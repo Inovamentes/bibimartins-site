@@ -248,6 +248,584 @@ function App() {
         </div>
       </section>
 
+      {/* About Section */}
+      <section id="sobre" className="py-20 lg:py-32 bg-white">
+        <div className="container mx-auto px-4 lg:px-8">
+          <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
+            {/* Image */}
+            <div className="relative">
+              <div className="relative rounded-3xl overflow-hidden shadow-2xl">
+                <img 
+                  src="/images/3BFD633B-9979-478F-B846-28C3DD19BCF4.jpeg" 
+                  alt="Bibi Martins - Palestrante" 
+                  className="w-full h-[500px] object-cover"
+                />
+              </div>
+              {/* Floating Card */}
+              <div className="absolute -bottom-6 -right-6 bg-white rounded-2xl shadow-xl p-6 max-w-[250px]">
+                <div className="flex items-center gap-3 mb-3">
+                  <div className="w-12 h-12 rounded-full bg-gradient-to-br from-purple-600 to-orange-500 flex items-center justify-center">
+                    <Award className="w-6 h-6 text-white" />
+                  </div>
+                  <div>
+                    <div className="font-bold text-gray-900">15+ Anos</div>
+                    <div className="text-sm text-gray-600">de Experiência</div>
+                  </div>
+                </div>
+                <p className="text-sm text-gray-600">
+                  Transformando líderes e organizações através da neurodiversidade.
+                </p>
+              </div>
+              {/* Decorative */}
+              <div className="absolute -top-4 -left-4 w-24 h-24 bg-purple-100 rounded-full -z-10" />
+              <div className="absolute -bottom-4 left-1/4 w-16 h-16 bg-orange-100 rounded-full -z-10" />
+            </div>
+
+            {/* Content */}
+            <div>
+              <Badge className="mb-4 bg-purple-100 text-purple-700 hover:bg-purple-200">
+                Sobre Mim
+              </Badge>
+              <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-900 mb-6">
+                Quem é{' '}
+                <span className="text-gradient">Bibi Martins?</span>
+              </h2>
+              <div className="space-y-4 text-gray-600 leading-relaxed">
+                <p>
+                  Sou palestrante, mentora corporativa e especialista em liderança neurodiversa. 
+                  Minha missão é transformar a forma como as organizações entendem e praticam 
+                  a liderança no mundo contemporâneo.
+                </p>
+                <p>
+                  Ao longo de mais de 15 anos, tenho ajudado empresas a compreenderem que 
+                  <strong> os neurodivergentes não estão sendo negligenciados por acaso</strong> — 
+                  estão sendo marginalizados por líderes que ainda não desenvolveram a 
+                  inteligência emocional e a flexibilidade cognitiva necessárias para 
+                  liderar equipes diversas.
+                </p>
+                <p>
+                  Também investigo <strong>por que as gerações mais novas estão rejeitando 
+                  cargos de liderança</strong>. A resposta está nas relações de poder tóxicas, 
+                  na falta de propósito e na ausência de modelos de liderança que realmente 
+                  inspirem.
+                </p>
+              </div>
+
+              {/* Topics */}
+              <div className="mt-8 grid sm:grid-cols-2 gap-4">
+                {[
+                  { icon: Brain, text: 'Liderança Neurodiversa' },
+                  { icon: Users, text: 'Relações de Poder' },
+                  { icon: Heart, text: 'Empoderamento' },
+                  { icon: TrendingUp, text: 'Gestão de Pessoas' },
+                ].map((item, index) => (
+                  <div key={index} className="flex items-center gap-3 p-3 rounded-xl bg-gray-50">
+                    <div className="w-10 h-10 rounded-lg bg-purple-100 flex items-center justify-center">
+                      <item.icon className="w-5 h-5 text-purple-600" />
+                    </div>
+                    <span className="font-medium text-gray-700">{item.text}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Método Sinapse 360 Section */}
+      <section id="metodo" className="py-20 lg:py-32 bg-gradient-to-b from-purple-50 to-white">
+        <div className="container mx-auto px-4 lg:px-8">
+          {/* Header */}
+          <div className="text-center max-w-3xl mx-auto mb-16">
+            <Badge className="mb-4 bg-orange-100 text-orange-700 hover:bg-orange-200">
+              <Lightbulb className="w-3 h-3 mr-1" />
+              Metodologia Exclusiva
+            </Badge>
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-900 mb-6">
+              Método <span className="text-gradient">Sinapse 360°</span>
+            </h2>
+            <p className="text-lg text-gray-600">
+              A metodologia BMAcademy de Liderança para o Neurodiverso e pelo Neurodiverso. 
+              Uma abordagem completa que transforma líderes e organizações.
+            </p>
+          </div>
+
+          {/* Pillars */}
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {[
+              {
+                number: '01',
+                title: 'Auto-Consciência Cognitiva',
+                description: 'O líder entende seu próprio padrão mental, forças e limites. Desenvolve autoconhecimento profundo sobre seu funcionamento mental e estilo de processamento.',
+                objective: 'Desenvolver autoconsciência para liderança adaptativa.',
+                color: 'purple',
+                icon: Brain,
+              },
+              {
+                number: '02',
+                title: 'Leitura de Perfis',
+                description: 'Capacidade de identificar estilos cognitivos e comportamentais sem rotular ou "patologizar". Aqui nasce a liderança inclusiva estratégica.',
+                objective: 'Identificar padrões cognitivos sem julgamentos.',
+                color: 'orange',
+                icon: Users,
+              },
+              {
+                number: '03',
+                title: 'Comunicação Sináptica',
+                description: 'Ajuste intencional da linguagem, estrutura e expectativas conforme o perfil da equipe. O coração do método - tradução entre mentes diferentes.',
+                objective: 'Estruturar mensagens com clareza cognitiva.',
+                color: 'teal',
+                icon: MessageCircle,
+              },
+              {
+                number: '04',
+                title: 'Arquitetura de Ambiente',
+                description: 'Criação de previsibilidade, clareza e segurança psicológica para diferentes funcionamentos mentais. O método sai do indivíduo e entra no sistema.',
+                objective: 'Criar ambientes previsíveis para cérebros diversos.',
+                color: 'purple',
+                icon: Target,
+              },
+              {
+                number: '05',
+                title: 'Performance Adaptativa',
+                description: 'Transformar diversidade cognitiva em vantagem competitiva. O líder deixa de "acomodar diferenças" e passa a usá-las estrategicamente.',
+                objective: 'Transformar diferenças em inovação e resultado.',
+                color: 'orange',
+                icon: Zap,
+              },
+            ].map((pillar, index) => (
+              <Card 
+                key={index} 
+                className="group relative overflow-hidden border-0 shadow-lg hover:shadow-2xl transition-all duration-300 hover:-translate-y-2"
+              >
+                <div className={`absolute top-0 left-0 w-full h-1 bg-gradient-to-r ${
+                  pillar.color === 'purple' ? 'from-purple-500 to-purple-600' :
+                  pillar.color === 'orange' ? 'from-orange-500 to-orange-600' :
+                  'from-teal-500 to-teal-600'
+                }`} />
+                <CardContent className="p-6">
+                  <div className="flex items-start justify-between mb-4">
+                    <div className={`w-14 h-14 rounded-xl flex items-center justify-center ${
+                      pillar.color === 'purple' ? 'bg-purple-100' :
+                      pillar.color === 'orange' ? 'bg-orange-100' :
+                      'bg-teal-100'
+                    }`}>
+                      <pillar.icon className={`w-7 h-7 ${
+                        pillar.color === 'purple' ? 'text-purple-600' :
+                        pillar.color === 'orange' ? 'text-orange-600' :
+                        'text-teal-600'
+                      }`} />
+                    </div>
+                    <span className={`text-4xl font-bold ${
+                      pillar.color === 'purple' ? 'text-purple-200' :
+                      pillar.color === 'orange' ? 'text-orange-200' :
+                      'text-teal-200'
+                    }`}>{pillar.number}</span>
+                  </div>
+                  <h3 className="text-xl font-bold text-gray-900 mb-3">{pillar.title}</h3>
+                  <p className="text-gray-600 mb-4 text-sm leading-relaxed">{pillar.description}</p>
+                  <div className={`p-3 rounded-lg ${
+                    pillar.color === 'purple' ? 'bg-purple-50' :
+                    pillar.color === 'orange' ? 'bg-orange-50' :
+                    'bg-teal-50'
+                  }`}>
+                    <p className={`text-sm font-medium ${
+                      pillar.color === 'purple' ? 'text-purple-700' :
+                      pillar.color === 'orange' ? 'text-orange-700' :
+                      'text-teal-700'
+                    }`}>
+                      <Target className="w-4 h-4 inline mr-1" />
+                      {pillar.objective}
+                    </p>
+                  </div>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+
+          {/* BM Academy CTA */}
+          <div className="mt-16">
+            <Card className="border-0 shadow-xl overflow-hidden">
+              <div className="grid lg:grid-cols-2">
+                <div className="p-8 lg:p-12">
+                  <div className="flex items-center gap-4 mb-6">
+                    <img 
+                      src="/images/Gemini_Generated_Image_pvaxsjpvaxsjpvax.png" 
+                      alt="BM Academy" 
+                      className="w-16 h-16 rounded-xl object-contain"
+                    />
+                    <div>
+                      <h3 className="text-2xl font-bold text-gray-900">BM Academy</h3>
+                      <p className="text-orange-600 font-medium">Se não te cabe, inove</p>
+                    </div>
+                  </div>
+                  <p className="text-gray-600 mb-6 leading-relaxed">
+                    A BM Academy é uma escola corporativa diferenciada que oferece programas 
+                    de desenvolvimento de liderança baseados no Método Sinapse 360°. 
+                    Preparamos líderes para o futuro do trabalho.
+                  </p>
+                  <Button 
+                    onClick={() => window.open('https://wa.me/5511932143117', '_blank')}
+                    className="bg-gradient-to-r from-purple-600 to-purple-700 hover:from-purple-700 hover:to-purple-800 text-white"
+                  >
+                    Saiba Mais
+                    <ArrowRight className="w-4 h-4 ml-2" />
+                  </Button>
+                </div>
+                <div className="relative hidden lg:block">
+                  <img 
+                    src="/images/Gemini_Generated_Image_pvaxsjpvaxsjpvax.png" 
+                    alt="BM Academy" 
+                    className="absolute inset-0 w-full h-full object-cover"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-r from-white via-white/50 to-transparent" />
+                </div>
+              </div>
+            </Card>
+          </div>
+        </div>
+      </section>
+
+      {/* Palestras Section */}
+      <section id="palestras" className="py-20 lg:py-32 bg-white">
+        <div className="container mx-auto px-4 lg:px-8">
+          {/* Header */}
+          <div className="text-center max-w-3xl mx-auto mb-16">
+            <Badge className="mb-4 bg-purple-100 text-purple-700 hover:bg-purple-200">
+              <Play className="w-3 h-3 mr-1" />
+              Palestras
+            </Badge>
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-900 mb-6">
+              Temas que <span className="text-gradient">Transformam</span>
+            </h2>
+            <p className="text-lg text-gray-600">
+              Palestras impactantes que desafiam paradigmas e inspiram mudanças 
+              reais nas organizações.
+            </p>
+          </div>
+
+          {/* Talks Grid */}
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {[
+              {
+                title: 'Neurodiversidade no Poder',
+                subtitle: 'Por que os neurodivergentes estão sendo negligenciados',
+                description: 'Uma análise profunda sobre como líderes despreparados estão marginalizando talentos neurodivergentes e o que fazer para reverter esse cenário.',
+                duration: '60-90 min',
+                audience: 'Liderança e RH',
+                color: 'purple',
+              },
+              {
+                title: 'A Crise da Liderança',
+                subtitle: 'Por que as novas gerações não querem ser líderes',
+                description: 'Descubra as razões profundas pelas quais millennials e gen Z estão rejeitando cargos de liderança e como criar modelos que realmente inspirem.',
+                duration: '60-90 min',
+                audience: 'Executivos e Gestores',
+                color: 'orange',
+              },
+              {
+                title: 'Relações de Poder Saudáveis',
+                subtitle: 'Empoderamento no ambiente corporativo',
+                description: 'Como construir relações de poder equilibradas que promovam crescimento, autonomia e resultados sem sacrificar o bem-estar das pessoas.',
+                duration: '60-90 min',
+                audience: 'Todas as hierarquias',
+                color: 'teal',
+              },
+              {
+                title: 'Liderança Adaptativa',
+                subtitle: 'O Método Sinapse 360° na prática',
+                description: 'Uma imersão prática na metodologia que está transformando líderes tradicionais em líderes adaptativos capazes de conduzir equipes diversas.',
+                duration: '2-4 horas',
+                audience: 'Liderança',
+                color: 'purple',
+              },
+              {
+                title: 'Inclusão que Gera Resultado',
+                subtitle: 'Da teoria à prática estratégica',
+                description: 'Como implementar programas de inclusão neurodiversa que realmente funcionam e geram vantagem competitiva mensurável.',
+                duration: '60-120 min',
+                audience: 'RH e Liderança',
+                color: 'orange',
+              },
+              {
+                title: 'Mentoria para Líderes',
+                subtitle: 'Programa personalizado de desenvolvimento',
+                description: 'Programa de mentoria individual ou em grupo para líderes que querem se desenvolver na condução de equipes diversas e de alta performance.',
+                duration: 'Personalizado',
+                audience: 'Líderes',
+                color: 'teal',
+              },
+            ].map((talk, index) => (
+              <Card 
+                key={index} 
+                className="group border-0 shadow-lg hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 overflow-hidden"
+              >
+                <div className={`h-2 bg-gradient-to-r ${
+                  talk.color === 'purple' ? 'from-purple-500 to-purple-600' :
+                  talk.color === 'orange' ? 'from-orange-500 to-orange-600' :
+                  'from-teal-500 to-teal-600'
+                }`} />
+                <CardContent className="p-6">
+                  <div className="flex items-center gap-2 mb-3">
+                    <Badge variant="secondary" className="text-xs">
+                      {talk.duration}
+                    </Badge>
+                    <Badge variant="outline" className="text-xs">
+                      {talk.audience}
+                    </Badge>
+                  </div>
+                  <h3 className="text-xl font-bold text-gray-900 mb-2 group-hover:text-purple-600 transition-colors">
+                    {talk.title}
+                  </h3>
+                  <p className={`text-sm font-medium mb-4 ${
+                    talk.color === 'purple' ? 'text-purple-600' :
+                    talk.color === 'orange' ? 'text-orange-600' :
+                    'text-teal-600'
+                  }`}>
+                    {talk.subtitle}
+                  </p>
+                  <p className="text-gray-600 text-sm leading-relaxed mb-6">
+                    {talk.description}
+                  </p>
+                  <Button 
+                    variant="outline" 
+                    size="sm"
+                    onClick={() => window.open('https://wa.me/5511932143117', '_blank')}
+                    className={`w-full group-hover:bg-gradient-to-r ${
+                      talk.color === 'purple' ? 'group-hover:from-purple-600 group-hover:to-purple-700' :
+                      talk.color === 'orange' ? 'group-hover:from-orange-500 group-hover:to-orange-600' :
+                      'group-hover:from-teal-500 group-hover:to-teal-600'
+                    } group-hover:text-white group-hover:border-transparent transition-all`}
+                  >
+                    Solicitar Orçamento
+                    <ChevronRight className="w-4 h-4 ml-1" />
+                  </Button>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Testimonials Section */}
+      <section id="depoimentos" className="py-20 lg:py-32 bg-gradient-to-b from-gray-50 to-white">
+        <div className="container mx-auto px-4 lg:px-8">
+          {/* Header */}
+          <div className="text-center max-w-3xl mx-auto mb-16">
+            <Badge className="mb-4 bg-orange-100 text-orange-700 hover:bg-orange-200">
+              <Star className="w-3 h-3 mr-1" />
+              Depoimentos
+            </Badge>
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-900 mb-6">
+              O que dizem sobre <span className="text-gradient">meu trabalho</span>
+            </h2>
+            <p className="text-lg text-gray-600">
+              Histórias reais de transformação e impacto nas organizações.
+            </p>
+          </div>
+
+          {/* Testimonials Grid */}
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {[
+              {
+                text: 'A palestra da Bibi foi um divisor de águas para nossa liderança. Ela conseguiu traduzir conceitos complexos de neurodiversidade em ações práticas que nossos gestores puderam aplicar imediatamente.',
+                author: 'Ana Paula Mendes',
+                role: 'Diretora de RH',
+                company: 'TechCorp Brasil',
+              },
+              {
+                text: 'Nunca tinha visto uma abordagem tão honesta sobre as falhas da liderança tradicional. Bibi não tem medo de falar o que ninguém quer ouvir, e é exatamente isso que as empresas precisam.',
+                author: 'Carlos Eduardo Lima',
+                role: 'CEO',
+                company: 'Inovação Group',
+              },
+              {
+                text: 'O Método Sinapse 360° transformou nossa cultura organizacional. Em 6 meses, reduzimos em 40% o turnover de talentos neurodivergentes e aumentamos a satisfação da equipe.',
+                author: 'Mariana Souza',
+                role: 'Head de D&I',
+                company: 'Global Industries',
+              },
+              {
+                text: 'A mentoria com a Bibi me ajudou a reconhecer meus próprios vieses como líder. Hoje consigo conduzir reuniões de forma mais inclusiva e obter melhores resultados da minha equipe.',
+                author: 'Ricardo Almeida',
+                role: 'Gerente de Operações',
+                company: 'Finance Solutions',
+              },
+              {
+                text: 'Contratamos a Bibi para falar sobre "A Crise da Liderança" e o impacto foi imediato. Nossos jovens talentos finalmente se sentiram ouvidos e entendidos.',
+                author: 'Fernanda Costa',
+                role: 'Gerente de Talentos',
+                company: 'StartUp Hub',
+              },
+              {
+                text: 'Bibi tem um dom: ela consegue fazer líderes tradicionais enxergarem a necessidade de mudança sem que se sintam atacados. É uma habilidade rara e valiosa.',
+                author: 'João Pedro Silva',
+                role: 'Consultor de Gestão',
+                company: 'Business Partners',
+              },
+            ].map((testimonial, index) => (
+              <Card 
+                key={index} 
+                className="border-0 shadow-lg hover:shadow-xl transition-all duration-300"
+              >
+                <CardContent className="p-6">
+                  <Quote className="w-10 h-10 text-purple-200 mb-4" />
+                  <p className="text-gray-700 leading-relaxed mb-6">
+                    "{testimonial.text}"
+                  </p>
+                  <div className="flex items-center gap-3">
+                    <div className="w-12 h-12 rounded-full bg-gradient-to-br from-purple-500 to-orange-500 flex items-center justify-center text-white font-bold">
+                      {testimonial.author.split(' ').map(n => n[0]).join('')}
+                    </div>
+                    <div>
+                      <p className="font-semibold text-gray-900">{testimonial.author}</p>
+                      <p className="text-sm text-gray-600">{testimonial.role}</p>
+                      <p className="text-xs text-purple-600">{testimonial.company}</p>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Contact Section */}
+      <section id="contato" className="py-20 lg:py-32 bg-white">
+        <div className="container mx-auto px-4 lg:px-8">
+          <div className="grid lg:grid-cols-2 gap-12 lg:gap-20">
+            {/* Contact Info */}
+            <div>
+              <Badge className="mb-4 bg-purple-100 text-purple-700 hover:bg-purple-200">
+                <Phone className="w-3 h-3 mr-1" />
+                Contato
+              </Badge>
+              <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-900 mb-6">
+                Vamos <span className="text-gradient">conversar?</span>
+              </h2>
+              <p className="text-lg text-gray-600 mb-8 leading-relaxed">
+                Estou pronta para ajudar sua organização a transformar sua liderança 
+                e criar ambientes mais inclusivos e produtivos. Entre em contato 
+                e vamos discutir como posso contribuir com seu evento ou projeto.
+              </p>
+
+              <div className="space-y-6">
+                <div className="flex items-center gap-4">
+                  <div className="w-14 h-14 rounded-xl bg-purple-100 flex items-center justify-center">
+                    <Phone className="w-6 h-6 text-purple-600" />
+                  </div>
+                  <div>
+                    <p className="text-sm text-gray-600">WhatsApp</p>
+                    <a 
+                      href="https://wa.me/5511932143117" 
+                      target="_blank" 
+                      rel="noopener noreferrer"
+                      className="text-lg font-semibold text-gray-900 hover:text-purple-600 transition-colors"
+                    >
+                      +55 11 93214-3117
+                    </a>
+                  </div>
+                </div>
+
+                <div className="flex items-center gap-4">
+                  <div className="w-14 h-14 rounded-xl bg-orange-100 flex items-center justify-center">
+                    <Mail className="w-6 h-6 text-orange-600" />
+                  </div>
+                  <div>
+                    <p className="text-sm text-gray-600">E-mail</p>
+                    <a 
+                      href="mailto:falacomigo@bibimartins.com"
+                      className="text-lg font-semibold text-gray-900 hover:text-orange-600 transition-colors"
+                    >
+                      falacomigo@bibimartins.com
+                    </a>
+                  </div>
+                </div>
+
+                <div className="flex items-center gap-4">
+                  <div className="w-14 h-14 rounded-xl bg-teal-100 flex items-center justify-center">
+                    <Instagram className="w-6 h-6 text-teal-600" />
+                  </div>
+                  <div>
+                    <p className="text-sm text-gray-600">Redes Sociais</p>
+                    <p className="text-lg font-semibold text-gray-900">@bibimartinsoficial</p>
+                  </div>
+                </div>
+              </div>
+
+              {/* Social Links */}
+              <div className="mt-8">
+                <p className="text-sm text-gray-600 mb-4">Siga nas redes:</p>
+                <div className="flex gap-3">
+                  {[
+                    { icon: Instagram, href: 'https://instagram.com/bibimartinsoficial', color: 'bg-pink-100 text-pink-600' },
+                    { icon: Facebook, href: 'https://facebook.com/bibimartinsoficial', color: 'bg-blue-100 text-blue-600' },
+                    { icon: Youtube, href: 'https://youtube.com/@bibimartinsoficial', color: 'bg-red-100 text-red-600' },
+                  ].map((social, index) => (
+                    <a
+                      key={index}
+                      href={social.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className={`w-12 h-12 rounded-xl ${social.color} flex items-center justify-center hover:scale-110 transition-transform`}
+                    >
+                      <social.icon className="w-5 h-5" />
+                    </a>
+                  ))}
+                </div>
+              </div>
+            </div>
+
+            {/* CTA Card */}
+            <div className="relative">
+              <Card className="border-0 shadow-2xl overflow-hidden">
+                <div className="absolute inset-0 bg-gradient-to-br from-purple-600 via-purple-700 to-orange-600" />
+                <div className="relative p-8 lg:p-12 text-white">
+                  <h3 className="text-2xl lg:text-3xl font-bold mb-4">
+                    Pronto para transformar sua liderança?
+                  </h3>
+                  <p className="text-white/90 mb-8 leading-relaxed">
+                    Não espere mais para criar uma cultura organizacional verdadeiramente 
+                    inclusiva. Cada dia de atraso é um talento perdido.
+                  </p>
+
+                  <div className="space-y-4 mb-8">
+                    {[
+                      'Palestras personalizadas para seu evento',
+                      'Programas de mentoria para líderes',
+                      'Consultoria em Diversidade & Inclusão',
+                      'Implementação do Método Sinapse 360°',
+                    ].map((item, index) => (
+                      <div key={index} className="flex items-center gap-3">
+                        <CheckCircle2 className="w-5 h-5 text-orange-300 flex-shrink-0" />
+                        <span className="text-white/90">{item}</span>
+                      </div>
+                    ))}
+                  </div>
+
+                  <Button 
+                    size="lg"
+                    onClick={() => window.open('https://wa.me/5511932143117', '_blank')}
+                    className="w-full bg-white text-purple-700 hover:bg-gray-100 font-semibold"
+                  >
+                    <Phone className="w-5 h-5 mr-2" />
+                    Falar no WhatsApp
+                  </Button>
+
+                  <p className="text-center text-white/70 text-sm mt-4">
+                    Resposta em até 24 horas
+                  </p>
+                </div>
+              </Card>
+
+              {/* Decorative */}
+              <div className="absolute -top-4 -right-4 w-24 h-24 bg-orange-400/30 rounded-full blur-2xl" />
+              <div className="absolute -bottom-4 -left-4 w-32 h-32 bg-purple-400/30 rounded-full blur-2xl" />
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* Footer */}
       <footer className="bg-gray-900 text-white py-16">
         <div className="container mx-auto px-4 lg:px-8">
@@ -284,6 +862,72 @@ function App() {
                 ))}
               </div>
             </div>
+
+            {/* Quick Links */}
+            <div>
+              <h4 className="font-bold text-lg mb-6">Links Rápidos</h4>
+              <ul className="space-y-3">
+                {[
+                  { label: 'Home', href: '#home' },
+                  { label: 'Sobre', href: '#sobre' },
+                  { label: 'Método Sinapse 360°', href: '#metodo' },
+                  { label: 'Palestras', href: '#palestras' },
+                  { label: 'Depoimentos', href: '#depoimentos' },
+                  { label: 'Contato', href: '#contato' },
+                ].map((link, index) => (
+                  <li key={index}>
+                    <button 
+                      onClick={() => scrollToSection(link.href.replace('#', ''))}
+                      className="text-gray-400 hover:text-white transition-colors"
+                    >
+                      {link.label}
+                    </button>
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            {/* Palestras */}
+            <div>
+              <h4 className="font-bold text-lg mb-6">Palestras</h4>
+              <ul className="space-y-3">
+                {[
+                  'Neurodiversidade no Poder',
+                  'A Crise da Liderança',
+                  'Relações de Poder Saudáveis',
+                  'Liderança Adaptativa',
+                  'Inclusão que Gera Resultado',
+                  'Mentoria para Líderes',
+                ].map((talk, index) => (
+                  <li key={index}>
+                    <span className="text-gray-400">{talk}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            {/* Contact */}
+            <div>
+              <h4 className="font-bold text-lg mb-6">Contato</h4>
+              <ul className="space-y-4">
+                <li className="flex items-center gap-3">
+                  <Phone className="w-5 h-5 text-purple-400" />
+                  <a href="https://wa.me/5511932143117" className="text-gray-400 hover:text-white transition-colors">
+                    +55 11 93214-3117
+                  </a>
+                </li>
+                <li className="flex items-center gap-3">
+                  <Mail className="w-5 h-5 text-orange-400" />
+                  <a href="mailto:falacomigo@bibimartins.com" className="text-gray-400 hover:text-white transition-colors">
+                    falacomigo@bibimartins.com
+                  </a>
+                </li>
+                <li className="flex items-center gap-3">
+                  <Instagram className="w-5 h-5 text-pink-400" />
+                  <span className="text-gray-400">@bibimartinsoficial</span>
+                </li>
+              </ul>
+            </div>
           </div>
 
           {/* Bottom */}
@@ -291,6 +935,14 @@ function App() {
             <p className="text-gray-500 text-sm">
               © 2025 Bibi Martins. Todos os direitos reservados.
             </p>
+            <div className="flex items-center gap-2">
+              <span className="text-gray-500 text-sm">Uma iniciativa</span>
+              <img 
+                src="/images/Gemini_Generated_Image_pvaxsjpvaxsjpvax.png" 
+                alt="BM Academy" 
+                className="h-8 w-auto"
+              />
+            </div>
           </div>
         </div>
       </footer>
