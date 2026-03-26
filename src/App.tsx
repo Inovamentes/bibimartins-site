@@ -309,7 +309,7 @@ function App() {
                 <p>
                   Neste meu projeto <strong>trouxe também o porque das gerações mais novas estarem rejeitando 
                   cargos de liderança</strong>. A resposta primária está nas relações de poder tóxicas, 
-                  na falta de propósito e na ausência de modelos de liderança que realmente inspirem.
+                  está também na falta de propósito e na ausência de modelos de liderança que realmente inspirem.
                 </p>
               </div>
 
