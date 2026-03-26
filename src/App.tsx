@@ -171,7 +171,7 @@ function App() {
           <img 
             src="/images/2F944E58-9815-40C7-B5F2-30BC9C5EA73B.jpeg" 
             alt="Bibi Martins" 
-            className="w-full h-full object-cover object-center"
+            className="w-full h-full object-cover object-top"
           />
           <div className="absolute inset-0 bg-gradient-to-r from-purple-900/90 via-purple-800/80 to-transparent" />
           <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
@@ -199,8 +199,8 @@ function App() {
             
             <p className="text-lg sm:text-xl text-white/90 mb-8 leading-relaxed">
               Palestras e mentoria que desafiam os paradigmas tradicionais. 
-              Descubra como líderes neurodivergentes estão transformando o 
-              cenário corporativo e por que as novas gerações estão 
+              Descubra como mudar de líder padrão para um líder inclusivo, identificando potenciais neurodivergentes
+              no novo cenário corporativo e por que as novas gerações estão 
               redefinindo o conceito de liderança.
             </p>
 
@@ -258,7 +258,7 @@ function App() {
                 <img 
                   src="/images/3BFD633B-9979-478F-B846-28C3DD19BCF4.jpeg" 
                   alt="Bibi Martins - Palestrante" 
-                  className="w-full h-[500px] object-cover"
+                  className="w-full h-[500px] object-contain"
                 />
               </div>
               {/* Floating Card */}
@@ -273,7 +273,7 @@ function App() {
                   </div>
                 </div>
                 <p className="text-sm text-gray-600">
-                  Transformando líderes e organizações através da neurodiversidade.
+                  Transformando líderes e liderados a reconhecer que precisam mudar o mindset neurotípico.
                 </p>
               </div>
               {/* Decorative */}
@@ -297,15 +297,15 @@ function App() {
                   a liderança no mundo contemporâneo.
                 </p>
                 <p>
-                  Ao longo de mais de 15 anos, tenho ajudado empresas a compreenderem que 
+                  Ao longo de mais de 15 anos, tenho trabalhando em grandes empresas e sendo uma delas
                   <strong> os neurodivergentes não estão sendo negligenciados por acaso</strong> — 
-                  estão sendo marginalizados por líderes que ainda não desenvolveram a 
+                  estão sendo marginalizados demitidos por líderes que ainda não desenvolveram a 
                   inteligência emocional e a flexibilidade cognitiva necessárias para 
                   liderar equipes diversas.
                 </p>
                 <p>
-                  Também investigo <strong>por que as gerações mais novas estão rejeitando 
-                  cargos de liderança</strong>. A resposta está nas relações de poder tóxicas, 
+                  Neste meu projeto <strong>trouxe o porque das gerações mais novas estarem rejeitando 
+                  cargos de liderança</strong>. A resposta primária está nas relações de poder tóxicas, 
                   na falta de propósito e na ausência de modelos de liderança que realmente 
                   inspirem.
                 </p>
