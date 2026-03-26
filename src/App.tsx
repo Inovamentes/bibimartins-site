@@ -635,6 +635,7 @@ function App() {
                 author: 'Ana Paula Mendes',
                 role: 'Diretora de RH',
                // ... 
+              },  
               {
                 text: 'Nunca tinha visto uma abordagem tão honesta sobre as falhas da liderança tradicional. Bibi não tem medo de falar o que ninguém quer ouvir, e é exatamente isso que as empresas precisam.',
                 author: 'Carlos Eduardo Lima',
@@ -664,8 +665,8 @@ function App() {
                 author: 'João Pedro Silva',
                 role: 'Consultor de Gestão',
                // ... 
-              ]}
-            {'>'}
+              },
+             </div>
             ].map((testimonial, index) => (
               <Card 
                 key={index} 
@@ -690,7 +691,6 @@ function App() {
               </Card>
             ))}
             {
-          </div>
         </div>
       </section>
 
