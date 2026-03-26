@@ -298,7 +298,7 @@ function App() {
                 </p>
                 <p>
                   Ao longo de mais de 15 anos, de atuação em grandes empresas, vivenciei de perto desafios enfrentados
-                  <strong>por profissionais neurodivergentes. Sendo também uma pessoa neurodivergente,compreendo por </strong> — 
+                  <strong> por profissionais neurodivergentes. Sendo também uma pessoa neurodivergente,compreendo por </strong>
                   que tantos talentos ainda são negligenciados — e, muitas vezes, marginalizados ou até desligados.
                 </p>
                 <p>
