@@ -171,7 +171,7 @@ function App() {
           <img 
             src="/images/2F944E58-9815-40C7-B5F2-30BC9C5EA73B.jpeg" 
             alt="Bibi Martins" 
-            className="w-full h-full object-cover object-top"
+            className="w-full h-full object-cover object-top" style={{objectPosition: '0% 20%'}}
           />
           <div className="absolute inset-0 bg-gradient-to-r from-purple-900/90 via-purple-800/80 to-transparent" />
           <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
@@ -199,8 +199,8 @@ function App() {
             
             <p className="text-lg sm:text-xl text-white/90 mb-8 leading-relaxed">
               Palestras e mentoria que desafiam os paradigmas tradicionais. 
-              Descubra como mudar de líder padrão para um líder inclusivo, identificando potenciais neurodivergentes
-              no novo cenário corporativo e por que as novas gerações estão 
+              Descubra como mudar de líder padrão para um líder inclusivo, identificando potenciais 
+              neurodivergentes no novo cenário corporativo e por que as novas gerações estão 
               redefinindo o conceito de liderança.
             </p>
 
@@ -298,7 +298,7 @@ function App() {
                 </p>
                 <p>
                   Ao longo de mais de 15 anos, de atuação em grandes empresas, vivenciei de perto desafios enfrentados
-                  <strong> por profissionais neurodivergentes. Sendo também uma pessoa neurodivergente,compreendo por </strong>
+                  <strong> por profissionais neurodivergentes. Sendo também uma pessoa neurodivergente, compreendo por </strong>
                   que tantos talentos ainda são negligenciados — e, muitas vezes, marginalizados ou até desligados.
                 </p>
                 <p>
