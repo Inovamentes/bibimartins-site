@@ -462,9 +462,10 @@ function App() {
                     </div>
                   </div>
                   <p className="text-gray-600 mb-6 leading-relaxed">
-                    A BM Academy é uma escola corporativa diferenciada que oferece programas 
-                    de desenvolvimento de liderança baseados no Método Sinapse 360°. 
-                    Preparamos líderes para o futuro do trabalho.
+                    A BM Academy é uma escola corporativa diferenciada que oferece programas de desenvolvimento
+                    desde a base de Jovens aprendizes,passando também pelo operacional, identificando potenciais para o 
+                    desenvolvimento de futuras lideranças, sendo todos os treinamentos baseados no Método Sinapse 360°. 
+                    Preparamos líderes para o futuro do trabalho sendo hard e softskill. Venha saber Mais!
                   </p>
                   <Button 
                     onClick={() => window.open('https://wa.me/5511932143117', '_blank')}
@@ -520,7 +521,7 @@ function App() {
               {
                 title: 'A Crise da Liderança',
                 subtitle: 'Por que as novas gerações não querem ser líderes',
-                description: 'Descubra as razões profundas pelas quais millennials e gen Z estão rejeitando cargos de liderança e como criar modelos que realmente inspirem.',
+                description: 'Descubra as razões profundas pelas quais millennials e gen Z estão rejeitando cargos de liderança e como criar modelos que realmente inspiram.',
                 duration: '60-90 min',
                 audience: 'Executivos e Gestores',
                 color: 'orange',
@@ -528,16 +529,16 @@ function App() {
               {
                 title: 'Relações de Poder Saudáveis',
                 subtitle: 'Empoderamento no ambiente corporativo',
-                description: 'Como construir relações de poder equilibradas que promovam crescimento, autonomia e resultados sem sacrificar o bem-estar das pessoas.',
+                description: 'Como construir relações de poder equilibradas que promovam crescimento, autonomia e resultados sem sacrificar o bem-estar das pessoas e a diversidade.',
                 duration: '60-90 min',
                 audience: 'Todas as hierarquias',
                 color: 'teal',
               },
               {
-                title: 'Liderança Adaptativa',
+                title: 'Se tornando um(a) Líder Neurodiverso',
                 subtitle: 'O Método Sinapse 360° na prática',
                 description: 'Uma imersão prática na metodologia que está transformando líderes tradicionais em líderes adaptativos capazes de conduzir equipes diversas.',
-                duration: '2-4 horas',
+                duration: '2 - 4 horas',
                 audience: 'Liderança',
                 color: 'purple',
               },
@@ -633,37 +634,31 @@ function App() {
                 text: 'A palestra da Bibi foi um divisor de águas para nossa liderança. Ela conseguiu traduzir conceitos complexos de neurodiversidade em ações práticas que nossos gestores puderam aplicar imediatamente.',
                 author: 'Ana Paula Mendes',
                 role: 'Diretora de RH',
-                company: 'TechCorp Brasil',
               },
               {
                 text: 'Nunca tinha visto uma abordagem tão honesta sobre as falhas da liderança tradicional. Bibi não tem medo de falar o que ninguém quer ouvir, e é exatamente isso que as empresas precisam.',
                 author: 'Carlos Eduardo Lima',
                 role: 'CEO',
-                company: 'Inovação Group',
               },
               {
                 text: 'O Método Sinapse 360° transformou nossa cultura organizacional. Em 6 meses, reduzimos em 40% o turnover de talentos neurodivergentes e aumentamos a satisfação da equipe.',
                 author: 'Mariana Souza',
                 role: 'Head de D&I',
-                company: 'Global Industries',
               },
               {
                 text: 'A mentoria com a Bibi me ajudou a reconhecer meus próprios vieses como líder. Hoje consigo conduzir reuniões de forma mais inclusiva e obter melhores resultados da minha equipe.',
                 author: 'Ricardo Almeida',
                 role: 'Gerente de Operações',
-                company: 'Finance Solutions',
               },
               {
                 text: 'Contratamos a Bibi para falar sobre "A Crise da Liderança" e o impacto foi imediato. Nossos jovens talentos finalmente se sentiram ouvidos e entendidos.',
                 author: 'Fernanda Costa',
                 role: 'Gerente de Talentos',
-                company: 'StartUp Hub',
               },
               {
                 text: 'Bibi tem um dom: ela consegue fazer líderes tradicionais enxergarem a necessidade de mudança sem que se sintam atacados. É uma habilidade rara e valiosa.',
                 author: 'João Pedro Silva',
                 role: 'Consultor de Gestão',
-                company: 'Business Partners',
               },
             ].map((testimonial, index) => (
               <Card 
@@ -897,7 +892,7 @@ function App() {
                   'Neurodiversidade no Poder',
                   'A Crise da Liderança',
                   'Relações de Poder Saudáveis',
-                  'Liderança Adaptativa',
+                  'Se Tornando um(a) Líder Neurodiverso',
                   'Inclusão que Gera Resultado',
                   'Mentoria para Líderes',
                 ].map((talk, index) => (
