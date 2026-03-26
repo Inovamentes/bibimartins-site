@@ -666,7 +666,7 @@ function App() {
                 role: 'Consultor de Gestão',
                // ... 
               ]}
-            >
+            {'>'}
             ].map((testimonial, index) => (
               <Card 
                 key={index} 
