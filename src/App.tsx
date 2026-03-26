@@ -634,7 +634,7 @@ function App() {
                 text: 'A palestra da Bibi foi um divisor de águas para nossa liderança. Ela conseguiu traduzir conceitos complexos de neurodiversidade em ações práticas que nossos gestores puderam aplicar imediatamente.',
                 author: 'Ana Paula Mendes',
                 role: 'Diretora de RH',
-                // ... 
+               // ... 
               } ,
               {
                 text: 'Nunca tinha visto uma abordagem tão honesta sobre as falhas da liderança tradicional. Bibi não tem medo de falar o que ninguém quer ouvir, e é exatamente isso que as empresas precisam.',
@@ -665,7 +665,7 @@ function App() {
                 author: 'João Pedro Silva',
                 role: 'Consultor de Gestão',
                // ... 
-              } ,
+              ]}
             ].map((testimonial, index) => (
               <Card 
                 key={index} 
@@ -689,6 +689,7 @@ function App() {
                 </CardContent>
               </Card>
             ))}
+            {
           </div>
         </div>
       </section>
