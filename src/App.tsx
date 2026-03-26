@@ -297,17 +297,19 @@ function App() {
                   a liderança no mundo contemporâneo.
                 </p>
                 <p>
-                  Ao longo de mais de 15 anos, tenho trabalhando em grandes empresas e sendo uma delas
-                  <strong> os neurodivergentes não estão sendo negligenciados por acaso</strong> — 
-                  estão sendo marginalizados demitidos por líderes que ainda não desenvolveram a 
-                  inteligência emocional e a flexibilidade cognitiva necessárias para 
-                  liderar equipes diversas.
+                  Ao longo de mais de 15 anos, de atuação em grandes empresas, vivenciei de perto desafios enfrentados
+                  <strong>por profissionais neurodivergentes. Sendo também uma pessoa neurodivergente,compreendo por </strong> — 
+                  que tantos talentos ainda são negligenciados — e, muitas vezes, marginalizados ou até desligados.
                 </p>
                 <p>
-                  Neste meu projeto <strong>trouxe o porque das gerações mais novas estarem rejeitando 
+                  Esse cenário não é pontual: ele reflete a ausência de uma liderança preparada, com inteligência neurodiversa
+                  e flexibilidade cognitiva, para reconhecer, desenvolver e reter profissionais em toda a sua diversidade. 
+                  O resultado é a perda de talentos, redução de performance e ambientes menos inovadores.
+                </p>
+                <p>
+                  Neste meu projeto <strong>trouxe também o porque das gerações mais novas estarem rejeitando 
                   cargos de liderança</strong>. A resposta primária está nas relações de poder tóxicas, 
-                  na falta de propósito e na ausência de modelos de liderança que realmente 
-                  inspirem.
+                  na falta de propósito e na ausência de modelos de liderança que realmente inspirem.
                 </p>
               </div>
 
