@@ -635,31 +635,31 @@ function App() {
                 author: 'Ana Paula Mendes',
                 role: 'Diretora de RH',
                // ... 
-              } ,
+              },
               {
                 text: 'Nunca tinha visto uma abordagem tão honesta sobre as falhas da liderança tradicional. Bibi não tem medo de falar o que ninguém quer ouvir, e é exatamente isso que as empresas precisam.',
                 author: 'Carlos Eduardo Lima',
                 role: 'CEO',
                // ... 
-              } ,
+              },
               {
                 text: 'O Método Sinapse 360° transformou nossa cultura organizacional. Em 6 meses, reduzimos em 40% o turnover de talentos neurodivergentes e aumentamos a satisfação da equipe.',
                 author: 'Mariana Souza',
                 role: 'Head de D&I',
                // ... 
-              } ,
+              },
               {
                 text: 'A mentoria com a Bibi me ajudou a reconhecer meus próprios vieses como líder. Hoje consigo conduzir reuniões de forma mais inclusiva e obter melhores resultados da minha equipe.',
                 author: 'Ricardo Almeida',
                 role: 'Gerente de Operações',
                // ... 
-              } ,
+              },
               {
                 text: 'Contratamos a Bibi para falar sobre "A Crise da Liderança" e o impacto foi imediato. Nossos jovens talentos finalmente se sentiram ouvidos e entendidos.',
                 author: 'Fernanda Costa',
                 role: 'Gerente de Talentos',
                // ... 
-              } ,
+              },
               {
                 text: 'Bibi tem um dom: ela consegue fazer líderes tradicionais enxergarem a necessidade de mudança sem que se sintam atacados. É uma habilidade rara e valiosa.',
                 author: 'João Pedro Silva',
