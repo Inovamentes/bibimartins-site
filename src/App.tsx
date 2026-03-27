@@ -106,7 +106,7 @@ function App() {
                 className="bg-gradient-to-r from-purple-600 to-purple-700 hover:from-purple-700 hover:to-purple-800 text-white px-6"
               >
                 <Phone className="w-4 h-4 mr-2" />
-                Fale Comigo
+                Fala Comigo
               </Button>
             </div>
 
@@ -171,7 +171,7 @@ function App() {
           <img 
             src="/images/2F944E58-9815-40C7-B5F2-30BC9C5EA73B.jpeg" 
             alt="Bibi Martins" 
-            className="w-full h-full object-cover object-top" style={{objectPosition: '0% 18%'}}
+            className="w-full h-full object-cover object-top" style={{objectPosition: '0% 10%'}}
           />
           <div className="absolute inset-0 bg-gradient-to-r from-purple-900/90 via-purple-800/80 to-transparent" />
           <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
@@ -298,19 +298,18 @@ function App() {
                 </p>
                 <p>
                   Ao longo de mais de 15 anos, de atuação em grandes empresas, vivenciei de perto desafios enfrentados
-                  <strong>por profissionais neurodivergentes. Sendo também uma pessoa neurodivergente,compreendo por </strong> — 
-                  <strong> por profissionais neurodivergentes. Sendo também uma pessoa neurodivergente,compreendo por </strong>
+                  <strong>por profissionais neurodivergentes. Sendo também uma pessoa neurodivergente,compreendo por </strong>
                   que tantos talentos ainda são negligenciados — e, muitas vezes, marginalizados ou até desligados.
                 </p>
                 <p>
-                  Esse cenário não é pontual: ele reflete a ausência de uma liderança preparada, com inteligência neurodiversa
-                  e flexibilidade cognitiva, para reconhecer, desenvolver e reter profissionais em toda a sua diversidade. 
+                  Esse cenário não é pontual:  <strong>ele reflete a ausência de uma liderança preparada, com inteligência neurodiversa
+                  e flexibilidade cognitiva, para reconhecer, desenvolver e reter profissionais em toda a sua diversidade. </strong> 
                   O resultado é a perda de talentos, redução de performance e ambientes menos inovadores.
                 </p>
                 <p>
                   Neste meu projeto <strong>trouxe também o porque das gerações mais novas estarem rejeitando 
-                  cargos de liderança</strong>. A resposta primária está nas relações de poder tóxicas, 
-                  na falta de propósito e na ausência de modelos de liderança que realmente inspirem.
+                  cargos de liderança</strong>. A resposta primária está nas <strong>relações de poder tóxicas, 
+                  na falta de propósito e na ausência de modelos de liderança que realmente inspirem.</strong>
                 </p>
               </div>
 
@@ -348,8 +347,10 @@ function App() {
               Método <span className="text-gradient">Sinapse 360°</span>
             </h2>
             <p className="text-lg text-gray-600">
-              A metodologia BMAcademy de Liderança para o Neurodiverso e pelo Neurodiverso. 
-              Uma abordagem completa que transforma líderes e organizações.
+              A BM Academy é uma escola corporativa de nova geração, especializada na formação de líderes preparados para a complexidade do futuro do trabalho.
+              Com base no Método Sinapse 360°, desenvolvemos uma liderança estratégica, adaptativa e inclusiva, capaz de integrar performance, diversidade e inovação.
+              Aqui, não formamos gestores tradicionais — formamos líderes que antecipam mudanças, potencializam talentos 
+              neurodivergentes e transformam desafios em vantagem competitiva.
             </p>
           </div>
 
@@ -446,7 +447,7 @@ function App() {
             ))}
           </div>
 
-          {/* BM Academy CTA */}
+          {/* BMAcademy CTA */}
           <div className="mt-16">
             <Card className="border-0 shadow-xl overflow-hidden">
               <div className="grid lg:grid-cols-2">
@@ -463,7 +464,7 @@ function App() {
                     </div>
                   </div>
                   <p className="text-gray-600 mb-6 leading-relaxed">
-                    A BM Academy é uma escola corporativa diferenciada que oferece programas 
+                    A BMAcademy é uma escola corporativa diferenciada que oferece programas 
                     de desenvolvimento de liderança baseados no Método Sinapse 360°. 
                     Preparamos líderes para o futuro do trabalho.
                   </p>
@@ -478,7 +479,7 @@ function App() {
                 <div className="relative hidden lg:block">
                   <img 
                     src="/images/Gemini_Generated_Image_pvaxsjpvaxsjpvax.png" 
-                    alt="BM Academy" 
+                    alt="BMAcademy" 
                     className="absolute inset-0 w-full h-full object-cover"
                   />
                   <div className="absolute inset-0 bg-gradient-to-r from-white via-white/50 to-transparent" />
