@@ -198,10 +198,10 @@ function App() {
             </h1>
 
             <p className="text-lg sm:text-xl text-white/90 mb-8 leading-relaxed">
-              Palestras e mentoria que desafiam os paradigmas tradicionais. 
-              Descubra como mudar de líder padrão para um líder inclusivo, identificando potenciais neurodivergentes
-              no novo cenário corporativo e por que as novas gerações estão 
-              redefinindo o conceito de liderança.
+              Palestras e mentorias que rompem com os modelos tradicionais de liderança.
+              Descubra como evoluir de um líder padrão para uma liderança verdadeiramente inclusiva, 
+              capaz de reconhecer e potencializar talentos neurodivergentes no novo cenário corporativo.
+              E entenda por que as novas gerações estão transformando, de forma irreversível, o conceito de liderar.
             </p>
 
             <div className="flex flex-col sm:flex-row gap-4 mb-12">
