@@ -68,7 +68,7 @@ function App() {
             {/* Logo */}
             <a href="#home" onClick={() => scrollToSection('home')} className="flex items-center gap-3">
               <div className="w-10 h-10 rounded-full bg-gradient-to-br from-purple-600 to-orange-500 flex items-center justify-center">
-                <span className="text-white font-bold text-lg">BM</span>
+                <span className="text-white font-bold text-lg">B</span>
               </div>
               <div className="hidden sm:block">
                 <span className={`font-bold text-xl transition-colors ${isScrolled ? 'text-gray-900' : 'text-white'}`}>
@@ -121,7 +121,7 @@ function App() {
                 <div className="flex flex-col gap-6 mt-8">
                   <div className="flex items-center gap-3">
                     <div className="w-12 h-12 rounded-full bg-gradient-to-br from-purple-600 to-orange-500 flex items-center justify-center">
-                      <span className="text-white font-bold text-xl">BM</span>
+                      <span className="text-white font-bold text-xl">B</span>
                     </div>
                     <div>
                       <span className="font-bold text-lg text-gray-900">Bibi Martins</span>
@@ -171,7 +171,7 @@ function App() {
           <img 
             src="/images/2F944E58-9815-40C7-B5F2-30BC9C5EA73B.jpeg" 
             alt="Bibi Martins" 
-            className="w-full h-full object-cover object-top" style={{objectPosition: '0% 20%'}}
+            className="w-full h-full object-cover object-center"
           />
           <div className="absolute inset-0 bg-gradient-to-r from-purple-900/90 via-purple-800/80 to-transparent" />
           <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
@@ -199,8 +199,8 @@ function App() {
             
             <p className="text-lg sm:text-xl text-white/90 mb-8 leading-relaxed">
               Palestras e mentoria que desafiam os paradigmas tradicionais. 
-              Descubra como mudar de líder padrão para um líder inclusivo, identificando potenciais 
-              neurodivergentes no novo cenário corporativo e por que as novas gerações estão 
+              Descubra como líderes neurodivergentes estão transformando o 
+              cenário corporativo e por que as novas gerações estão 
               redefinindo o conceito de liderança.
             </p>
 
@@ -258,7 +258,7 @@ function App() {
                 <img 
                   src="/images/3BFD633B-9979-478F-B846-28C3DD19BCF4.jpeg" 
                   alt="Bibi Martins - Palestrante" 
-                  className="w-full h-[500px] object-contain"
+                  className="w-full h-[500px] object-cover"
                 />
               </div>
               {/* Floating Card */}
@@ -273,7 +273,7 @@ function App() {
                   </div>
                 </div>
                 <p className="text-sm text-gray-600">
-                  Transformando líderes e liderados a reconhecer que precisam mudar o mindset neurotípico.
+                  Transformando líderes e organizações através da neurodiversidade.
                 </p>
               </div>
               {/* Decorative */}
@@ -297,19 +297,17 @@ function App() {
                   a liderança no mundo contemporâneo.
                 </p>
                 <p>
-                  Ao longo de mais de 15 anos, de atuação em grandes empresas, vivenciei de perto desafios enfrentados
-                  <strong> por profissionais neurodivergentes. Sendo também uma pessoa neurodivergente, compreendo por </strong>
-                  que tantos talentos ainda são negligenciados — e, muitas vezes, marginalizados ou até desligados.
+                  Ao longo de mais de 15 anos, tenho ajudado empresas a compreenderem que 
+                  <strong> os neurodivergentes não estão sendo negligenciados por acaso</strong> — 
+                  estão sendo marginalizados por líderes que ainda não desenvolveram a 
+                  inteligência emocional e a flexibilidade cognitiva necessárias para 
+                  liderar equipes diversas.
                 </p>
                 <p>
-                  Esse cenário não é pontual: ele reflete a ausência de uma liderança preparada, com inteligência neurodiversa
-                  e flexibilidade cognitiva, para reconhecer, desenvolver e reter profissionais em toda a sua diversidade. 
-                  O resultado é a perda de talentos, redução de performance e ambientes menos inovadores.
-                </p>
-                <p>
-                  Neste meu projeto <strong>trouxe também o porque das gerações mais novas estarem rejeitando 
-                  cargos de liderança</strong>. A resposta primária está nas relações de poder tóxicas, 
-                  está também na falta de propósito e na ausência de modelos de liderança que realmente inspirem.
+                  Também investigo <strong>por que as gerações mais novas estão rejeitando 
+                  cargos de liderança</strong>. A resposta está nas relações de poder tóxicas, 
+                  na falta de propósito e na ausência de modelos de liderança que realmente 
+                  inspirem.
                 </p>
               </div>
 
@@ -462,10 +460,9 @@ function App() {
                     </div>
                   </div>
                   <p className="text-gray-600 mb-6 leading-relaxed">
-                    A BM Academy é uma escola corporativa diferenciada que oferece programas de desenvolvimento
-                    desde a base de Jovens aprendizes,passando também pelo operacional, identificando potenciais para o 
-                    desenvolvimento de futuras lideranças, sendo todos os treinamentos baseados no Método Sinapse 360°. 
-                    Preparamos líderes para o futuro do trabalho sendo hard e softskill. Venha saber Mais!
+                    A BM Academy é uma escola corporativa diferenciada que oferece programas 
+                    de desenvolvimento de liderança baseados no Método Sinapse 360°. 
+                    Preparamos líderes para o futuro do trabalho.
                   </p>
                   <Button 
                     onClick={() => window.open('https://wa.me/5511932143117', '_blank')}
@@ -521,7 +518,7 @@ function App() {
               {
                 title: 'A Crise da Liderança',
                 subtitle: 'Por que as novas gerações não querem ser líderes',
-                description: 'Descubra as razões profundas pelas quais millennials e gen Z estão rejeitando cargos de liderança e como criar modelos que realmente inspiram.',
+                description: 'Descubra as razões profundas pelas quais millennials e gen Z estão rejeitando cargos de liderança e como criar modelos que realmente inspirem.',
                 duration: '60-90 min',
                 audience: 'Executivos e Gestores',
                 color: 'orange',
@@ -529,16 +526,16 @@ function App() {
               {
                 title: 'Relações de Poder Saudáveis',
                 subtitle: 'Empoderamento no ambiente corporativo',
-                description: 'Como construir relações de poder equilibradas que promovam crescimento, autonomia e resultados sem sacrificar o bem-estar das pessoas e a diversidade.',
+                description: 'Como construir relações de poder equilibradas que promovam crescimento, autonomia e resultados sem sacrificar o bem-estar das pessoas.',
                 duration: '60-90 min',
                 audience: 'Todas as hierarquias',
                 color: 'teal',
               },
               {
-                title: 'Se tornando um(a) Líder Neurodiverso',
+                title: 'Liderança Adaptativa',
                 subtitle: 'O Método Sinapse 360° na prática',
                 description: 'Uma imersão prática na metodologia que está transformando líderes tradicionais em líderes adaptativos capazes de conduzir equipes diversas.',
-                duration: '2 - 4 horas',
+                duration: '2-4 horas',
                 audience: 'Liderança',
                 color: 'purple',
               },
@@ -634,39 +631,38 @@ function App() {
                 text: 'A palestra da Bibi foi um divisor de águas para nossa liderança. Ela conseguiu traduzir conceitos complexos de neurodiversidade em ações práticas que nossos gestores puderam aplicar imediatamente.',
                 author: 'Ana Paula Mendes',
                 role: 'Diretora de RH',
-               // ... 
-              },  
+                company: 'TechCorp Brasil',
+              },
               {
                 text: 'Nunca tinha visto uma abordagem tão honesta sobre as falhas da liderança tradicional. Bibi não tem medo de falar o que ninguém quer ouvir, e é exatamente isso que as empresas precisam.',
                 author: 'Carlos Eduardo Lima',
                 role: 'CEO',
-               // ... 
+                company: 'Inovação Group',
               },
               {
                 text: 'O Método Sinapse 360° transformou nossa cultura organizacional. Em 6 meses, reduzimos em 40% o turnover de talentos neurodivergentes e aumentamos a satisfação da equipe.',
                 author: 'Mariana Souza',
                 role: 'Head de D&I',
-               // ... 
+                company: 'Global Industries',
               },
               {
                 text: 'A mentoria com a Bibi me ajudou a reconhecer meus próprios vieses como líder. Hoje consigo conduzir reuniões de forma mais inclusiva e obter melhores resultados da minha equipe.',
                 author: 'Ricardo Almeida',
                 role: 'Gerente de Operações',
-               // ... 
+                company: 'Finance Solutions',
               },
               {
                 text: 'Contratamos a Bibi para falar sobre "A Crise da Liderança" e o impacto foi imediato. Nossos jovens talentos finalmente se sentiram ouvidos e entendidos.',
                 author: 'Fernanda Costa',
                 role: 'Gerente de Talentos',
-               // ... 
+                company: 'StartUp Hub',
               },
               {
                 text: 'Bibi tem um dom: ela consegue fazer líderes tradicionais enxergarem a necessidade de mudança sem que se sintam atacados. É uma habilidade rara e valiosa.',
                 author: 'João Pedro Silva',
                 role: 'Consultor de Gestão',
-               // ... 
+                company: 'Business Partners',
               },
-             </div>
             ].map((testimonial, index) => (
               <Card 
                 key={index} 
@@ -690,7 +686,7 @@ function App() {
                 </CardContent>
               </Card>
             ))}
-            {
+          </div>
         </div>
       </section>
 
@@ -764,7 +760,7 @@ function App() {
                   {[
                     { icon: Instagram, href: 'https://instagram.com/bibimartinsoficial', color: 'bg-pink-100 text-pink-600' },
                     { icon: Facebook, href: 'https://facebook.com/bibimartinsoficial', color: 'bg-blue-100 text-blue-600' },
-                    { icon: Youtube, href: 'https://youtube.com/@bibimartinsoficial', color: 'bg-red-100 text-red-600' },
+                    { icon: Youtube, href: 'https://youtube.com/bibimartinsoficial', color: 'bg-red-100 text-red-600' },
                   ].map((social, index) => (
                     <a
                       key={index}
@@ -838,7 +834,7 @@ function App() {
             <div>
               <div className="flex items-center gap-3 mb-6">
                 <div className="w-12 h-12 rounded-full bg-gradient-to-br from-purple-500 to-orange-500 flex items-center justify-center">
-                  <span className="text-white font-bold text-xl">BM</span>
+                  <span className="text-white font-bold text-xl">B</span>
                 </div>
                 <div>
                   <span className="font-bold text-xl">Bibi Martins</span>
@@ -852,7 +848,7 @@ function App() {
                 {[
                   { icon: Instagram, href: 'https://instagram.com/bibimartinsoficial' },
                   { icon: Facebook, href: 'https://facebook.com/bibimartinsoficial' },
-                  { icon: Youtube, href: 'https://youtube.com/@bibimartinsoficial' },
+                  { icon: Youtube, href: 'https://youtube.com/bibimartinsoficial' },
                 ].map((social, index) => (
                   <a
                     key={index}
@@ -899,7 +895,7 @@ function App() {
                   'Neurodiversidade no Poder',
                   'A Crise da Liderança',
                   'Relações de Poder Saudáveis',
-                  'Se Tornando um(a) Líder Neurodiverso',
+                  'Liderança Adaptativa',
                   'Inclusão que Gera Resultado',
                   'Mentoria para Líderes',
                 ].map((talk, index) => (
