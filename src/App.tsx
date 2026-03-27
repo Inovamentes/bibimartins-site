@@ -19,7 +19,7 @@ function App() {
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 50)
-      
+
       // Update active section based on scroll position
       const sections = ['home', 'sobre', 'metodo', 'palestras', 'depoimentos', 'contato']
       for (const section of sections) {
@@ -68,7 +68,7 @@ function App() {
             {/* Logo */}
             <a href="#home" onClick={() => scrollToSection('home')} className="flex items-center gap-3">
               <div className="w-10 h-10 rounded-full bg-gradient-to-br from-purple-600 to-orange-500 flex items-center justify-center">
-                <span className="text-white font-bold text-lg">B</span>
+                <span className="text-white font-bold text-lg">BM</span>
               </div>
               <div className="hidden sm:block">
                 <span className={`font-bold text-xl transition-colors ${isScrolled ? 'text-gray-900' : 'text-white'}`}>
@@ -121,7 +121,7 @@ function App() {
                 <div className="flex flex-col gap-6 mt-8">
                   <div className="flex items-center gap-3">
                     <div className="w-12 h-12 rounded-full bg-gradient-to-br from-purple-600 to-orange-500 flex items-center justify-center">
-                      <span className="text-white font-bold text-xl">B</span>
+                      <span className="text-white font-bold text-xl">BM</span>
                     </div>
                     <div>
                       <span className="font-bold text-lg text-gray-900">Bibi Martins</span>
@@ -171,7 +171,7 @@ function App() {
           <img 
             src="/images/2F944E58-9815-40C7-B5F2-30BC9C5EA73B.jpeg" 
             alt="Bibi Martins" 
-            className="w-full h-full object-cover object-center"
+            className="w-full h-full object-cover object-top"
           />
           <div className="absolute inset-0 bg-gradient-to-r from-purple-900/90 via-purple-800/80 to-transparent" />
           <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
@@ -188,7 +188,7 @@ function App() {
               <Sparkles className="w-3 h-3 mr-1" />
               Transformando Liderança
             </Badge>
-            
+
             <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-white leading-tight mb-6">
               Liderança{' '}
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-orange-400 to-orange-300">
@@ -196,11 +196,11 @@ function App() {
               </span>{' '}
               para o Mundo Real
             </h1>
-            
+
             <p className="text-lg sm:text-xl text-white/90 mb-8 leading-relaxed">
               Palestras e mentoria que desafiam os paradigmas tradicionais. 
-              Descubra como líderes neurodivergentes estão transformando o 
-              cenário corporativo e por que as novas gerações estão 
+              Descubra como mudar de líder padrão para um líder inclusivo, identificando potenciais neurodivergentes
+              no novo cenário corporativo e por que as novas gerações estão 
               redefinindo o conceito de liderança.
             </p>
 
@@ -258,7 +258,7 @@ function App() {
                 <img 
                   src="/images/3BFD633B-9979-478F-B846-28C3DD19BCF4.jpeg" 
                   alt="Bibi Martins - Palestrante" 
-                  className="w-full h-[500px] object-cover"
+                  className="w-full h-[500px] object-contain"
                 />
               </div>
               {/* Floating Card */}
@@ -273,7 +273,7 @@ function App() {
                   </div>
                 </div>
                 <p className="text-sm text-gray-600">
-                  Transformando líderes e organizações através da neurodiversidade.
+                  Transformando líderes e liderados a reconhecer que precisam mudar o mindset neurotípico.
                 </p>
               </div>
               {/* Decorative */}
@@ -297,17 +297,20 @@ function App() {
                   a liderança no mundo contemporâneo.
                 </p>
                 <p>
-                  Ao longo de mais de 15 anos, tenho ajudado empresas a compreenderem que 
-                  <strong> os neurodivergentes não estão sendo negligenciados por acaso</strong> — 
-                  estão sendo marginalizados por líderes que ainda não desenvolveram a 
-                  inteligência emocional e a flexibilidade cognitiva necessárias para 
-                  liderar equipes diversas.
+                  Ao longo de mais de 15 anos, de atuação em grandes empresas, vivenciei de perto desafios enfrentados
+                  <strong>por profissionais neurodivergentes. Sendo também uma pessoa neurodivergente,compreendo por </strong> — 
+                  <strong> por profissionais neurodivergentes. Sendo também uma pessoa neurodivergente,compreendo por </strong>
+                  que tantos talentos ainda são negligenciados — e, muitas vezes, marginalizados ou até desligados.
                 </p>
                 <p>
-                  Também investigo <strong>por que as gerações mais novas estão rejeitando 
-                  cargos de liderança</strong>. A resposta está nas relações de poder tóxicas, 
-                  na falta de propósito e na ausência de modelos de liderança que realmente 
-                  inspirem.
+                  Esse cenário não é pontual: ele reflete a ausência de uma liderança preparada, com inteligência neurodiversa
+                  e flexibilidade cognitiva, para reconhecer, desenvolver e reter profissionais em toda a sua diversidade. 
+                  O resultado é a perda de talentos, redução de performance e ambientes menos inovadores.
+                </p>
+                <p>
+                  Neste meu projeto <strong>trouxe também o porque das gerações mais novas estarem rejeitando 
+                  cargos de liderança</strong>. A resposta primária está nas relações de poder tóxicas, 
+                  na falta de propósito e na ausência de modelos de liderança que realmente inspirem.
                 </p>
               </div>
 
@@ -760,7 +763,7 @@ function App() {
                   {[
                     { icon: Instagram, href: 'https://instagram.com/bibimartinsoficial', color: 'bg-pink-100 text-pink-600' },
                     { icon: Facebook, href: 'https://facebook.com/bibimartinsoficial', color: 'bg-blue-100 text-blue-600' },
-                    { icon: Youtube, href: 'https://youtube.com/bibimartinsoficial', color: 'bg-red-100 text-red-600' },
+                    { icon: Youtube, href: 'https://youtube.com/@bibimartinsoficial', color: 'bg-red-100 text-red-600' },
                   ].map((social, index) => (
                     <a
                       key={index}
@@ -834,7 +837,7 @@ function App() {
             <div>
               <div className="flex items-center gap-3 mb-6">
                 <div className="w-12 h-12 rounded-full bg-gradient-to-br from-purple-500 to-orange-500 flex items-center justify-center">
-                  <span className="text-white font-bold text-xl">B</span>
+                  <span className="text-white font-bold text-xl">BM</span>
                 </div>
                 <div>
                   <span className="font-bold text-xl">Bibi Martins</span>
@@ -848,7 +851,7 @@ function App() {
                 {[
                   { icon: Instagram, href: 'https://instagram.com/bibimartinsoficial' },
                   { icon: Facebook, href: 'https://facebook.com/bibimartinsoficial' },
-                  { icon: Youtube, href: 'https://youtube.com/bibimartinsoficial' },
+                  { icon: Youtube, href: 'https://youtube.com/@bibimartinsoficial' },
                 ].map((social, index) => (
                   <a
                     key={index}
