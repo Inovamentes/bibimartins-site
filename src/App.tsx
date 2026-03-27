@@ -622,7 +622,7 @@ function App() {
               O que dizem sobre <span className="text-gradient">meu trabalho</span>
             </h2>
             <p className="text-lg text-gray-600">
-              Histórias reais de transformação e impacto nas organizações.
+              Histórias reais na transformação de Líderes e pessoas as quais liderei .
             </p>
           </div>
 
