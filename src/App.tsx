@@ -347,10 +347,7 @@ function App() {
               Método <span className="text-gradient">Sinapse 360°</span>
             </h2>
             <p className="text-lg text-gray-600">
-              A BM Academy é uma escola corporativa de nova geração, especializada na formação de líderes preparados para a complexidade do futuro do trabalho.
-              Com base no Método Sinapse 360°, desenvolvemos uma liderança estratégica, adaptativa e inclusiva, capaz de integrar performance, diversidade e inovação.
-              Aqui, não formamos gestores tradicionais — formamos líderes que antecipam mudanças, potencializam talentos 
-              neurodivergentes e transformam desafios em vantagem competitiva.
+              Método Sinapse 360°: liderança inteligente que transforma a neurodiversidade em vantagem competitiva.
             </p>
           </div>
 
@@ -464,9 +461,10 @@ function App() {
                     </div>
                   </div>
                   <p className="text-gray-600 mb-6 leading-relaxed">
-                    A BMAcademy é uma escola corporativa diferenciada que oferece programas 
-                    de desenvolvimento de liderança baseados no Método Sinapse 360°. 
-                    Preparamos líderes para o futuro do trabalho.
+                    A BM Academy é uma escola corporativa de nova geração, especializada na formação de líderes preparados para a complexidade do futuro do trabalho.
+                    Com base no Método Sinapse 360°, desenvolvemos uma liderança estratégica, adaptativa e inclusiva, capaz de integrar performance, diversidade e inovação.
+                    Aqui, não formamos gestores tradicionais — formamos líderes que antecipam mudanças, potencializam talentos 
+                    neurodivergentes e transformam desafios em vantagem competitiva.
                   </p>
                   <Button 
                     onClick={() => window.open('https://wa.me/5511932143117', '_blank')}
