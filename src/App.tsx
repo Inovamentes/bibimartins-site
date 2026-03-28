@@ -748,10 +748,17 @@ function App() {
                   <div className="w-14 h-14 rounded-xl bg-teal-100 flex items-center justify-center">
                     <Instagram className="w-6 h-6 text-teal-600" />
                   </div>
-                  <div>
-                    <p className="text-sm text-gray-600">Redes Sociais</p>
-                    <p className="text-lg font-semibold text-gray-900">@bibimartinsoficial</p>
-                  </div>
+	                  <div>
+	                    <p className="text-sm text-gray-600">Redes Sociais</p>
+	                    <a 
+	                      href="https://instagram.com/bibimartinsoficial" 
+	                      target="_blank" 
+	                      rel="noopener noreferrer"
+	                      className="text-lg font-semibold text-gray-900 hover:text-pink-600 transition-colors"
+	                    >
+	                      @bibimartinsoficial
+	                    </a>
+	                  </div>
                 </div>
               </div>
 
@@ -924,10 +931,17 @@ function App() {
                     falacomigo@bibimartins.com
                   </a>
                 </li>
-                <li className="flex items-center gap-3">
-                  <Instagram className="w-5 h-5 text-pink-400" />
-                  <span className="text-gray-400">@bibimartinsoficial</span>
-                </li>
+	                <li className="flex items-center gap-3">
+	                  <Instagram className="w-5 h-5 text-pink-400" />
+	                  <a 
+	                    href="https://instagram.com/bibimartinsoficial" 
+	                    target="_blank" 
+	                    rel="noopener noreferrer"
+	                    className="text-gray-400 hover:text-white transition-colors"
+	                  >
+	                    @bibimartinsoficial
+	                  </a>
+	                </li>
               </ul>
             </div>
           </div>
