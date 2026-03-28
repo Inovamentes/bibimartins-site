@@ -682,7 +682,7 @@ function App() {
                     <div>
                       <p className="font-semibold text-gray-900">{testimonial.author}</p>
                       <p className="text-sm text-gray-600">{testimonial.role}</p>
-                      <p className="text-xs text-purple-600">{testimonial.company}</p>
+
                     </div>
                   </div>
                 </CardContent>
