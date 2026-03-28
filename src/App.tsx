@@ -900,18 +900,23 @@ function App() {
             <div>
               <h4 className="font-bold text-lg mb-6">Palestras</h4>
               <ul className="space-y-3">
-                {[
-                  'Neurodiversidade no Poder',
-                  'A Crise da Liderança',
-                  'Relações de Poder Saudáveis',
-                  'Liderança Adaptativa',
-                  'Inclusão que Gera Resultado',
-                  'Mentoria para Líderes',
-                ].map((talk, index) => (
-                  <li key={index}>
-                    <span className="text-gray-400">{talk}</span>
-                  </li>
-                ))}
+	                {[
+	                  'Neurodiversidade no Poder',
+	                  'A Crise da Liderança',
+	                  'Relações de Poder Saudáveis',
+	                  'Liderança Adaptativa',
+	                  'Inclusão que Gera Resultado',
+	                  'Mentoria para Líderes',
+	                ].map((talk, index) => (
+	                  <li key={index}>
+	                    <button 
+	                      onClick={() => scrollToSection('palestras')}
+	                      className="text-gray-400 hover:text-white transition-colors text-left"
+	                    >
+	                      {talk}
+	                    </button>
+	                  </li>
+	                ))}
               </ul>
             </div>
 
