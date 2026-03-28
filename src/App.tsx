@@ -132,10 +132,12 @@ function App() {
                     {navItems.map((item) => (
                       <button
                         key={item.id}
-                        onClick={() => {
-                          scrollToSection(item.id)
-                          document.querySelector('[data-state="open"]')?.dispatchEvent(new Event('close'))
-                        }}
+	                        onClick={() => {
+	                          scrollToSection(item.id)
+	                          // Forçar o fechamento do Sheet simulando o clique no botão de fechar ou usando o estado se disponível
+	                          const closeButton = document.querySelector('button[type="button"] > svg.lucide-x')?.parentElement;
+	                          if (closeButton instanceof HTMLElement) closeButton.click();
+	                        }}
                         className={`px-4 py-3 rounded-lg text-left font-medium transition-all ${
                           activeSection === item.id
                             ? 'bg-purple-100 text-purple-700'
