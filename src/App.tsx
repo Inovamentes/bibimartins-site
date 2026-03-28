@@ -14,6 +14,7 @@ import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet'
 function App() {
   const [isScrolled, setIsScrolled] = useState(false)
   const [activeSection, setActiveSection] = useState('home')
+  const [isMenuOpen, setIsMenuOpen] = useState(false)
   const heroRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
@@ -111,7 +112,7 @@ function App() {
             </div>
 
             {/* Mobile Menu */}
-            <Sheet>
+            <Sheet open={isMenuOpen} onOpenChange={setIsMenuOpen}>
               <SheetTrigger asChild className="lg:hidden">
                 <Button variant="ghost" size="icon" className={isScrolled ? 'text-gray-900' : 'text-white'}>
                   <Menu className="w-6 h-6" />
@@ -132,12 +133,12 @@ function App() {
                     {navItems.map((item) => (
                       <button
                         key={item.id}
-	                        onClick={() => {
-	                          scrollToSection(item.id)
-	                          // Forçar o fechamento do Sheet simulando o clique no botão de fechar ou usando o estado se disponível
-	                          const closeButton = document.querySelector('button[type="button"] > svg.lucide-x')?.parentElement;
-	                          if (closeButton instanceof HTMLElement) closeButton.click();
-	                        }}
+                        onClick={() => {
+                          setIsMenuOpen(false)
+                          setTimeout(() => {
+                            scrollToSection(item.id)
+                          }, 300)
+                        }}
                         className={`px-4 py-3 rounded-lg text-left font-medium transition-all ${
                           activeSection === item.id
                             ? 'bg-purple-100 text-purple-700'
