@@ -1,5 +1,5 @@
 ---
-name: Bibi Martins Website
+name: bibi-martins-website
 description: Site pessoal e profissional de Bibi Martins - Palestrante e Mentora em Liderança Neurodiversa
 version: 1.0.0
 author: Bibi Martins
