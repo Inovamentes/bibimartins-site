@@ -77,3 +77,10 @@
     "vite": "^7.2.4"
   }
 }
+{
+  "dependencies": {
+    "axios": "^1.6.0",
+    "react-router-dom": "^6.22.3",
+    "lucide-react": "^0.294.0"
+  }
+}
