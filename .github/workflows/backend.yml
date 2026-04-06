@@ -1,0 +1,26 @@
+name: Backend Deploy Railway
+on:
+  push:
+    paths:
+      - 'backend/**'
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Set up JDK 21
+        uses: actions/setup-java@v4
+        with:
+          java-version: '21'
+          distribution: 'temurin'
+          
+      - name: Build with Maven
+        run: cd backend && mvn clean package -DskipTests
+        
+      - name: Deploy to Railway
+        uses: railwayapp/actions-deploy@v1
+        with:
+          railwayToken: ${{ secrets.RAILWAY_TOKEN }}
+          serviceId: ${{ secrets.RAILWAY_SERVICE_ID }}
+          watchForChanges: false
