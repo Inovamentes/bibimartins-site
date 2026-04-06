@@ -3,7 +3,7 @@ WORKDIR /app
 COPY . .
 RUN mvn clean package -DskipTests
 
-FROM eclipse-temurin:21-jre-slim
+FROM eclipse-temurin:21-jre
 WORKDIR /app
 COPY --from=build /app/target/bibimartins-backend-1.0.0.jar app.jar
 EXPOSE 8080
