@@ -1,5 +1,10 @@
+FROM maven:3.9.6-openjdk-21 AS build
+WORKDIR /app
+COPY . .
 RUN mvn clean package -DskipTests
 
-FROM openjdk:21-jar-slim
+FROM openjdk:21-jre-slim
 WORKDIR /app
-COPY --from
+COPY --from=build /app/target/bibimartins-backend-1.0.0.jar app.jar
+EXPOSE 8080
+ENTRYPOINT ["java", "-jar", "app.jar"]
