@@ -1,0 +1,10 @@
+services:
+  - type: web
+    name: bibimartins-backend
+    env: docker
+    plan: free
+    rootDir: backend
+    dockerfilePath: ./Dockerfile
+    envVars:
+      - key: PORT
+        value: 8080
