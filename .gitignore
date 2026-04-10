@@ -1,0 +1,19 @@
+# macOS
+.DS_Store
+**/.DS_Store
+
+# Node / frontend
+node_modules/
+dist/
+*.log
+.env
+.env.*
+
+# Java / Maven (build output)
+**/target/
+
+# IDE
+.idea/
+*.iml
+.vscode/
+*.swp

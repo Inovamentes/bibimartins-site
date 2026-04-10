@@ -11,6 +11,7 @@ import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.security.web.header.writers.XXssProtectionHeaderWriter;
 import org.springframework.security.web.header.writers.StaticHeadersWriter;
 
 import java.util.List;
@@ -36,14 +37,17 @@ public class SecurityConfig {
             // Session stateless (JWT-like)
             .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             // Headers segurança (XSS, Clickjacking, etc)
-            .headers(headers -> headers
-                .frameOptions(frame -> frame.sameOrigin())
-                .xssProtection(xss -> {})
-                .contentSecurityPolicy(csp -> csp.policyDirectives("default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'"))
-                .addHeaderWriter(new StaticHeadersWriter("X-Content-Type-Options", "nosniff"))
-                .addHeaderWriter(new StaticHeadersWriter("Referrer-Policy", "strict-origin-when-cross-origin")))
+            .headers(headers -> {
+                headers.frameOptions(frame -> frame.sameOrigin());
+                headers.contentSecurityPolicy(csp -> csp.policyDirectives(
+                    "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'"));
+                headers.addHeaderWriter(new XXssProtectionHeaderWriter());
+                headers.addHeaderWriter(new StaticHeadersWriter("X-Content-Type-Options", "nosniff"));
+                headers.addHeaderWriter(new StaticHeadersWriter("Referrer-Policy", "strict-origin-when-cross-origin"));
+            })
             // Rate limiting custom via interceptor (AuthService)
             .authorizeHttpRequests(auth -> auth
+                .requestMatchers("/health").permitAll()
                 .requestMatchers("/api/auth/**").permitAll()
                 .requestMatchers("/api/admin/**").hasRole("ADMIN")
                 .requestMatchers("/api/client/**").hasRole("CLIENT")
