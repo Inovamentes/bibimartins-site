@@ -3,13 +3,14 @@ import './App.css'
 import { 
   Menu, Phone, Mail, Instagram, Facebook, Youtube, 
   ChevronRight, Star, Quote, Brain, Users, MessageCircle, 
-  Target, Zap, Award, TrendingUp, ArrowRight, Play,
+  Target, Zap, Award, TrendingUp, ArrowRight, Play, Building2,
   Sparkles, Lightbulb, Heart, CheckCircle2
 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet'
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion'
 
 function App() {
   const [isScrolled, setIsScrolled] = useState(false)
@@ -22,7 +23,7 @@ function App() {
       setIsScrolled(window.scrollY > 50)
 
       // Update active section based on scroll position
-      const sections = ['home', 'sobre', 'metodo', 'palestras', 'depoimentos', 'contato']
+      const sections = ['home', 'sobre', 'metodo', 'palestras', 'depoimentos', 'faq', 'contato']
       for (const section of sections) {
         const element = document.getElementById(section)
         if (element) {
@@ -51,6 +52,7 @@ function App() {
     { id: 'metodo', label: 'Método' },
     { id: 'palestras', label: 'Palestras' },
     { id: 'depoimentos', label: 'Depoimentos' },
+    { id: 'faq', label: 'FAQ' },
     { id: 'contato', label: 'Contato' },
   ]
 
@@ -612,6 +614,27 @@ function App() {
         </div>
       </section>
 
+      {/* Social proof strip */}
+      <section className="py-10 bg-gray-50 border-y border-gray-100">
+        <div className="container mx-auto px-4 lg:px-8">
+          <div className="grid md:grid-cols-3 gap-4">
+            {[
+              { value: 'Online + Presencial', label: 'formatos flexíveis para sua operação', icon: Award },
+              { value: 'Método Sinapse 360°', label: 'abordagem prática em 5 pilares', icon: Brain },
+              { value: 'Conteúdo Sob Medida', label: 'adaptação total ao contexto da empresa', icon: Target },
+            ].map((item, index) => (
+              <div key={index} className="rounded-2xl bg-white border border-gray-100 p-5 text-center">
+                <div className="mx-auto mb-2 w-11 h-11 rounded-lg bg-purple-100 flex items-center justify-center">
+                  <item.icon className="w-5 h-5 text-purple-600" />
+                </div>
+                <p className="text-xl font-bold text-gray-900">{item.value}</p>
+                <p className="text-sm text-gray-600">{item.label}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* Testimonials Section */}
       <section id="depoimentos" className="py-20 lg:py-32 bg-gradient-to-b from-gray-50 to-white">
         <div className="container mx-auto px-4 lg:px-8">
@@ -625,7 +648,7 @@ function App() {
               O que dizem sobre <span className="text-gradient">meu trabalho</span>
             </h2>
             <p className="text-lg text-gray-600">
-              Histórias reais na transformação de Líderes e pessoas as quais liderei .
+              Histórias reais de transformação de líderes e equipes.
             </p>
           </div>
 
@@ -685,13 +708,67 @@ function App() {
                     <div>
                       <p className="font-semibold text-gray-900">{testimonial.author}</p>
                       <p className="text-sm text-gray-600">{testimonial.role}</p>
-
+                      <p className="text-xs text-gray-500">{testimonial.company}</p>
                     </div>
                   </div>
                 </CardContent>
               </Card>
             ))}
           </div>
+        </div>
+      </section>
+
+      {/* FAQ Section */}
+      <section id="faq" className="py-20 lg:py-28 bg-gray-50">
+        <div className="container mx-auto px-4 lg:px-8">
+          <div className="text-center max-w-3xl mx-auto mb-12">
+            <Badge className="mb-4 bg-purple-100 text-purple-700 hover:bg-purple-200">
+              <Building2 className="w-3 h-3 mr-1" />
+              Dúvidas Frequentes
+            </Badge>
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-900 mb-4">
+              Informações para <span className="text-gradient">contratar com segurança</span>
+            </h2>
+            <p className="text-lg text-gray-600">
+              Respostas rápidas para facilitar sua decisão e agilizar o próximo passo.
+            </p>
+          </div>
+
+          <Card className="border-0 shadow-lg max-w-4xl mx-auto">
+            <CardContent className="p-3 sm:p-6">
+              <Accordion type="single" collapsible className="w-full">
+                {[
+                  {
+                    question: 'As palestras são presenciais ou online?',
+                    answer: 'As duas modalidades estão disponíveis. O formato é definido conforme o objetivo do evento, a logística da empresa e o perfil da audiência.',
+                  },
+                  {
+                    question: 'É possível personalizar o conteúdo para minha empresa?',
+                    answer: 'Sim. Antes do evento, fazemos um alinhamento para adaptar linguagem, exemplos e foco estratégico conforme seus desafios de liderança e cultura.',
+                  },
+                  {
+                    question: 'Qual o tempo médio das palestras e workshops?',
+                    answer: 'As palestras variam entre 60 e 120 minutos. Workshops e imersões podem ser estruturados em formatos de 2 a 4 horas.',
+                  },
+                  {
+                    question: 'Vocês atendem eventos para C-level, liderança e RH?',
+                    answer: 'Sim. O conteúdo é calibrado para diferentes públicos, incluindo executivos, gestores, RH, D&I e squads multidisciplinares.',
+                  },
+                  {
+                    question: 'Como solicitar proposta e próximos passos?',
+                    answer: 'Basta clicar em “Falar no WhatsApp”. Você recebe atendimento para escopo, investimento, agenda e formato ideal para seu evento.',
+                  },
+                ].map((item, index) => (
+                  <AccordionItem key={index} value={`item-${index}`}>
+                    <AccordionTrigger className="text-left">{item.question}</AccordionTrigger>
+                    <AccordionContent className="text-gray-600 leading-relaxed">
+                      {item.answer}
+                    </AccordionContent>
+                  </AccordionItem>
+                ))}
+              </Accordion>
+            </CardContent>
+          </Card>
         </div>
       </section>
 
@@ -885,6 +962,7 @@ function App() {
                   { label: 'Método Sinapse 360°', href: '#metodo' },
                   { label: 'Palestras', href: '#palestras' },
                   { label: 'Depoimentos', href: '#depoimentos' },
+                  { label: 'FAQ', href: '#faq' },
                   { label: 'Contato', href: '#contato' },
                 ].map((link, index) => (
                   <li key={index}>
