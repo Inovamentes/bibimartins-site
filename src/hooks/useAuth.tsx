@@ -5,6 +5,7 @@ import api from '@/lib/api'
 interface AuthUser {
   email: string
   role: 'ADMIN' | 'CLIENT'
+  fullName?: string
 }
 
 interface AuthContextType {
