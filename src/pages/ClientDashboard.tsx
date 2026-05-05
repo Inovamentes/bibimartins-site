@@ -91,7 +91,7 @@ export default function ClientDashboard() {
         <div className="p-4 border-t border-orange-500">
           <div className="flex items-center gap-3 mb-4">
             <div className="w-9 h-9 rounded-full bg-white/20 flex items-center justify-center text-white text-xs font-bold shrink-0">
-              {((profile?.fullName ? profile.fullName.charAt(0) : user?.email?.charAt(0)) || 'U').toUpperCase()}
+              {((profile?.fullName ? profile?.fullName?.charAt(0) : user?.email?.charAt(0)) || 'U').toUpperCase()}
             </div>
             <div className="flex-1 min-w-0">
               <p className="text-xs font-medium truncate">{profile?.fullName || user?.email}</p>
@@ -113,7 +113,7 @@ export default function ClientDashboard() {
             <div className="mb-8">
               <div className="flex items-center gap-3 mb-2">
                 <h1 className="text-2xl font-bold text-gray-900">
-                  Olá, {profile?.fullName ? profile.fullName.split(' ')[0] : (user?.email ? user.email.split('@')[0] : 'Cliente')}! 👋
+                  Olá, {profile?.fullName ? profile?.fullName?.split(' ')?.[0] : (user?.email ? user?.email?.split('@')?.[0] : 'Cliente')}! 👋
                 </h1>
               </div>
               <p className="text-gray-500">Bem-vindo à sua área exclusiva de desenvolvimento em liderança.</p>
@@ -125,7 +125,7 @@ export default function ClientDashboard() {
               <CardContent className="p-6 flex flex-col md:flex-row items-start md:items-center gap-6 justify-between">
                 <div className="flex items-center gap-6">
                   <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-orange-400 to-orange-600 flex items-center justify-center text-white text-2xl font-bold shadow-lg">
-                    {((profile?.fullName ? profile.fullName.charAt(0) : user?.email?.charAt(0)) || 'U').toUpperCase()}
+                    {((profile?.fullName ? profile?.fullName?.charAt(0) : user?.email?.charAt(0)) || 'U').toUpperCase()}
                   </div>
                   <div>
                     <h2 className="text-lg font-bold text-gray-900">{profile?.fullName || 'Nome não informado'}</h2>
