@@ -44,14 +44,14 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     setUser({ email: em, role })
   }
 
-  const register = async (email: string, password: string) => {
-    const res = await api.post('/api/auth/register', { email, password })
-    const { token: tk, role, email: em } = res.data
+  const register = async (userData: any) => {
+    const res = await api.post('/api/auth/register', userData)
+    const { token: tk, role, email: em, fullName } = res.data
     localStorage.setItem('bm_token', tk)
     localStorage.setItem('bm_role', role)
     localStorage.setItem('bm_email', em)
     setToken(tk)
-    setUser({ email: em, role })
+    setUser({ email: em, role, fullName })
   }
 
   const logout = () => {

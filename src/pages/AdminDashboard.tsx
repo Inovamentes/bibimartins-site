@@ -11,17 +11,22 @@ import {
 } from 'lucide-react'
 
 interface Stats { totalUsers: number; totalClients: number; totalAdmins: number }
-interface User  { id: number; email: string; role: string; createdAt: string }
+interface User  { 
+  id: number; email: string; role: string; createdAt: string;
+  fullName?: string; whatsapp?: string; documentType?: string; documentNumber?: string; companyName?: string; companyAddress?: string;
+}
 
 export default function AdminDashboard() {
   const { user, logout } = useAuth()
   const navigate = useNavigate()
-  const [stats, setStats]   = useState<Stats | null>(null)
-  const [users, setUsers]   = useState<User[]>([])
+  const [stats, setStats]     = useState<Stats | null>(null)
+  const [users, setUsers]     = useState<User[]>([])
   const [loading, setLoading] = useState(true)
+  const [apiError, setApiError] = useState<string | null>(null)
 
   const fetchData = async () => {
     setLoading(true)
+    setApiError(null)
     try {
       const [statsRes, usersRes] = await Promise.all([
         api.get('/api/admin/stats'),
@@ -29,8 +34,9 @@ export default function AdminDashboard() {
       ])
       setStats(statsRes.data)
       setUsers(usersRes.data)
-    } catch {
-      // handled by interceptor
+    } catch (err: any) {
+      console.error('Erro ao carregar dados admin:', err)
+      setApiError(err?.response?.data?.error || err?.message || 'Erro ao carregar dados')
     } finally {
       setLoading(false)
     }
@@ -105,7 +111,14 @@ export default function AdminDashboard() {
           </Button>
         </div>
 
-        {/* Stats Cards */}
+        {/* Error Banner */}
+        {apiError && (
+          <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-xl text-red-700 text-sm flex items-center gap-3">
+            <span className="font-bold">⚠️ Erro:</span> {apiError}
+          </div>
+        )}
+
+
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
           {[
             { label: 'Total Usuários', value: stats?.totalUsers ?? '—', icon: Users, color: 'purple', bg: 'from-purple-500 to-purple-600' },
@@ -138,7 +151,9 @@ export default function AdminDashboard() {
                 <thead>
                   <tr className="bg-gray-50">
                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">ID</th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">E-mail</th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Usuário</th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Contato</th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Doc/Empresa</th>
                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Perfil</th>
                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Cadastro</th>
                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Ações</th>
@@ -146,19 +161,33 @@ export default function AdminDashboard() {
                 </thead>
                 <tbody className="divide-y divide-gray-100">
                   {loading ? (
-                    <tr><td colSpan={5} className="px-6 py-12 text-center text-gray-400">Carregando...</td></tr>
+                    <tr><td colSpan={7} className="px-6 py-12 text-center text-gray-400">Carregando...</td></tr>
                   ) : users.length === 0 ? (
-                    <tr><td colSpan={5} className="px-6 py-12 text-center text-gray-400">Nenhum usuário ainda</td></tr>
+                    <tr><td colSpan={7} className="px-6 py-12 text-center text-gray-400">Nenhum usuário ainda</td></tr>
                   ) : users.map((u) => (
                     <tr key={u.id} className="hover:bg-gray-50 transition-colors">
                       <td className="px-6 py-4 text-sm text-gray-500">#{u.id}</td>
                       <td className="px-6 py-4">
                         <div className="flex items-center gap-3">
-                          <div className="w-8 h-8 rounded-full bg-gradient-to-br from-purple-500 to-orange-500 flex items-center justify-center text-white text-xs font-bold">
-                            {u.email[0].toUpperCase()}
+                          <div className="w-8 h-8 rounded-full bg-gradient-to-br from-purple-500 to-orange-500 flex items-center justify-center text-white text-xs font-bold shrink-0">
+                            {(u.fullName ? u.fullName[0] : u.email[0]).toUpperCase()}
                           </div>
-                          <span className="text-sm font-medium text-gray-900">{u.email}</span>
+                          <div>
+                            <span className="text-sm font-medium text-gray-900 block">{u.fullName || 'Sem nome'}</span>
+                            <span className="text-xs text-gray-500">{u.email}</span>
+                          </div>
                         </div>
+                      </td>
+                      <td className="px-6 py-4">
+                        <span className="text-sm text-gray-900 block">{u.whatsapp || '—'}</span>
+                      </td>
+                      <td className="px-6 py-4">
+                        {u.documentType ? (
+                          <div className="flex flex-col">
+                            <span className="text-sm font-medium text-gray-900">{u.documentType}: {u.documentNumber}</span>
+                            {u.companyName && <span className="text-xs text-gray-500">{u.companyName}</span>}
+                          </div>
+                        ) : <span className="text-sm text-gray-500">—</span>}
                       </td>
                       <td className="px-6 py-4">
                         <Badge className={u.role === 'ADMIN'

@@ -5,6 +5,7 @@ import com.bibimartins.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.security.crypto.argon2.Argon2PasswordEncoder;
 import org.springframework.stereotype.Component;
 
@@ -14,23 +15,23 @@ public class DataInitializer implements ApplicationRunner {
     @Autowired
     private UserRepository userRepository;
 
-    private final Argon2PasswordEncoder argon2 = new Argon2PasswordEncoder(16, 32, 1, 65536, 10);
+    @Autowired @Lazy
+    private Argon2PasswordEncoder argon2;
 
     private static final String ADMIN_EMAIL    = "falacomigo@bibimartins.com";
     private static final String ADMIN_PASSWORD = "310412rsm";
 
     @Override
     public void run(ApplicationArguments args) {
-        // Cria o admin somente se ainda não existir
-        if (userRepository.findByEmail(ADMIN_EMAIL).isEmpty()) {
-            User admin = new User();
-            admin.setEmail(ADMIN_EMAIL);
-            admin.setPassword(argon2.encode(ADMIN_PASSWORD));
-            admin.setAdmin(true);
-            userRepository.save(admin);
-            System.out.println("✅ Admin criado: " + ADMIN_EMAIL);
-        } else {
-            System.out.println("ℹ️  Admin já existe: " + ADMIN_EMAIL);
-        }
+        // Sempre garante que o admin existe com a senha/hash corretos
+        User admin = userRepository.findByEmail(ADMIN_EMAIL)
+            .orElse(new User());
+
+        admin.setEmail(ADMIN_EMAIL);
+        admin.setPassword(argon2.encode(ADMIN_PASSWORD)); // re-hash com params atuais
+        admin.setAdmin(true);
+        userRepository.save(admin);
+
+        System.out.println("✅ Admin sincronizado: " + ADMIN_EMAIL);
     }
 }

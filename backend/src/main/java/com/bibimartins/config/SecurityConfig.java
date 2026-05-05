@@ -26,7 +26,8 @@ public class SecurityConfig {
 
     @Bean
     public Argon2PasswordEncoder argon2PasswordEncoder() {
-        return new Argon2PasswordEncoder(16, 32, 1, 65536, 10);
+        // salt=16, hash=32, threads=1, memory=65536KB, iterations=3 (~2s por hash)
+        return new Argon2PasswordEncoder(16, 32, 1, 65536, 3);
     }
 
     @Bean

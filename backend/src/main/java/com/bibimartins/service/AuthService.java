@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.argon2.Argon2PasswordEncoder;
 import org.springframework.stereotype.Service;
 import jakarta.transaction.Transactional;
+import org.springframework.context.annotation.Lazy;
 
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
@@ -19,7 +20,9 @@ public class AuthService {
     @Autowired
     private UserRepository userRepository;
 
-    private final Argon2PasswordEncoder argon2 = new Argon2PasswordEncoder(16, 32, 1, 65536, 10);
+    @Autowired @Lazy
+    private Argon2PasswordEncoder argon2;
+
     private final Map<String, LoginAttempt> loginAttempts = new ConcurrentHashMap<>();
 
     private static class LoginAttempt {
@@ -50,7 +53,7 @@ public class AuthService {
     }
 
     @Transactional
-    public String register(String email, String password) {
+    public String register(String email, String password, String fullName, String whatsapp, String documentType, String documentNumber, String companyName, String companyAddress) {
         String key = email.toLowerCase();
 
         if (userRepository.findByEmail(key).isPresent()) {
@@ -65,6 +68,12 @@ public class AuthService {
         user.setEmail(key);
         user.setPassword(argon2.encode(password));
         user.setAdmin(false);
+        user.setFullName(fullName);
+        user.setWhatsapp(whatsapp);
+        user.setDocumentType(documentType);
+        user.setDocumentNumber(documentNumber);
+        user.setCompanyName(companyName);
+        user.setCompanyAddress(companyAddress);
         userRepository.save(user);
         return "CLIENT";
     }

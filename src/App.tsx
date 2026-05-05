@@ -4,7 +4,7 @@ import {
   Menu, Phone, Mail, Instagram, Facebook, Youtube, 
   ChevronRight, Star, Quote, Brain, Users, MessageCircle, 
   Target, Zap, Award, TrendingUp, ArrowRight, Play, Building2,
-  Sparkles, Lightbulb, Heart, CheckCircle2
+  Sparkles, Lightbulb, Heart, CheckCircle2, User
 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
@@ -103,7 +103,15 @@ function App() {
             </nav>
 
             {/* CTA Button */}
-            <div className="hidden lg:block">
+            <div className="hidden lg:flex items-center gap-3">
+              <Button 
+                variant="ghost"
+                onClick={() => window.location.href = '/login'}
+                className={`transition-colors font-medium ${isScrolled ? 'text-purple-700 hover:bg-purple-50 hover:text-purple-800' : 'text-white hover:bg-white/10'}`}
+              >
+                <User className="w-4 h-4 mr-2" />
+                Área do Cliente
+              </Button>
               <Button 
                 onClick={() => window.open('https://wa.me/5511932143117', '_blank')}
                 className="bg-gradient-to-r from-purple-600 to-purple-700 hover:from-purple-700 hover:to-purple-800 text-white px-6"
@@ -151,13 +159,23 @@ function App() {
                       </button>
                     ))}
                   </nav>
-                  <Button 
-                    onClick={() => window.open('https://wa.me/5511932143117', '_blank')}
-                    className="bg-gradient-to-r from-purple-600 to-purple-700 text-white w-full"
-                  >
-                    <Phone className="w-4 h-4 mr-2" />
-                    Fale Comigo
-                  </Button>
+                  <div className="flex flex-col gap-3 mt-2">
+                    <Button 
+                      variant="outline"
+                      onClick={() => window.location.href = '/login'}
+                      className="border-purple-200 text-purple-700 hover:bg-purple-50 w-full"
+                    >
+                      <User className="w-4 h-4 mr-2" />
+                      Área do Cliente
+                    </Button>
+                    <Button 
+                      onClick={() => window.open('https://wa.me/5511932143117', '_blank')}
+                      className="bg-gradient-to-r from-purple-600 to-purple-700 text-white w-full"
+                    >
+                      <Phone className="w-4 h-4 mr-2" />
+                      Fale Comigo
+                    </Button>
+                  </div>
                 </div>
               </SheetContent>
             </Sheet>

@@ -52,16 +52,22 @@ public class AuthController {
 
         String email    = (String) request.get("email");
         String password = (String) request.get("password");
+        String fullName = (String) request.get("fullName");
+        String whatsapp = (String) request.get("whatsapp");
+        String documentType = (String) request.get("documentType");
+        String documentNumber = (String) request.get("documentNumber");
+        String companyName = (String) request.get("companyName");
+        String companyAddress = (String) request.get("companyAddress");
 
-        if (email == null || password == null) {
-            return ResponseEntity.badRequest().body(Map.of("error", "Email e senha são obrigatórios"));
+        if (email == null || password == null || fullName == null) {
+            return ResponseEntity.badRequest().body(Map.of("error", "Nome, Email e senha são obrigatórios"));
         }
 
         try {
-            String role  = authService.register(email, password);
+            String role  = authService.register(email, password, fullName, whatsapp, documentType, documentNumber, companyName, companyAddress);
             String token = jwtUtil.generateToken(email.toLowerCase(), role);
             return ResponseEntity.status(HttpStatus.CREATED)
-                .body(Map.of("token", token, "role", role, "email", email.toLowerCase()));
+                .body(Map.of("token", token, "role", role, "email", email.toLowerCase(), "fullName", fullName));
         } catch (RuntimeException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of("error", e.getMessage()));
         }
