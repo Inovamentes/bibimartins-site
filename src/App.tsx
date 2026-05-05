@@ -708,7 +708,6 @@ function App() {
                     <div>
                       <p className="font-semibold text-gray-900">{testimonial.author}</p>
                       <p className="text-sm text-gray-600">{testimonial.role}</p>
-                      <p className="text-xs text-gray-500">{testimonial.company}</p>
                     </div>
                   </div>
                 </CardContent>
