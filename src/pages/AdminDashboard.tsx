@@ -7,7 +7,7 @@ import { Card, CardContent } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import {
   Brain, Users, LogOut, Trash2, RefreshCw,
-  LayoutDashboard, Shield, TrendingUp, Mail
+  LayoutDashboard, Shield, TrendingUp
 } from 'lucide-react'
 
 interface Stats { totalUsers: number; totalClients: number; totalAdmins: number }

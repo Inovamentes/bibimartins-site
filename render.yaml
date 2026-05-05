@@ -8,3 +8,11 @@ services:
     envVars:
       - key: PORT
         value: 8080
+      - key: SPRING_DATASOURCE_URL
+        sync: false   # Defina manualmente no painel do Render
+      - key: SPRING_DATASOURCE_USERNAME
+        sync: false   # Defina manualmente no painel do Render
+      - key: SPRING_DATASOURCE_PASSWORD
+        sync: false   # Defina manualmente no painel do Render
+      - key: JWT_SECRET
+        sync: false   # Defina manualmente no painel do Render (mínimo 32 chars)
