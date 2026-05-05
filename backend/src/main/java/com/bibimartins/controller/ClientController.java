@@ -21,10 +21,16 @@ public class ClientController {
     public ResponseEntity<?> getProfile(Authentication auth) {
         return userRepository.findByEmail(auth.getName())
             .map(u -> ResponseEntity.ok(Map.of(
-                "id",        u.getId(),
-                "email",     u.getEmail(),
-                "role",      u.isAdmin() ? "ADMIN" : "CLIENT",
-                "createdAt", u.getCreatedAt().toString()
+                "id",             u.getId(),
+                "email",          u.getEmail(),
+                "role",           u.isAdmin() ? "ADMIN" : "CLIENT",
+                "createdAt",      u.getCreatedAt().toString(),
+                "fullName",       u.getFullName() != null ? u.getFullName() : "",
+                "whatsapp",       u.getWhatsapp() != null ? u.getWhatsapp() : "",
+                "documentType",   u.getDocumentType() != null ? u.getDocumentType() : "",
+                "documentNumber", u.getDocumentNumber() != null ? u.getDocumentNumber() : "",
+                "companyName",    u.getCompanyName() != null ? u.getCompanyName() : "",
+                "companyAddress", u.getCompanyAddress() != null ? u.getCompanyAddress() : ""
             )))
             .orElse(ResponseEntity.notFound().build());
     }
@@ -33,7 +39,13 @@ public class ClientController {
     public ResponseEntity<?> updateProfile(@RequestBody Map<String, Object> body, Authentication auth) {
         return userRepository.findByEmail(auth.getName())
             .map(u -> {
-                // Aqui futuramente podemos adicionar campos como nome, telefone, etc.
+                if (body.containsKey("fullName")) u.setFullName((String) body.get("fullName"));
+                if (body.containsKey("whatsapp")) u.setWhatsapp((String) body.get("whatsapp"));
+                if (body.containsKey("documentType")) u.setDocumentType((String) body.get("documentType"));
+                if (body.containsKey("documentNumber")) u.setDocumentNumber((String) body.get("documentNumber"));
+                if (body.containsKey("companyName")) u.setCompanyName((String) body.get("companyName"));
+                if (body.containsKey("companyAddress")) u.setCompanyAddress((String) body.get("companyAddress"));
+
                 userRepository.save(u);
                 return ResponseEntity.ok(Map.of("message", "Perfil atualizado com sucesso"));
             })

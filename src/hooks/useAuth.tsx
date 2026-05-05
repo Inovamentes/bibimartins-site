@@ -11,7 +11,7 @@ interface AuthContextType {
   user: AuthUser | null
   token: string | null
   login: (email: string, password: string) => Promise<void>
-  register: (email: string, password: string) => Promise<void>
+  register: (userData: any) => Promise<void>
   logout: () => void
   isLoading: boolean
 }
