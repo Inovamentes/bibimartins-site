@@ -7,7 +7,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
-import { Brain, LogOut, LayoutDashboard, User, BookOpen, Sparkles, Calendar, Mail, Loader2, Save, CheckCircle2, Lock, Unlock, PlayCircle } from 'lucide-react'
+import { Brain, LogOut, LayoutDashboard, User, Mail, Loader2, Save, CheckCircle2, Lock, Unlock, PlayCircle } from 'lucide-react'
 
 interface Profile { 
   id: number; email: string; role: string; createdAt: string;
