@@ -34,14 +34,43 @@ public class AdminController {
     @GetMapping("/users")
     public ResponseEntity<List<Map<String, Object>>> listUsers() {
         List<Map<String, Object>> users = userRepository.findAll().stream()
-            .map(u -> Map.<String, Object>of(
-                "id",        u.getId(),
-                "email",     u.getEmail(),
-                "role",      u.isAdmin() ? "ADMIN" : "CLIENT",
-                "createdAt", u.getCreatedAt().toString()
-            ))
+            .map(u -> {
+                java.util.Map<String, Object> map = new java.util.HashMap<>();
+                map.put("id", u.getId());
+                map.put("email", u.getEmail());
+                map.put("role", u.isAdmin() ? "ADMIN" : "CLIENT");
+                map.put("createdAt", u.getCreatedAt().toString());
+                map.put("fullName", u.getFullName());
+                map.put("whatsapp", u.getWhatsapp());
+                map.put("documentType", u.getDocumentType());
+                map.put("documentNumber", u.getDocumentNumber());
+                map.put("companyName", u.getCompanyName());
+                map.put("companyAddress", u.getCompanyAddress());
+                return map;
+            })
             .toList();
         return ResponseEntity.ok(users);
+    }
+
+    @PutMapping("/users/{id}")
+    public ResponseEntity<?> updateUser(@PathVariable Long id, @RequestBody Map<String, String> data, Authentication auth) {
+        return userRepository.findById(id).map(user -> {
+            if (data.containsKey("fullName")) user.setFullName(data.get("fullName"));
+            if (data.containsKey("whatsapp")) user.setWhatsapp(data.get("whatsapp"));
+            if (data.containsKey("documentType")) user.setDocumentType(data.get("documentType"));
+            if (data.containsKey("documentNumber")) user.setDocumentNumber(data.get("documentNumber"));
+            if (data.containsKey("companyName")) user.setCompanyName(data.get("companyName"));
+            if (data.containsKey("companyAddress")) user.setCompanyAddress(data.get("companyAddress"));
+            if (data.containsKey("role")) {
+                if (user.getEmail().equals(auth.getName()) && data.get("role").equals("CLIENT")) {
+                    return ResponseEntity.badRequest().<Object>body(Map.of("error", "Você não pode remover seu próprio acesso de Admin"));
+                }
+                user.setAdmin("ADMIN".equals(data.get("role")));
+            }
+            
+            userRepository.save(user);
+            return ResponseEntity.ok().<Object>body(Map.of("message", "Usuário atualizado com sucesso"));
+        }).orElse(ResponseEntity.notFound().<Object>build());
     }
 
     @DeleteMapping("/users/{id}")

@@ -7,7 +7,7 @@ import { Card, CardContent } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import {
   Brain, Users, LogOut, Trash2, RefreshCw,
-  LayoutDashboard, Shield, TrendingUp
+  LayoutDashboard, Shield, TrendingUp, Edit, X
 } from 'lucide-react'
 
 interface Stats { totalUsers: number; totalClients: number; totalAdmins: number }
@@ -23,6 +23,9 @@ export default function AdminDashboard() {
   const [users, setUsers]     = useState<User[]>([])
   const [loading, setLoading] = useState(true)
   const [apiError, setApiError] = useState<string | null>(null)
+  const [editingUser, setEditingUser] = useState<User | null>(null)
+  const [editForm, setEditForm] = useState<Partial<User>>({})
+  const [isSaving, setIsSaving] = useState(false)
 
   const fetchData = async () => {
     setLoading(true)
@@ -55,6 +58,25 @@ export default function AdminDashboard() {
   }
 
   const handleLogout = () => { logout(); navigate('/login', { replace: true }) }
+
+  const handleEdit = (u: User) => {
+    setEditingUser(u);
+    setEditForm({ ...u });
+  };
+
+  const handleSaveEdit = async () => {
+    if (!editingUser) return;
+    setIsSaving(true);
+    try {
+      await api.put(`/api/admin/users/${editingUser.id}`, editForm);
+      setEditingUser(null);
+      fetchData();
+    } catch (err: any) {
+      alert(err?.response?.data?.error || 'Erro ao atualizar usuário');
+    } finally {
+      setIsSaving(false);
+    }
+  };
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -197,7 +219,11 @@ export default function AdminDashboard() {
                         </Badge>
                       </td>
                       <td className="px-6 py-4 text-sm text-gray-500">{new Date(u.createdAt).toLocaleDateString('pt-BR')}</td>
-                      <td className="px-6 py-4">
+                      <td className="px-6 py-4 flex items-center gap-2">
+                        <Button onClick={() => handleEdit(u)} variant="ghost" size="sm"
+                          className="text-blue-500 hover:text-blue-700 hover:bg-blue-50 gap-1">
+                          <Edit className="w-4 h-4" /> Editar
+                        </Button>
                         {u.email !== user?.email && (
                           <Button onClick={() => handleDelete(u.id)} variant="ghost" size="sm"
                             className="text-red-500 hover:text-red-700 hover:bg-red-50 gap-1">
@@ -217,6 +243,63 @@ export default function AdminDashboard() {
           <Link to="/" className="hover:text-purple-600 transition-colors">← Ver site público</Link>
         </p>
       </main>
+
+      {/* Edit Modal */}
+      {editingUser && (
+        <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
+          <Card className="w-full max-w-xl max-h-[90vh] overflow-y-auto">
+            <div className="p-6 border-b flex justify-between items-center sticky top-0 bg-white">
+              <h2 className="text-xl font-bold">Editar Cliente: {editingUser.email}</h2>
+              <Button variant="ghost" size="sm" onClick={() => setEditingUser(null)}>
+                <X className="w-5 h-5" />
+              </Button>
+            </div>
+            <CardContent className="p-6 space-y-4">
+              <div className="grid grid-cols-2 gap-4">
+                <div className="space-y-2 col-span-2 md:col-span-1">
+                  <label className="text-sm font-medium text-gray-700">Nome Completo</label>
+                  <input type="text" className="w-full p-2 border rounded-md" value={editForm.fullName || ''} onChange={(e) => setEditForm({...editForm, fullName: e.target.value})} />
+                </div>
+                <div className="space-y-2 col-span-2 md:col-span-1">
+                  <label className="text-sm font-medium text-gray-700">WhatsApp</label>
+                  <input type="text" className="w-full p-2 border rounded-md" value={editForm.whatsapp || ''} onChange={(e) => setEditForm({...editForm, whatsapp: e.target.value})} />
+                </div>
+                <div className="space-y-2 col-span-2 md:col-span-1">
+                  <label className="text-sm font-medium text-gray-700">Tipo (CPF/CNPJ)</label>
+                  <select className="w-full p-2 border rounded-md" value={editForm.documentType || ''} onChange={(e) => setEditForm({...editForm, documentType: e.target.value})}>
+                    <option value="">Selecione...</option>
+                    <option value="CPF">Pessoa Física (CPF)</option>
+                    <option value="CNPJ">Empresa (CNPJ)</option>
+                  </select>
+                </div>
+                <div className="space-y-2 col-span-2 md:col-span-1">
+                  <label className="text-sm font-medium text-gray-700">Número do Documento</label>
+                  <input type="text" className="w-full p-2 border rounded-md" value={editForm.documentNumber || ''} onChange={(e) => setEditForm({...editForm, documentNumber: e.target.value})} />
+                </div>
+                {editForm.documentType === 'CNPJ' && (
+                  <div className="space-y-2 col-span-2">
+                    <label className="text-sm font-medium text-gray-700">Razão Social</label>
+                    <input type="text" className="w-full p-2 border rounded-md" value={editForm.companyName || ''} onChange={(e) => setEditForm({...editForm, companyName: e.target.value})} />
+                  </div>
+                )}
+                <div className="space-y-2 col-span-2">
+                  <label className="text-sm font-medium text-gray-700">Nível de Acesso</label>
+                  <select className="w-full p-2 border rounded-md" value={editForm.role || 'CLIENT'} onChange={(e) => setEditForm({...editForm, role: e.target.value})}>
+                    <option value="CLIENT">Cliente (Comum)</option>
+                    <option value="ADMIN">Administrador</option>
+                  </select>
+                </div>
+              </div>
+              <div className="flex justify-end gap-3 mt-6">
+                <Button variant="outline" onClick={() => setEditingUser(null)}>Cancelar</Button>
+                <Button onClick={handleSaveEdit} disabled={isSaving}>
+                  {isSaving ? 'Salvando...' : 'Salvar Alterações'}
+                </Button>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+      )}
     </div>
   )
 }
