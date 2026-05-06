@@ -39,6 +39,18 @@ public class CourseAdminController {
         return ResponseEntity.ok(planRepository.save(plan));
     }
 
+    @PutMapping("/plans/{id}")
+    public ResponseEntity<Plan> updatePlan(@PathVariable Long id, @RequestBody Plan planDetails) {
+        return planRepository.findById(id).map(plan -> {
+            plan.setName(planDetails.getName());
+            plan.setDescription(planDetails.getDescription());
+            plan.setPrice(planDetails.getPrice());
+            // Note: Manage courses separately or here? Let's allow updating the set of courses.
+            plan.setCourses(planDetails.getCourses());
+            return ResponseEntity.ok(planRepository.save(plan));
+        }).orElse(ResponseEntity.notFound().build());
+    }
+
     @DeleteMapping("/plans/{id}")
     public ResponseEntity<?> deletePlan(@PathVariable Long id) {
         return planRepository.findById(id).map(plan -> {
@@ -57,6 +69,17 @@ public class CourseAdminController {
     @PostMapping
     public ResponseEntity<Course> createCourse(@RequestBody Course course) {
         return ResponseEntity.ok(courseRepository.save(course));
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Course> updateCourse(@PathVariable Long id, @RequestBody Course courseDetails) {
+        return courseRepository.findById(id).map(course -> {
+            course.setTitle(courseDetails.getTitle());
+            course.setDescription(courseDetails.getDescription());
+            course.setThumbnailUrl(courseDetails.getThumbnailUrl());
+            course.setPreviewVideoUrl(courseDetails.getPreviewVideoUrl());
+            return ResponseEntity.ok(courseRepository.save(course));
+        }).orElse(ResponseEntity.notFound().build());
     }
 
     @DeleteMapping("/{id}")
@@ -78,6 +101,18 @@ public class CourseAdminController {
     public ResponseEntity<?> createLesson(@PathVariable Long courseId, @RequestBody Lesson lesson) {
         return courseRepository.findById(courseId).map(course -> {
             lesson.setCourse(course);
+            return ResponseEntity.ok(lessonRepository.save(lesson));
+        }).orElse(ResponseEntity.notFound().build());
+    }
+
+    @PutMapping("/lessons/{lessonId}")
+    public ResponseEntity<Lesson> updateLesson(@PathVariable Long lessonId, @RequestBody Lesson lessonDetails) {
+        return lessonRepository.findById(lessonId).map(lesson -> {
+            lesson.setTitle(lessonDetails.getTitle());
+            lesson.setDescription(lessonDetails.getDescription());
+            lesson.setVideoUrl(lessonDetails.getVideoUrl());
+            lesson.setAttachmentUrl(lessonDetails.getAttachmentUrl());
+            lesson.setOrderIndex(lessonDetails.getOrderIndex());
             return ResponseEntity.ok(lessonRepository.save(lesson));
         }).orElse(ResponseEntity.notFound().build());
     }

@@ -8,6 +8,7 @@ import LoginPage from './pages/LoginPage.tsx'
 import RegisterPage from './pages/RegisterPage.tsx'
 import AdminDashboard from './pages/AdminDashboard.tsx'
 import ClientDashboard from './pages/ClientDashboard.tsx'
+import CoursePage from './pages/CoursePage.tsx'
 import './index.css'
 
 createRoot(document.getElementById('root')!).render(
@@ -31,6 +32,12 @@ createRoot(document.getElementById('root')!).render(
           <Route path="/cliente" element={
             <ProtectedRoute>
               <ClientDashboard />
+            </ProtectedRoute>
+          } />
+
+          <Route path="/curso/:id" element={
+            <ProtectedRoute>
+              <CoursePage />
             </ProtectedRoute>
           } />
 

@@ -7,9 +7,11 @@ import { Card, CardContent } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import {
   Brain, Users, LogOut, Trash2, RefreshCw,
-  LayoutDashboard, Shield, TrendingUp, Edit, X, Video
+  LayoutDashboard, Shield, TrendingUp, Edit, X, Video, CreditCard, Key
 } from 'lucide-react'
 import { AdminCourses } from '@/components/AdminCourses'
+import { AdminPlans } from '@/components/AdminPlans'
+import { AdminSubscriptions } from '@/components/AdminSubscriptions'
 
 interface Stats { totalUsers: number; totalClients: number; totalAdmins: number }
 interface User  { 
@@ -27,7 +29,7 @@ export default function AdminDashboard() {
   const [editingUser, setEditingUser] = useState<User | null>(null)
   const [editForm, setEditForm] = useState<Partial<User>>({})
   const [isSaving, setIsSaving] = useState(false)
-  const [activeTab, setActiveTab] = useState<'dashboard' | 'users' | 'courses'>('dashboard')
+  const [activeTab, setActiveTab] = useState<'dashboard' | 'users' | 'courses' | 'plans' | 'subscriptions'>('dashboard')
 
   const fetchData = async () => {
     setLoading(true)
@@ -105,6 +107,12 @@ export default function AdminDashboard() {
           </button>
           <button onClick={() => setActiveTab('courses')} className={`w-full px-3 py-2 rounded-xl flex items-center gap-3 text-sm font-medium transition-colors ${activeTab === 'courses' ? 'bg-white/20 text-white' : 'hover:bg-white/10 text-purple-200'}`}>
             <Video className="w-4 h-4" /> Cursos e Módulos
+          </button>
+          <button onClick={() => setActiveTab('plans')} className={`w-full px-3 py-2 rounded-xl flex items-center gap-3 text-sm font-medium transition-colors ${activeTab === 'plans' ? 'bg-white/20 text-white' : 'hover:bg-white/10 text-purple-200'}`}>
+            <CreditCard className="w-4 h-4" /> Planos e Vendas
+          </button>
+          <button onClick={() => setActiveTab('subscriptions')} className={`w-full px-3 py-2 rounded-xl flex items-center gap-3 text-sm font-medium transition-colors ${activeTab === 'subscriptions' ? 'bg-white/20 text-white' : 'hover:bg-white/10 text-purple-200'}`}>
+            <Key className="w-4 h-4" /> Assinaturas
           </button>
         </nav>
 
@@ -250,6 +258,14 @@ export default function AdminDashboard() {
 
         {activeTab === 'courses' && (
           <AdminCourses />
+        )}
+
+        {activeTab === 'plans' && (
+          <AdminPlans />
+        )}
+
+        {activeTab === 'subscriptions' && (
+          <AdminSubscriptions />
         )}
 
         <p className="mt-6 text-center text-sm text-gray-400">

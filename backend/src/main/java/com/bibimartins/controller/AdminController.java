@@ -86,4 +86,47 @@ public class AdminController {
             return ResponseEntity.ok().<Object>body(Map.of("message", "Usuário removido"));
         }).orElse(ResponseEntity.notFound().<Object>build());
     }
+
+    // --- SUBSCRIPTIONS ---
+
+    @Autowired
+    private com.bibimartins.repository.UserSubscriptionRepository subscriptionRepository;
+    
+    @Autowired
+    private com.bibimartins.repository.PlanRepository planRepository;
+
+    @GetMapping("/subscriptions")
+    public ResponseEntity<?> listSubscriptions() {
+        return ResponseEntity.ok(subscriptionRepository.findAll().stream().map(s -> Map.of(
+            "id", s.getId(),
+            "userId", s.getUser().getId(),
+            "userEmail", s.getUser().getEmail(),
+            "planId", s.getPlan().getId(),
+            "planName", s.getPlan().getName(),
+            "active", s.isActive(),
+            "createdAt", s.getCreatedAt().toString()
+        )).toList());
+    }
+
+    @PostMapping("/subscriptions")
+    public ResponseEntity<?> createSubscription(@RequestBody Map<String, Long> data) {
+        Long userId = data.get("userId");
+        Long planId = data.get("planId");
+        
+        User user = userRepository.findById(userId).orElseThrow();
+        com.bibimartins.entity.Plan plan = planRepository.findById(planId).orElseThrow();
+        
+        com.bibimartins.entity.UserSubscription sub = new com.bibimartins.entity.UserSubscription();
+        sub.setUser(user);
+        sub.setPlan(plan);
+        sub.setActive(true);
+        
+        return ResponseEntity.ok(subscriptionRepository.save(sub));
+    }
+
+    @DeleteMapping("/subscriptions/{id}")
+    public ResponseEntity<?> deleteSubscription(@PathVariable Long id) {
+        subscriptionRepository.deleteById(id);
+        return ResponseEntity.ok().build();
+    }
 }

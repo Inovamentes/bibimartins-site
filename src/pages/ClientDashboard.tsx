@@ -196,9 +196,12 @@ export default function ClientDashboard() {
                       
                       <div className="flex gap-2">
                         {c.isUnlocked ? (
-                           <Button className="w-full bg-orange-600 hover:bg-orange-700 text-white rounded-lg">
-                             Assistir Aulas
-                           </Button>
+                            <Button 
+                              onClick={() => navigate(`/curso/${c.id}`)}
+                              className="w-full bg-orange-600 hover:bg-orange-700 text-white rounded-lg"
+                            >
+                              Assistir Aulas
+                            </Button>
                         ) : (
                            <>
                              {c.previewVideoUrl && (
