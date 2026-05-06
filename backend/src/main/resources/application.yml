@@ -15,3 +15,7 @@ spring:
 # JWT Secret: em produção, defina JWT_SECRET no Render (mínimo 32 caracteres)
 jwt:
   secret: ${JWT_SECRET:bibimartins-super-secret-key-2025-neurodiversa-lideranca-dev}
+
+app:
+  encryption:
+    secret: ${APP_ENCRYPTION_SECRET:12345678901234567890123456789012}

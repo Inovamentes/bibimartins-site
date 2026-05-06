@@ -53,19 +53,21 @@ public class AdminController {
     }
 
     @PutMapping("/users/{id}")
-    public ResponseEntity<?> updateUser(@PathVariable Long id, @RequestBody Map<String, String> data, Authentication auth) {
+    public ResponseEntity<?> updateUser(@PathVariable Long id, @RequestBody Map<String, Object> data, Authentication auth) {
         return userRepository.findById(id).map(user -> {
-            if (data.containsKey("fullName")) user.setFullName(data.get("fullName"));
-            if (data.containsKey("whatsapp")) user.setWhatsapp(data.get("whatsapp"));
-            if (data.containsKey("documentType")) user.setDocumentType(data.get("documentType"));
-            if (data.containsKey("documentNumber")) user.setDocumentNumber(data.get("documentNumber"));
-            if (data.containsKey("companyName")) user.setCompanyName(data.get("companyName"));
-            if (data.containsKey("companyAddress")) user.setCompanyAddress(data.get("companyAddress"));
+            if (data.containsKey("fullName")) user.setFullName(data.get("fullName") == null ? null : data.get("fullName").toString());
+            if (data.containsKey("whatsapp")) user.setWhatsapp(data.get("whatsapp") == null ? null : data.get("whatsapp").toString());
+            if (data.containsKey("documentType")) user.setDocumentType(data.get("documentType") == null ? null : data.get("documentType").toString());
+            if (data.containsKey("documentNumber")) user.setDocumentNumber(data.get("documentNumber") == null ? null : data.get("documentNumber").toString());
+            if (data.containsKey("companyName")) user.setCompanyName(data.get("companyName") == null ? null : data.get("companyName").toString());
+            if (data.containsKey("companyAddress")) user.setCompanyAddress(data.get("companyAddress") == null ? null : data.get("companyAddress").toString());
+            
             if (data.containsKey("role")) {
-                if (user.getEmail().equals(auth.getName()) && data.get("role").equals("CLIENT")) {
+                String role = data.get("role") == null ? "CLIENT" : data.get("role").toString();
+                if (user.getEmail().equals(auth.getName()) && role.equals("CLIENT")) {
                     return ResponseEntity.badRequest().<Object>body(Map.of("error", "Você não pode remover seu próprio acesso de Admin"));
                 }
-                user.setAdmin("ADMIN".equals(data.get("role")));
+                user.setAdmin("ADMIN".equals(role));
             }
             
             userRepository.save(user);

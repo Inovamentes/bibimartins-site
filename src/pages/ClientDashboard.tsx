@@ -7,7 +7,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
-import { Brain, LogOut, LayoutDashboard, User, BookOpen, Sparkles, Calendar, Mail, Loader2, Save, CheckCircle2 } from 'lucide-react'
+import { Brain, LogOut, LayoutDashboard, User, BookOpen, Sparkles, Calendar, Mail, Loader2, Save, CheckCircle2, Lock, Unlock, PlayCircle } from 'lucide-react'
 
 interface Profile { 
   id: number; email: string; role: string; createdAt: string;
@@ -21,6 +21,8 @@ export default function ClientDashboard() {
   const [activeTab, setActiveTab] = useState<'inicio' | 'perfil'>('inicio')
   const [loading, setLoading] = useState(false)
   const [saveSuccess, setSaveSuccess] = useState(false)
+  const [catalog, setCatalog] = useState<any[]>([])
+  const [loadingCatalog, setLoadingCatalog] = useState(true)
 
   // Edit form state
   const [editForm, setEditForm] = useState<Partial<Profile>>({})
@@ -30,6 +32,13 @@ export default function ClientDashboard() {
       setProfile(res.data)
       setEditForm(res.data)
     }).catch(() => {})
+
+    api.get('/api/client/courses/catalog').then(res => {
+      setCatalog(res.data)
+      setLoadingCatalog(false)
+    }).catch(() => {
+      setLoadingCatalog(false)
+    })
   }, [])
 
   const handleLogout = () => { logout(); navigate('/login', { replace: true }) }
@@ -50,12 +59,7 @@ export default function ClientDashboard() {
     }
   }
 
-  const resources = [
-    { icon: BookOpen, title: 'Método Sinapse 360°',  desc: 'Guia completo do método exclusivo', tag: 'PDF', color: 'purple' },
-    { icon: Brain,    title: 'Auto-Consciência',      desc: 'Workshop em vídeo - Pilar 01',      tag: 'Vídeo', color: 'orange' },
-    { icon: Calendar, title: 'Próximas Palestras',    desc: 'Agenda de eventos abertos',         tag: 'Agenda', color: 'teal' },
-    { icon: Sparkles, title: 'Liderança Neurodiversa',desc: 'E-book exclusivo para membros',     tag: 'E-book', color: 'purple' },
-  ]
+
 
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col md:flex-row">
@@ -161,29 +165,58 @@ export default function ClientDashboard() {
             </Card>
 
             {/* Exclusive Content Grid */}
-            <h2 className="text-lg font-bold text-gray-900 mb-4">Conteúdo Exclusivo</h2>
-            <div className="grid md:grid-cols-2 gap-6 mb-8">
-              {resources.map((r) => (
-                <Card key={r.title} className="border-0 shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1 cursor-pointer group">
-                  <CardContent className="p-6 flex items-start gap-4">
-                    <div className={`w-12 h-12 rounded-xl flex items-center justify-center shrink-0 ${
-                      r.color === 'purple' ? 'bg-purple-100' : r.color === 'orange' ? 'bg-orange-100' : 'bg-teal-100'
-                    }`}>
-                      <r.icon className={`w-6 h-6 ${
-                        r.color === 'purple' ? 'text-purple-600' : r.color === 'orange' ? 'text-orange-600' : 'text-teal-600'
-                      }`} />
-                    </div>
-                    <div className="flex-1">
-                      <div className="flex items-center gap-2 mb-1">
-                        <h3 className="font-semibold text-gray-900 group-hover:text-orange-600 transition-colors">{r.title}</h3>
-                        <Badge className="text-[10px] bg-gray-100 text-gray-600">{r.tag}</Badge>
+            <h2 className="text-lg font-bold text-gray-900 mb-4">Meus Cursos e Módulos</h2>
+            {loadingCatalog ? (
+              <div className="flex justify-center p-8"><Loader2 className="w-8 h-8 animate-spin text-orange-500" /></div>
+            ) : catalog.length === 0 ? (
+              <div className="text-center p-8 bg-white rounded-xl border border-gray-100 mb-8">
+                <p className="text-gray-500">Nenhum curso disponível no momento.</p>
+              </div>
+            ) : (
+              <div className="grid md:grid-cols-2 gap-6 mb-8">
+                {catalog.map((c) => (
+                  <Card key={c.id} className={`border-0 shadow-lg transition-all duration-300 hover:-translate-y-1 ${c.isUnlocked ? 'ring-2 ring-orange-500/50' : 'opacity-90'}`}>
+                    {c.thumbnailUrl && (
+                      <div className="h-32 w-full bg-cover bg-center rounded-t-xl" style={{ backgroundImage: `url(${c.thumbnailUrl})` }} />
+                    )}
+                    <CardContent className="p-6">
+                      <div className="flex items-start justify-between gap-4 mb-2">
+                        <div className={`w-12 h-12 rounded-xl flex items-center justify-center shrink-0 ${c.isUnlocked ? 'bg-orange-100 text-orange-600' : 'bg-gray-100 text-gray-500'}`}>
+                          {c.isUnlocked ? <Unlock className="w-6 h-6" /> : <Lock className="w-6 h-6" />}
+                        </div>
+                        {c.isUnlocked ? (
+                          <Badge className="bg-green-100 text-green-700 hover:bg-green-200 cursor-pointer">Acessar</Badge>
+                        ) : (
+                          <Badge className="bg-gray-100 text-gray-600">Bloqueado</Badge>
+                        )}
                       </div>
-                      <p className="text-sm text-gray-500">{r.desc}</p>
-                    </div>
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
+                      
+                      <h3 className="font-semibold text-lg text-gray-900 mb-1">{c.title}</h3>
+                      <p className="text-sm text-gray-500 line-clamp-2 mb-4">{c.description || 'Sem descrição'}</p>
+                      
+                      <div className="flex gap-2">
+                        {c.isUnlocked ? (
+                           <Button className="w-full bg-orange-600 hover:bg-orange-700 text-white rounded-lg">
+                             Assistir Aulas
+                           </Button>
+                        ) : (
+                           <>
+                             {c.previewVideoUrl && (
+                               <Button variant="outline" onClick={() => window.open(c.previewVideoUrl, '_blank')} className="flex-1 border-orange-200 text-orange-700 hover:bg-orange-50">
+                                 <PlayCircle className="w-4 h-4 mr-2" /> Prévia
+                               </Button>
+                             )}
+                             <Button onClick={() => alert('Em breve: Integração de Pagamento Checkout Hotmart/Stripe para comprar de forma avulsa')} className="flex-1 bg-gray-900 hover:bg-gray-800 text-white">
+                               Comprar
+                             </Button>
+                           </>
+                        )}
+                      </div>
+                    </CardContent>
+                  </Card>
+                ))}
+              </div>
+            )}
 
             {/* Contact Banner */}
             <Card className="border-0 shadow-lg overflow-hidden">

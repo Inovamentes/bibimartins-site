@@ -58,13 +58,14 @@ public class AuthController {
         String documentNumber = (String) request.get("documentNumber");
         String companyName = (String) request.get("companyName");
         String companyAddress = (String) request.get("companyAddress");
+        Boolean termsAccepted = (Boolean) request.get("termsAccepted");
 
         if (email == null || password == null || fullName == null) {
             return ResponseEntity.badRequest().body(Map.of("error", "Nome, Email e senha são obrigatórios"));
         }
 
         try {
-            String role  = authService.register(email, password, fullName, whatsapp, documentType, documentNumber, companyName, companyAddress);
+            String role  = authService.register(email, password, fullName, whatsapp, documentType, documentNumber, companyName, companyAddress, termsAccepted);
             String token = jwtUtil.generateToken(email.toLowerCase(), role);
             return ResponseEntity.status(HttpStatus.CREATED)
                 .body(Map.of("token", token, "role", role, "email", email.toLowerCase(), "fullName", fullName));

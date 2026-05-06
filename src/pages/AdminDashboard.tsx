@@ -7,8 +7,9 @@ import { Card, CardContent } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import {
   Brain, Users, LogOut, Trash2, RefreshCw,
-  LayoutDashboard, Shield, TrendingUp, Edit, X
+  LayoutDashboard, Shield, TrendingUp, Edit, X, Video
 } from 'lucide-react'
+import { AdminCourses } from '@/components/AdminCourses'
 
 interface Stats { totalUsers: number; totalClients: number; totalAdmins: number }
 interface User  { 
@@ -26,6 +27,7 @@ export default function AdminDashboard() {
   const [editingUser, setEditingUser] = useState<User | null>(null)
   const [editForm, setEditForm] = useState<Partial<User>>({})
   const [isSaving, setIsSaving] = useState(false)
+  const [activeTab, setActiveTab] = useState<'dashboard' | 'users' | 'courses'>('dashboard')
 
   const fetchData = async () => {
     setLoading(true)
@@ -95,12 +97,15 @@ export default function AdminDashboard() {
         </div>
 
         <nav className="flex-1 p-4 space-y-1">
-          <div className="px-3 py-2 rounded-xl bg-white/10 flex items-center gap-3 text-sm font-medium">
+          <button onClick={() => setActiveTab('dashboard')} className={`w-full px-3 py-2 rounded-xl flex items-center gap-3 text-sm font-medium transition-colors ${activeTab === 'dashboard' ? 'bg-white/20 text-white' : 'hover:bg-white/10 text-purple-200'}`}>
             <LayoutDashboard className="w-4 h-4" /> Dashboard
-          </div>
-          <div className="px-3 py-2 rounded-xl hover:bg-white/10 flex items-center gap-3 text-sm text-purple-200 cursor-pointer">
+          </button>
+          <button onClick={() => setActiveTab('users')} className={`w-full px-3 py-2 rounded-xl flex items-center gap-3 text-sm font-medium transition-colors ${activeTab === 'users' ? 'bg-white/20 text-white' : 'hover:bg-white/10 text-purple-200'}`}>
             <Users className="w-4 h-4" /> Usuários
-          </div>
+          </button>
+          <button onClick={() => setActiveTab('courses')} className={`w-full px-3 py-2 rounded-xl flex items-center gap-3 text-sm font-medium transition-colors ${activeTab === 'courses' ? 'bg-white/20 text-white' : 'hover:bg-white/10 text-purple-200'}`}>
+            <Video className="w-4 h-4" /> Cursos e Módulos
+          </button>
         </nav>
 
         <div className="p-4 border-t border-purple-700">
@@ -141,28 +146,33 @@ export default function AdminDashboard() {
         )}
 
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-          {[
-            { label: 'Total Usuários', value: stats?.totalUsers ?? '—', icon: Users, color: 'purple', bg: 'from-purple-500 to-purple-600' },
-            { label: 'Clientes',       value: stats?.totalClients ?? '—', icon: TrendingUp, color: 'orange', bg: 'from-orange-400 to-orange-500' },
-            { label: 'Admins',         value: stats?.totalAdmins ?? '—', icon: Shield, color: 'teal', bg: 'from-teal-500 to-teal-600' },
-          ].map((card) => (
-            <Card key={card.label} className="border-0 shadow-lg overflow-hidden">
-              <CardContent className="p-6 flex items-center gap-4">
-                <div className={`w-14 h-14 rounded-2xl bg-gradient-to-br ${card.bg} flex items-center justify-center shadow-lg`}>
-                  <card.icon className="w-7 h-7 text-white" />
-                </div>
-                <div>
-                  <p className="text-3xl font-bold text-gray-900">{card.value}</p>
-                  <p className="text-gray-500 text-sm">{card.label}</p>
-                </div>
-              </CardContent>
-            </Card>
-          ))}
         </div>
 
+        {activeTab === 'dashboard' && (
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+            {[
+              { label: 'Total Usuários', value: stats?.totalUsers ?? '—', icon: Users, color: 'purple', bg: 'from-purple-500 to-purple-600' },
+              { label: 'Clientes',       value: stats?.totalClients ?? '—', icon: TrendingUp, color: 'orange', bg: 'from-orange-400 to-orange-500' },
+              { label: 'Admins',         value: stats?.totalAdmins ?? '—', icon: Shield, color: 'teal', bg: 'from-teal-500 to-teal-600' },
+            ].map((card) => (
+              <Card key={card.label} className="border-0 shadow-lg overflow-hidden">
+                <CardContent className="p-6 flex items-center gap-4">
+                  <div className={`w-14 h-14 rounded-2xl bg-gradient-to-br ${card.bg} flex items-center justify-center shadow-lg`}>
+                    <card.icon className="w-7 h-7 text-white" />
+                  </div>
+                  <div>
+                    <p className="text-3xl font-bold text-gray-900">{card.value}</p>
+                    <p className="text-gray-500 text-sm">{card.label}</p>
+                  </div>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        )}
+
         {/* Users Table */}
-        <Card className="border-0 shadow-lg">
+        {activeTab === 'users' && (
+          <Card className="border-0 shadow-lg">
           <CardContent className="p-0">
             <div className="p-6 border-b border-gray-100">
               <h2 className="text-lg font-bold text-gray-900">Usuários Cadastrados</h2>
@@ -238,6 +248,11 @@ export default function AdminDashboard() {
             </div>
           </CardContent>
         </Card>
+        )}
+
+        {activeTab === 'courses' && (
+          <AdminCourses />
+        )}
 
         <p className="mt-6 text-center text-sm text-gray-400">
           <Link to="/" className="hover:text-purple-600 transition-colors">← Ver site público</Link>

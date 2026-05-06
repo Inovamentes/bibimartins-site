@@ -53,8 +53,12 @@ public class AuthService {
     }
 
     @Transactional
-    public String register(String email, String password, String fullName, String whatsapp, String documentType, String documentNumber, String companyName, String companyAddress) {
+    public String register(String email, String password, String fullName, String whatsapp, String documentType, String documentNumber, String companyName, String companyAddress, Boolean termsAccepted) {
         String key = email.toLowerCase();
+
+        if (termsAccepted == null || !termsAccepted) {
+            throw new RuntimeException("É obrigatório aceitar os Termos de Uso e a Política de Privacidade");
+        }
 
         if (userRepository.findByEmail(key).isPresent()) {
             throw new RuntimeException("E-mail já cadastrado");
@@ -74,6 +78,7 @@ public class AuthService {
         user.setDocumentNumber(documentNumber);
         user.setCompanyName(companyName);
         user.setCompanyAddress(companyAddress);
+        user.setTermsAccepted(true);
         userRepository.save(user);
         return "CLIENT";
     }

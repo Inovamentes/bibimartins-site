@@ -29,6 +29,7 @@ export default function RegisterPage() {
   const [loading, setLoading]   = useState(false)
   const [error, setError]       = useState('')
   const [honeypot, setHoneypot] = useState('')
+  const [termsAccepted, setTermsAccepted] = useState(false)
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -36,7 +37,7 @@ export default function RegisterPage() {
     setLoading(true)
     try {
       const userData = {
-        email, password, fullName, whatsapp, documentType, documentNumber, companyName, companyAddress
+        email, password, fullName, whatsapp, documentType, documentNumber, companyName, companyAddress, termsAccepted
       };
       await register(userData)
       navigate('/cliente', { replace: true })
@@ -177,6 +178,20 @@ export default function RegisterPage() {
                   ))}
                 </div>
               )}
+
+              <div className="flex items-start gap-2 mt-4">
+                <input 
+                  type="checkbox" 
+                  id="terms" 
+                  checked={termsAccepted} 
+                  onChange={(e) => setTermsAccepted(e.target.checked)} 
+                  className="mt-1 w-4 h-4 text-orange-500 focus:ring-orange-500 border-gray-300 rounded"
+                  required 
+                />
+                <Label htmlFor="terms" className="text-sm text-gray-600 leading-snug cursor-pointer">
+                  Li e concordo com os <a href="#" className="text-purple-600 hover:underline">Termos de Uso</a> e a <a href="#" className="text-purple-600 hover:underline">Política de Privacidade</a>, e autorizo o tratamento dos meus dados conforme a LGPD.
+                </Label>
+              </div>
 
               <Button type="submit" disabled={loading} className="w-full h-12 bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white rounded-xl font-semibold text-base mt-2">
                 {loading ? <><Loader2 className="w-5 h-5 mr-2 animate-spin" /> Criando conta...</> : 'Criar conta e acessar'}

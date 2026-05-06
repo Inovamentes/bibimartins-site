@@ -29,23 +29,35 @@ public class User {
     private String fullName;
 
     @Column(name = "whatsapp")
+    @Convert(converter = com.bibimartins.util.AttributeEncryptor.class)
     private String whatsapp;
 
     @Column(name = "document_type")
     private String documentType; // CPF ou CNPJ
 
     @Column(name = "document_number")
+    @Convert(converter = com.bibimartins.util.AttributeEncryptor.class)
     private String documentNumber;
 
     @Column(name = "company_name")
     private String companyName;
 
     @Column(name = "company_address")
+    @Convert(converter = com.bibimartins.util.AttributeEncryptor.class)
     private String companyAddress;
+
+    @Column(name = "terms_accepted", nullable = false)
+    private boolean termsAccepted = false;
+
+    @Column(name = "consent_date")
+    private LocalDateTime consentDate;
 
     @PrePersist
     protected void onCreate() {
         this.createdAt = LocalDateTime.now();
+        if (this.termsAccepted && this.consentDate == null) {
+            this.consentDate = LocalDateTime.now();
+        }
     }
 
     // Getters and setters
@@ -136,5 +148,21 @@ public class User {
 
     public void setCompanyAddress(String companyAddress) {
         this.companyAddress = companyAddress;
+    }
+
+    public boolean isTermsAccepted() {
+        return termsAccepted;
+    }
+
+    public void setTermsAccepted(boolean termsAccepted) {
+        this.termsAccepted = termsAccepted;
+    }
+
+    public LocalDateTime getConsentDate() {
+        return consentDate;
+    }
+
+    public void setConsentDate(LocalDateTime consentDate) {
+        this.consentDate = consentDate;
     }
 }
