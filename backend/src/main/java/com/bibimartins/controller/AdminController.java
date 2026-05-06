@@ -29,11 +29,11 @@ public class AdminController {
         long totalAdmins = userRepository.findAll().stream().filter(User::isAdmin).count();
         long totalClients = totalUsers - totalAdmins;
 
-        return ResponseEntity.ok(Map.of(
-            "totalUsers",   totalUsers,
-            "totalClients", totalClients,
-            "totalAdmins",  totalAdmins
-        ));
+        Map<String, Object> stats = new HashMap<>();
+        stats.put("totalUsers", totalUsers);
+        stats.put("totalClients", totalClients);
+        stats.put("totalAdmins", totalAdmins);
+        return ResponseEntity.ok(stats);
     }
 
     @GetMapping("/users")
@@ -102,15 +102,17 @@ public class AdminController {
 
     @GetMapping("/subscriptions")
     public ResponseEntity<?> listSubscriptions() {
-        return ResponseEntity.ok(subscriptionRepository.findAll().stream().map(s -> Map.of(
-            "id", s.getId(),
-            "userId", s.getUser().getId(),
-            "userEmail", s.getUser().getEmail(),
-            "planId", s.getPlan().getId(),
-            "planName", s.getPlan().getName(),
-            "active", s.isActive(),
-            "createdAt", s.getCreatedAt().toString()
-        )).toList());
+        return ResponseEntity.ok(subscriptionRepository.findAll().stream().map(s -> {
+            Map<String, Object> m = new HashMap<>();
+            m.put("id", s.getId());
+            m.put("userId", s.getUser().getId());
+            m.put("userEmail", s.getUser().getEmail());
+            m.put("planId", s.getPlan().getId());
+            m.put("planName", s.getPlan().getName());
+            m.put("active", s.isActive());
+            m.put("createdAt", s.getCreatedAt().toString());
+            return m;
+        }).toList());
     }
 
     @PostMapping("/subscriptions")
