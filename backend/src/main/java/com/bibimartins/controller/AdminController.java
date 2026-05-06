@@ -1,7 +1,11 @@
 package com.bibimartins.controller;
 
 import com.bibimartins.entity.User;
+import com.bibimartins.entity.Plan;
+import com.bibimartins.entity.UserSubscription;
 import com.bibimartins.repository.UserRepository;
+import com.bibimartins.repository.PlanRepository;
+import com.bibimartins.repository.UserSubscriptionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -9,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Map;
+import java.util.HashMap;
 
 @RestController
 @RequestMapping("/api/admin")
@@ -35,7 +40,7 @@ public class AdminController {
     public ResponseEntity<List<Map<String, Object>>> listUsers() {
         List<Map<String, Object>> users = userRepository.findAll().stream()
             .map(u -> {
-                java.util.Map<String, Object> map = new java.util.HashMap<>();
+                Map<String, Object> map = new HashMap<>();
                 map.put("id", u.getId());
                 map.put("email", u.getEmail());
                 map.put("role", u.isAdmin() ? "ADMIN" : "CLIENT");
@@ -90,10 +95,10 @@ public class AdminController {
     // --- SUBSCRIPTIONS ---
 
     @Autowired
-    private com.bibimartins.repository.UserSubscriptionRepository subscriptionRepository;
+    private UserSubscriptionRepository subscriptionRepository;
     
     @Autowired
-    private com.bibimartins.repository.PlanRepository planRepository;
+    private PlanRepository planRepository;
 
     @GetMapping("/subscriptions")
     public ResponseEntity<?> listSubscriptions() {
@@ -114,9 +119,9 @@ public class AdminController {
         Long planId = data.get("planId");
         
         User user = userRepository.findById(userId).orElseThrow();
-        com.bibimartins.entity.Plan plan = planRepository.findById(planId).orElseThrow();
+        Plan plan = planRepository.findById(planId).orElseThrow();
         
-        com.bibimartins.entity.UserSubscription sub = new com.bibimartins.entity.UserSubscription();
+        UserSubscription sub = new UserSubscription();
         sub.setUser(user);
         sub.setPlan(plan);
         sub.setActive(true);

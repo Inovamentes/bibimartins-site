@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Map;
+import java.util.HashMap;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -51,14 +52,14 @@ public class CourseClientController {
 
         List<Map<String, Object>> catalog = courseRepository.findAll().stream().map(course -> {
             boolean isUnlocked = unlockedCourseIds.contains(course.getId());
-            return Map.of(
-                "id", course.getId(),
-                "title", course.getTitle(),
-                "description", course.getDescription() == null ? "" : course.getDescription(),
-                "thumbnailUrl", course.getThumbnailUrl() == null ? "" : course.getThumbnailUrl(),
-                "previewVideoUrl", course.getPreviewVideoUrl() == null ? "" : course.getPreviewVideoUrl(),
-                "isUnlocked", isUnlocked
-            );
+            Map<String, Object> item = new HashMap<>();
+            item.put("id", course.getId());
+            item.put("title", course.getTitle());
+            item.put("description", course.getDescription() == null ? "" : course.getDescription());
+            item.put("thumbnailUrl", course.getThumbnailUrl() == null ? "" : course.getThumbnailUrl());
+            item.put("previewVideoUrl", course.getPreviewVideoUrl() == null ? "" : course.getPreviewVideoUrl());
+            item.put("isUnlocked", isUnlocked);
+            return item;
         }).toList();
 
         return ResponseEntity.ok(catalog);
@@ -81,34 +82,36 @@ public class CourseClientController {
             // If unlocked, return full details including lessons
             if (isUnlocked) {
                 var lessons = course.getLessons().stream()
-                    .map(l -> Map.of(
-                        "id", l.getId(),
-                        "title", l.getTitle(),
-                        "description", l.getDescription() == null ? "" : l.getDescription(),
-                        "videoUrl", l.getVideoUrl() == null ? "" : l.getVideoUrl(),
-                        "attachmentUrl", l.getAttachmentUrl() == null ? "" : l.getAttachmentUrl(),
-                        "orderIndex", l.getOrderIndex()
-                    )).toList();
+                    .map(l -> {
+                        Map<String, Object> m = new HashMap<>();
+                        m.put("id", l.getId());
+                        m.put("title", l.getTitle());
+                        m.put("description", l.getDescription() == null ? "" : l.getDescription());
+                        m.put("videoUrl", l.getVideoUrl() == null ? "" : l.getVideoUrl());
+                        m.put("attachmentUrl", l.getAttachmentUrl() == null ? "" : l.getAttachmentUrl());
+                        m.put("orderIndex", l.getOrderIndex());
+                        return m;
+                    }).toList();
                 
-                return ResponseEntity.ok(Map.of(
-                    "id", course.getId(),
-                    "title", course.getTitle(),
-                    "description", course.getDescription(),
-                    "thumbnailUrl", course.getThumbnailUrl(),
-                    "isUnlocked", true,
-                    "lessons", lessons
-                ));
+                Map<String, Object> response = new HashMap<>();
+                response.put("id", course.getId());
+                response.put("title", course.getTitle());
+                response.put("description", course.getDescription());
+                response.put("thumbnailUrl", course.getThumbnailUrl());
+                response.put("isUnlocked", true);
+                response.put("lessons", lessons);
+                return ResponseEntity.ok(response);
             } else {
                 // If locked, return only basic info + preview
-                return ResponseEntity.ok(Map.of(
-                    "id", course.getId(),
-                    "title", course.getTitle(),
-                    "description", course.getDescription(),
-                    "thumbnailUrl", course.getThumbnailUrl(),
-                    "previewVideoUrl", course.getPreviewVideoUrl(),
-                    "isUnlocked", false,
-                    "message", "Este curso está bloqueado. Adquira um plano para acessar."
-                ));
+                Map<String, Object> response = new HashMap<>();
+                response.put("id", course.getId());
+                response.put("title", course.getTitle());
+                response.put("description", course.getDescription());
+                response.put("thumbnailUrl", course.getThumbnailUrl());
+                response.put("previewVideoUrl", course.getPreviewVideoUrl());
+                response.put("isUnlocked", false);
+                response.put("message", "Este curso está bloqueado. Adquira um plano para acessar.");
+                return ResponseEntity.ok(response);
             }
         }).orElse(ResponseEntity.notFound().build());
     }
