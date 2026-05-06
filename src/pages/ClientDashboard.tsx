@@ -58,10 +58,10 @@ export default function ClientDashboard() {
   ]
 
   return (
-    <div className="min-h-screen bg-gray-50 flex">
+    <div className="min-h-screen bg-gray-50 flex flex-col md:flex-row">
       {/* Sidebar */}
-      <aside className="fixed top-0 left-0 h-full w-64 bg-gradient-to-b from-orange-600 to-orange-700 text-white flex flex-col z-40 shadow-2xl">
-        <div className="p-6 border-b border-orange-500">
+      <aside className="w-full md:fixed md:top-0 md:left-0 md:h-full md:w-64 bg-gradient-to-b from-orange-600 to-orange-700 text-white flex flex-col md:z-40 shadow-xl shrink-0">
+        <div className="p-4 md:p-6 border-b border-orange-500 flex justify-between items-center md:block">
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 rounded-xl bg-white/20 flex items-center justify-center">
               <Brain className="w-5 h-5" />
@@ -73,22 +73,22 @@ export default function ClientDashboard() {
           </div>
         </div>
 
-        <nav className="flex-1 p-4 space-y-1">
+        <nav className="flex md:flex-col md:flex-1 p-2 md:p-4 gap-2 overflow-x-auto whitespace-nowrap">
           <button 
             onClick={() => setActiveTab('inicio')}
-            className={`w-full px-3 py-2 rounded-xl flex items-center gap-3 text-sm font-medium transition-colors ${activeTab === 'inicio' ? 'bg-white/20 text-white' : 'hover:bg-white/10 text-orange-100'}`}
+            className={`flex-1 md:w-full px-3 py-2 rounded-xl flex items-center justify-center md:justify-start gap-2 text-sm font-medium transition-colors ${activeTab === 'inicio' ? 'bg-white/20 text-white' : 'hover:bg-white/10 text-orange-100'}`}
           >
-            <LayoutDashboard className="w-4 h-4" /> Início
+            <LayoutDashboard className="w-4 h-4 shrink-0" /> Início
           </button>
           <button 
             onClick={() => setActiveTab('perfil')}
-            className={`w-full px-3 py-2 rounded-xl flex items-center gap-3 text-sm font-medium transition-colors ${activeTab === 'perfil' ? 'bg-white/20 text-white' : 'hover:bg-white/10 text-orange-100'}`}
+            className={`flex-1 md:w-full px-3 py-2 rounded-xl flex items-center justify-center md:justify-start gap-2 text-sm font-medium transition-colors ${activeTab === 'perfil' ? 'bg-white/20 text-white' : 'hover:bg-white/10 text-orange-100'}`}
           >
-            <User className="w-4 h-4" /> Meu Perfil
+            <User className="w-4 h-4 shrink-0" /> Meu Perfil
           </button>
         </nav>
 
-        <div className="p-4 border-t border-orange-500">
+        <div className="hidden md:block p-4 border-t border-orange-500">
           <div className="flex items-center gap-3 mb-4">
             <div className="w-9 h-9 rounded-full bg-white/20 flex items-center justify-center text-white text-xs font-bold shrink-0">
               {((profile?.fullName ? profile?.fullName?.charAt(0) : user?.email?.charAt(0)) || 'U').toUpperCase()}
@@ -98,15 +98,28 @@ export default function ClientDashboard() {
               <Badge className="text-[10px] bg-white/20 text-white border-white/20 mt-0.5">CLIENTE</Badge>
             </div>
           </div>
-          <Button onClick={handleLogout} variant="ghost"
-            className="w-full text-orange-200 hover:text-white hover:bg-white/10 justify-start gap-2 h-9">
-            <LogOut className="w-4 h-4" /> Sair
-          </Button>
+          <button
+            onClick={handleLogout}
+            className="w-full flex items-center gap-2 px-3 py-2 text-sm font-medium text-orange-100 hover:text-white hover:bg-white/10 rounded-lg transition-colors"
+          >
+            <LogOut className="w-4 h-4" />
+            Sair da Conta
+          </button>
         </div>
       </aside>
 
       {/* Main Content */}
-      <main className="ml-64 p-8 flex-1">
+      <main className="md:ml-64 p-4 md:p-8 flex-1 w-full max-w-[100vw] overflow-x-hidden">
+        {/* Mobile Header elements (Logout button on top for mobile) */}
+        <div className="md:hidden flex justify-end mb-4">
+          <button
+            onClick={handleLogout}
+            className="flex items-center gap-2 px-3 py-2 text-sm font-medium text-red-600 bg-red-50 hover:bg-red-100 rounded-lg transition-colors"
+          >
+            <LogOut className="w-4 h-4" />
+            Sair
+          </button>
+        </div>
         {activeTab === 'inicio' ? (
           <>
             {/* Welcome Header */}
