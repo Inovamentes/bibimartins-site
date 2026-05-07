@@ -195,6 +195,8 @@ function App() {
             src="/images/2F944E58-9815-40C7-B5F2-30BC9C5EA73B.jpeg" 
             alt="Bibi Martins" 
             className="w-full h-full object-cover object-top" style={{objectPosition: '0% 10%'}}
+            loading="eager"
+            fetchPriority="high"
           />
           <div className="absolute inset-0 bg-gradient-to-r from-purple-900/90 via-purple-800/80 to-transparent" />
           <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
@@ -282,6 +284,7 @@ function App() {
                   src="/images/3BFD633B-9979-478F-B846-28C3DD19BCF4.jpeg" 
                   alt="Bibi Martins - Palestrante" 
                   className="w-full h-[500px] object-contain"
+                  loading="lazy"
                 />
               </div>
               {/* Floating Card */}
@@ -502,6 +505,7 @@ function App() {
                     src="/images/Gemini_Generated_Image_pvaxsjpvaxsjpvax.png" 
                     alt="BMAcademy" 
                     className="absolute inset-0 w-full h-full object-cover"
+                    loading="lazy"
                   />
                   <div className="absolute inset-0 bg-gradient-to-r from-white via-white/50 to-transparent" />
                 </div>

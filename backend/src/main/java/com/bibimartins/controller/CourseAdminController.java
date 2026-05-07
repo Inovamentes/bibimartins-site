@@ -61,8 +61,20 @@ public class CourseAdminController {
     // --- COURSES ---
 
     @GetMapping
-    public ResponseEntity<List<Course>> listCourses() {
-        return ResponseEntity.ok(courseRepository.findAll());
+    public ResponseEntity<List<Map<String, Object>>> listCourses() {
+        List<Map<String, Object>> courses = courseRepository.findAll().stream()
+            .map(c -> {
+                Map<String, Object> m = new HashMap<>();
+                m.put("id", c.getId());
+                m.put("title", c.getTitle());
+                m.put("description", c.getDescription());
+                m.put("thumbnailUrl", c.getThumbnailUrl());
+                m.put("previewVideoUrl", c.getPreviewVideoUrl());
+                m.put("createdAt", c.getCreatedAt() != null ? c.getCreatedAt().toString() : null);
+                return m;
+            })
+            .collect(java.util.stream.Collectors.toList());
+        return ResponseEntity.ok(courses);
     }
 
     @PostMapping

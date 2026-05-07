@@ -31,21 +31,22 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       const storedEmail = localStorage.getItem('bm_email')
       
       if (storedToken && storedRole && storedEmail) {
+        // Optimistic update: set state immediately from localStorage
+        setToken(storedToken)
+        setUser({ email: storedEmail, role: storedRole })
+        setIsLoading(false) // Release the UI immediately
+
         try {
-          // Verify token validity with a simple 'me' request
+          // Verify in background
           const res = await api.get('/api/auth/me')
-          setToken(storedToken)
           setUser(res.data)
         } catch (err) {
-          console.error('Token inválido ou expirado:', err)
-          localStorage.removeItem('bm_token')
-          localStorage.removeItem('bm_role')
-          localStorage.removeItem('bm_email')
-          setToken(null)
-          setUser(null)
+          console.error('Token expirado, limpando sessão em background')
+          logout()
         }
+      } else {
+        setIsLoading(false)
       }
-      setIsLoading(false)
     }
 
     initAuth()

@@ -6,9 +6,58 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="icon" type="image/png" href="/favicon.png" />
     <title>Bibi Martins - Palestrante</title>
+    <style>
+      #initial-loader {
+        position: fixed;
+        inset: 0;
+        background: white;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        z-index: 9999;
+        transition: opacity 0.5s ease;
+      }
+      .loader-logo {
+        width: 64px;
+        height: 64px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, #9333ea, #f97316);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-weight: bold;
+        font-size: 1.5rem;
+        margin-bottom: 20px;
+        box-shadow: 0 4px 15px rgba(147, 51, 234, 0.3);
+      }
+      .spinner {
+        width: 30px;
+        height: 30px;
+        border: 3px border rgba(147, 51, 234, 0.1);
+        border-top-color: #9333ea;
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+      }
+      @keyframes spin { to { transform: rotate(360deg); } }
+    </style>
   </head>
   <body>
+    <div id="initial-loader">
+      <div class="loader-logo">BM</div>
+      <div class="spinner"></div>
+    </div>
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
+    <script>
+      window.addEventListener('load', () => {
+        const loader = document.getElementById('initial-loader');
+        if (loader) {
+          loader.style.opacity = '0';
+          setTimeout(() => loader.remove(), 500);
+        }
+      });
+    </script>
   </body>
 </html>
