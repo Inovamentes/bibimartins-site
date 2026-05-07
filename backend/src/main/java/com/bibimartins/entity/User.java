@@ -29,21 +29,18 @@ public class User {
     private String fullName;
 
     @Column(name = "whatsapp")
-    @Convert(converter = com.bibimartins.util.AttributeEncryptor.class)
     private String whatsapp;
 
     @Column(name = "document_type")
     private String documentType; // CPF ou CNPJ
 
     @Column(name = "document_number")
-    @Convert(converter = com.bibimartins.util.AttributeEncryptor.class)
     private String documentNumber;
 
     @Column(name = "company_name")
     private String companyName;
 
     @Column(name = "company_address")
-    @Convert(converter = com.bibimartins.util.AttributeEncryptor.class)
     private String companyAddress;
 
     @Column(name = "terms_accepted", nullable = false)
