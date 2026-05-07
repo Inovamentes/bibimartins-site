@@ -104,8 +104,20 @@ public class CourseAdminController {
     // --- LESSONS ---
 
     @GetMapping("/{courseId}/lessons")
-    public ResponseEntity<List<Lesson>> listLessons(@PathVariable Long courseId) {
-        return ResponseEntity.ok(lessonRepository.findByCourseIdOrderByOrderIndexAsc(courseId));
+    public ResponseEntity<List<Map<String, Object>>> listLessons(@PathVariable Long courseId) {
+        List<Map<String, Object>> lessons = lessonRepository.findByCourseIdOrderByOrderIndexAsc(courseId).stream()
+            .map(l -> {
+                Map<String, Object> m = new HashMap<>();
+                m.put("id", l.getId());
+                m.put("title", l.getTitle());
+                m.put("description", l.getDescription());
+                m.put("videoUrl", l.getVideoUrl());
+                m.put("attachmentUrl", l.getAttachmentUrl());
+                m.put("orderIndex", l.getOrderIndex());
+                return m;
+            })
+            .collect(java.util.stream.Collectors.toList());
+        return ResponseEntity.ok(lessons);
     }
 
     @PostMapping("/{courseId}/lessons")
