@@ -17,7 +17,6 @@ import java.util.HashMap;
 
 @RestController
 @RequestMapping("/api/admin")
-@CrossOrigin(origins = {"http://localhost:5173", "https://bibimartins.com"})
 public class AdminController {
 
     @Autowired

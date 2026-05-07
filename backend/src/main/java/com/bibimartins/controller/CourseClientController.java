@@ -21,7 +21,6 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/client/courses")
-@CrossOrigin(origins = {"http://localhost:5173", "https://bibimartins.com"})
 public class CourseClientController {
 
     @Autowired
