@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
 import java.util.HashMap;
+import java.util.Optional;
+import com.bibimartins.entity.User;
 
 @RestController
 @RequestMapping("/api/auth")

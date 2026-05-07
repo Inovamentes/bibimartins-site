@@ -7,5 +7,5 @@ FROM eclipse-temurin:21-jre
 WORKDIR /app
 COPY --from=build /app/target/bibimartins-backend-1.0.0.jar app.jar
 EXPOSE 8080
-ENTRYPOINT ["java", "-Xmx300m", "-jar", "app.jar"]
+ENTRYPOINT ["java", "-Xmx300m", "-XX:+TieredCompilation", "-XX:TieredStopAtLevel=1", "-jar", "app.jar"]
 
