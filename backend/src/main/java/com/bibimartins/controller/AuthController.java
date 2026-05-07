@@ -104,17 +104,17 @@ public class AuthController {
         }
         String token = authHeader.substring(7);
         try {
-            String email = jwtUtil.extractEmail(token);
             if (jwtUtil.isValid(token)) {
-                return authService.getUserByEmail(email)
-                    .map(user -> {
-                        Map<String, String> res = new HashMap<>();
-                        res.put("email", user.getEmail());
-                        res.put("role", user.isAdmin() ? "ADMIN" : "CLIENT");
-                        res.put("fullName", user.getFullName() != null ? user.getFullName() : "");
-                        return ResponseEntity.ok(res);
-                    })
-                    .orElse(ResponseEntity.status(HttpStatus.UNAUTHORIZED).build());
+                String email = jwtUtil.extractEmail(token);
+                Optional<User> userOpt = authService.getUserByEmail(email);
+                if (userOpt.isPresent()) {
+                    User user = userOpt.get();
+                    Map<String, String> res = new HashMap<>();
+                    res.put("email", user.getEmail());
+                    res.put("role", user.isAdmin() ? "ADMIN" : "CLIENT");
+                    res.put("fullName", user.getFullName() != null ? user.getFullName() : "");
+                    return ResponseEntity.ok(res);
+                }
             }
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
