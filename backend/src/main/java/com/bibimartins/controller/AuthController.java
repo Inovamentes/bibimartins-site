@@ -59,7 +59,10 @@ public class AuthController {
     @PostMapping("/register")
     public ResponseEntity<?> register(@RequestBody Map<String, Object> request) {
         if (isBot(request)) {
-            return ResponseEntity.ok(Map.of("token", "fake-token", "role", "CLIENT"));
+            Map<String, String> botRes = new HashMap<>();
+            botRes.put("token", "fake-token");
+            botRes.put("role", "CLIENT");
+            return ResponseEntity.ok(botRes);
         }
 
         String email    = (String) request.get("email");
