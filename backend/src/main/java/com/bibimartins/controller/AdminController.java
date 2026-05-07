@@ -70,13 +70,17 @@ public class AdminController {
             if (data.containsKey("role")) {
                 String role = data.get("role") == null ? "CLIENT" : data.get("role").toString();
                 if (user.getEmail().equals(auth.getName()) && role.equals("CLIENT")) {
-                    return ResponseEntity.badRequest().<Object>body(Map.of("error", "Você não pode remover seu próprio acesso de Admin"));
+                    Map<String, String> error = new HashMap<>();
+                    error.put("error", "Você não pode remover seu próprio acesso de Admin");
+                    return ResponseEntity.badRequest().<Object>body(error);
                 }
                 user.setAdmin("ADMIN".equals(role));
             }
             
             userRepository.save(user);
-            return ResponseEntity.ok().<Object>body(Map.of("message", "Usuário atualizado com sucesso"));
+            Map<String, String> response = new HashMap<>();
+            response.put("message", "Usuário atualizado com sucesso");
+            return ResponseEntity.ok().<Object>body(response);
         }).orElse(ResponseEntity.notFound().<Object>build());
     }
 
@@ -84,11 +88,14 @@ public class AdminController {
     public ResponseEntity<?> deleteUser(@PathVariable Long id, Authentication auth) {
         return userRepository.findById(id).map(user -> {
             if (user.getEmail().equals(auth.getName())) {
-                return ResponseEntity.badRequest()
-                    .<Object>body(Map.of("error", "Você não pode se excluir"));
+                Map<String, String> error = new HashMap<>();
+                error.put("error", "Você não pode se excluir");
+                return ResponseEntity.badRequest().<Object>body(error);
             }
             userRepository.delete(user);
-            return ResponseEntity.ok().<Object>body(Map.of("message", "Usuário removido"));
+            Map<String, String> response = new HashMap<>();
+            response.put("message", "Usuário removido");
+            return ResponseEntity.ok().<Object>body(response);
         }).orElse(ResponseEntity.notFound().<Object>build());
     }
 

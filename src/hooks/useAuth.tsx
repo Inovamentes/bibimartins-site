@@ -25,14 +25,30 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [isLoading, setIsLoading] = useState(true)
 
   useEffect(() => {
-    const storedToken = localStorage.getItem('bm_token')
-    const storedRole  = localStorage.getItem('bm_role') as 'ADMIN' | 'CLIENT' | null
-    const storedEmail = localStorage.getItem('bm_email')
-    if (storedToken && storedRole && storedEmail) {
-      setToken(storedToken)
-      setUser({ email: storedEmail, role: storedRole })
+    const initAuth = async () => {
+      const storedToken = localStorage.getItem('bm_token')
+      const storedRole  = localStorage.getItem('bm_role') as 'ADMIN' | 'CLIENT' | null
+      const storedEmail = localStorage.getItem('bm_email')
+      
+      if (storedToken && storedRole && storedEmail) {
+        try {
+          // Verify token validity with a simple 'me' request
+          const res = await api.get('/api/auth/me')
+          setToken(storedToken)
+          setUser(res.data)
+        } catch (err) {
+          console.error('Token inválido ou expirado:', err)
+          localStorage.removeItem('bm_token')
+          localStorage.removeItem('bm_role')
+          localStorage.removeItem('bm_email')
+          setToken(null)
+          setUser(null)
+        }
+      }
+      setIsLoading(false)
     }
-    setIsLoading(false)
+
+    initAuth()
   }, [])
 
   const login = async (email: string, password: string) => {

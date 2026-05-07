@@ -110,6 +110,10 @@ public class AuthService {
         loginAttempts.remove(key);
     }
 
+    public Optional<User> getUserByEmail(String email) {
+        return userRepository.findByEmail(email.toLowerCase());
+    }
+
     private boolean isPasswordValid(String password) {
         if (password == null || password.length() < 8) return false;
         boolean hasUpper = password.chars().anyMatch(Character::isUpperCase);

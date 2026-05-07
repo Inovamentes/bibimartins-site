@@ -7,7 +7,8 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
-import { Brain, LogOut, LayoutDashboard, User, Mail, Loader2, Save, CheckCircle2, Lock, Unlock, PlayCircle } from 'lucide-react'
+import { LogOut, LayoutDashboard, User, Mail, Loader2, Save, CheckCircle2, Lock, Unlock, PlayCircle } from 'lucide-react'
+import { Logo } from '@/components/Logo'
 
 interface Profile { 
   id: number; email: string; role: string; createdAt: string;
@@ -67,9 +68,7 @@ export default function ClientDashboard() {
       <aside className="w-full md:fixed md:top-0 md:left-0 md:h-full md:w-64 bg-gradient-to-b from-orange-600 to-orange-700 text-white flex flex-col md:z-40 shadow-xl shrink-0">
         <div className="p-4 md:p-6 border-b border-orange-500 flex justify-between items-center md:block">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-white/20 flex items-center justify-center">
-              <Brain className="w-5 h-5" />
-            </div>
+            <Logo size="md" variant="white" />
             <div>
               <p className="font-bold text-sm">Bibi Martins</p>
               <p className="text-xs text-orange-200">Área do Cliente</p>

@@ -4,7 +4,8 @@ import { useAuth } from '@/hooks/useAuth'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
-import { Brain, Eye, EyeOff, Loader2, AlertCircle, CheckCircle2 } from 'lucide-react'
+import { Eye, EyeOff, Loader2, AlertCircle, CheckCircle2 } from 'lucide-react'
+import { Logo } from '@/components/Logo'
 
 const rules = [
   { label: 'Mínimo 8 caracteres', test: (p: string) => p.length >= 8 },
@@ -57,9 +58,7 @@ export default function RegisterPage() {
           style={{ backgroundImage: 'radial-gradient(circle at 2px 2px, white 1px, transparent 0)', backgroundSize: '40px 40px' }} />
         <div className="relative z-10 flex flex-col justify-center px-12 text-white h-full">
           <div className="flex items-center gap-3 mb-12">
-            <div className="w-12 h-12 rounded-2xl bg-white/20 backdrop-blur flex items-center justify-center">
-              <Brain className="w-6 h-6 text-white" />
-            </div>
+            <Logo size="lg" variant="white" />
             <span className="font-bold text-2xl">Bibi Martins</span>
           </div>
           <h1 className="text-4xl font-bold mb-4 leading-tight">
@@ -77,12 +76,10 @@ export default function RegisterPage() {
       </div>
 
       {/* Right Panel (Scrollable) */}
-      <div className="w-full lg:w-7/12 flex items-start justify-center p-8 bg-gray-50 overflow-y-auto lg:ml-auto min-h-screen">
+      <div className="w-full lg:w-7/12 flex items-start justify-center p-4 md:p-8 bg-gray-50 overflow-y-auto lg:ml-auto min-h-screen">
         <div className="w-full max-w-xl my-auto">
           <div className="flex items-center gap-3 mb-8 lg:hidden">
-            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-purple-600 to-orange-500 flex items-center justify-center">
-              <span className="text-white font-bold">BM</span>
-            </div>
+            <Logo size="md" />
             <span className="font-bold text-xl text-gray-900">Bibi Martins</span>
           </div>
 
@@ -118,14 +115,14 @@ export default function RegisterPage() {
               </div>
 
               <div className="space-y-4 border border-gray-100 bg-gray-50/50 p-5 rounded-2xl">
-                <div className="flex gap-4">
-                  <label className="flex items-center gap-2 cursor-pointer">
+                <div className="flex flex-wrap gap-4">
+                  <label className="flex items-center gap-2 cursor-pointer group">
                     <input type="radio" name="docType" checked={documentType === 'CPF'} onChange={() => setDocumentType('CPF')} className="text-orange-500 focus:ring-orange-500 w-4 h-4" />
-                    <span className="text-sm font-medium text-gray-700">Pessoa Física (CPF)</span>
+                    <span className="text-sm font-medium text-gray-700 group-hover:text-orange-600 transition-colors">Pessoa Física (CPF)</span>
                   </label>
-                  <label className="flex items-center gap-2 cursor-pointer">
+                  <label className="flex items-center gap-2 cursor-pointer group">
                     <input type="radio" name="docType" checked={documentType === 'CNPJ'} onChange={() => setDocumentType('CNPJ')} className="text-orange-500 focus:ring-orange-500 w-4 h-4" />
-                    <span className="text-sm font-medium text-gray-700">Empresa (CNPJ)</span>
+                    <span className="text-sm font-medium text-gray-700 group-hover:text-orange-600 transition-colors">Empresa (CNPJ)</span>
                   </label>
                 </div>
 
@@ -179,18 +176,24 @@ export default function RegisterPage() {
                 </div>
               )}
 
-              <div className="flex items-start gap-2 mt-4">
+              <div className="flex items-start gap-3 mt-4">
                 <input 
                   type="checkbox" 
                   id="terms" 
                   checked={termsAccepted} 
                   onChange={(e) => setTermsAccepted(e.target.checked)} 
-                  className="mt-1 w-4 h-4 text-orange-500 focus:ring-orange-500 border-gray-300 rounded"
+                  className="mt-1 w-5 h-5 shrink-0 text-orange-500 focus:ring-orange-500 border-gray-300 rounded transition-colors cursor-pointer"
                   required 
                 />
-                <Label htmlFor="terms" className="text-sm text-gray-600 leading-snug cursor-pointer">
-                  Li e concordo com os <a href="#" className="text-purple-600 hover:underline">Termos de Uso</a> e a <a href="#" className="text-purple-600 hover:underline">Política de Privacidade</a>, e autorizo o tratamento dos meus dados conforme a LGPD.
-                </Label>
+                <label htmlFor="terms" className="text-sm text-gray-600 leading-relaxed cursor-pointer select-none">
+                  Li e concordo com os:
+                  <br />
+                  • <a href="#" className="text-purple-600 font-semibold hover:underline">Termos de Uso</a>
+                  <br />
+                  • <a href="#" className="text-purple-600 font-semibold hover:underline">Política de Privacidade</a>
+                  <br />
+                  e autorizo o tratamento dos meus dados conforme a LGPD.
+                </label>
               </div>
 
               <Button type="submit" disabled={loading} className="w-full h-12 bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white rounded-xl font-semibold text-base mt-2">

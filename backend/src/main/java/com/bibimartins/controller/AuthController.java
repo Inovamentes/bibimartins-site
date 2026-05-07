@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
+import java.util.HashMap;
 
 @RestController
 @RequestMapping("/api/auth")
@@ -25,22 +26,33 @@ public class AuthController {
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody Map<String, Object> request) {
         if (isBot(request)) {
-            return ResponseEntity.ok(Map.of("token", "fake-token", "role", "CLIENT"));
+            Map<String, String> botRes = new HashMap<>();
+            botRes.put("token", "fake-token");
+            botRes.put("role", "CLIENT");
+            return ResponseEntity.ok(botRes);
         }
 
         String email    = (String) request.get("email");
         String password = (String) request.get("password");
 
         if (email == null || password == null) {
-            return ResponseEntity.badRequest().body(Map.of("error", "Email e senha são obrigatórios"));
+            Map<String, String> err = new HashMap<>();
+            err.put("error", "Email e senha são obrigatórios");
+            return ResponseEntity.badRequest().body(err);
         }
 
         try {
             String role  = authService.login(email, password);
             String token = jwtUtil.generateToken(email.toLowerCase(), role);
-            return ResponseEntity.ok(Map.of("token", token, "role", role, "email", email.toLowerCase()));
+            Map<String, String> res = new HashMap<>();
+            res.put("token", token);
+            res.put("role", role);
+            res.put("email", email.toLowerCase());
+            return ResponseEntity.ok(res);
         } catch (RuntimeException e) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of("error", e.getMessage()));
+            Map<String, String> err = new HashMap<>();
+            err.put("error", e.getMessage());
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(err);
         }
     }
 
@@ -61,17 +73,50 @@ public class AuthController {
         Boolean termsAccepted = (Boolean) request.get("termsAccepted");
 
         if (email == null || password == null || fullName == null) {
-            return ResponseEntity.badRequest().body(Map.of("error", "Nome, Email e senha são obrigatórios"));
+            Map<String, String> err = new HashMap<>();
+            err.put("error", "Nome, Email e senha são obrigatórios");
+            return ResponseEntity.badRequest().body(err);
         }
 
         try {
             String role  = authService.register(email, password, fullName, whatsapp, documentType, documentNumber, companyName, companyAddress, termsAccepted);
             String token = jwtUtil.generateToken(email.toLowerCase(), role);
-            return ResponseEntity.status(HttpStatus.CREATED)
-                .body(Map.of("token", token, "role", role, "email", email.toLowerCase(), "fullName", fullName));
+            Map<String, String> res = new HashMap<>();
+            res.put("token", token);
+            res.put("role", role);
+            res.put("email", email.toLowerCase());
+            res.put("fullName", fullName);
+            return ResponseEntity.status(HttpStatus.CREATED).body(res);
         } catch (RuntimeException e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of("error", e.getMessage()));
+            Map<String, String> err = new HashMap<>();
+            err.put("error", e.getMessage());
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(err);
         }
+    }
+
+    @GetMapping("/me")
+    public ResponseEntity<?> getCurrentUser(@RequestHeader("Authorization") String authHeader) {
+        if (authHeader == null || !authHeader.startsWith("Bearer ")) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
+        String token = authHeader.substring(7);
+        try {
+            String email = jwtUtil.extractEmail(token);
+            if (jwtUtil.isValid(token)) {
+                return authService.getUserByEmail(email)
+                    .map(user -> {
+                        Map<String, String> res = new HashMap<>();
+                        res.put("email", user.getEmail());
+                        res.put("role", user.isAdmin() ? "ADMIN" : "CLIENT");
+                        res.put("fullName", user.getFullName() != null ? user.getFullName() : "");
+                        return ResponseEntity.ok(res);
+                    })
+                    .orElse(ResponseEntity.status(HttpStatus.UNAUTHORIZED).build());
+            }
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
     }
 
     private boolean isBot(Map<String, Object> request) {

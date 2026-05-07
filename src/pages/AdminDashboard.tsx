@@ -6,9 +6,10 @@ import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import {
-  Brain, Users, LogOut, Trash2, RefreshCw,
+  Users, LogOut, Trash2, RefreshCw, Menu,
   LayoutDashboard, Shield, TrendingUp, Edit, X, Video, CreditCard, Key
 } from 'lucide-react'
+import { Logo } from '@/components/Logo'
 import { AdminCourses } from '@/components/AdminCourses'
 import { AdminPlans } from '@/components/AdminPlans'
 import { AdminSubscriptions } from '@/components/AdminSubscriptions'
@@ -30,6 +31,7 @@ export default function AdminDashboard() {
   const [editForm, setEditForm] = useState<Partial<User>>({})
   const [isSaving, setIsSaving] = useState(false)
   const [activeTab, setActiveTab] = useState<'dashboard' | 'users' | 'courses' | 'plans' | 'subscriptions'>('dashboard')
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false)
 
   const fetchData = async () => {
     setLoading(true)
@@ -82,36 +84,51 @@ export default function AdminDashboard() {
     }
   };
 
+  const closeSidebar = () => setIsSidebarOpen(false);
+  const selectTab = (tab: typeof activeTab) => {
+    setActiveTab(tab);
+    if (window.innerWidth < 1024) setIsSidebarOpen(false);
+  };
+
   return (
     <div className="min-h-screen bg-gray-50">
+      {/* Mobile Overlay */}
+      {isSidebarOpen && (
+        <div 
+          className="fixed inset-0 bg-black/50 z-40 lg:hidden backdrop-blur-sm transition-opacity"
+          onClick={closeSidebar}
+        />
+      )}
+
       {/* Sidebar */}
-      <aside className="fixed top-0 left-0 h-full w-64 bg-gradient-to-b from-purple-900 to-purple-800 text-white flex flex-col z-40 shadow-2xl">
-        <div className="p-6 border-b border-purple-700">
+      <aside className={`fixed top-0 left-0 h-full w-64 bg-gradient-to-b from-purple-900 to-purple-800 text-white flex flex-col z-50 shadow-2xl transition-transform duration-300 lg:translate-x-0 ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full'}`}>
+        <div className="p-6 border-b border-purple-700 flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-white/20 flex items-center justify-center">
-              <Brain className="w-5 h-5" />
-            </div>
+            <Logo size="md" variant="white" />
             <div>
               <p className="font-bold text-sm">Bibi Martins</p>
               <p className="text-xs text-purple-300">Painel Admin</p>
             </div>
           </div>
+          <button onClick={closeSidebar} className="lg:hidden p-2 hover:bg-white/10 rounded-lg">
+            <X className="w-5 h-5" />
+          </button>
         </div>
 
         <nav className="flex-1 p-4 space-y-1">
-          <button onClick={() => setActiveTab('dashboard')} className={`w-full px-3 py-2 rounded-xl flex items-center gap-3 text-sm font-medium transition-colors ${activeTab === 'dashboard' ? 'bg-white/20 text-white' : 'hover:bg-white/10 text-purple-200'}`}>
+          <button onClick={() => selectTab('dashboard')} className={`w-full px-3 py-2 rounded-xl flex items-center gap-3 text-sm font-medium transition-colors ${activeTab === 'dashboard' ? 'bg-white/20 text-white' : 'hover:bg-white/10 text-purple-200'}`}>
             <LayoutDashboard className="w-4 h-4" /> Dashboard
           </button>
-          <button onClick={() => setActiveTab('users')} className={`w-full px-3 py-2 rounded-xl flex items-center gap-3 text-sm font-medium transition-colors ${activeTab === 'users' ? 'bg-white/20 text-white' : 'hover:bg-white/10 text-purple-200'}`}>
+          <button onClick={() => selectTab('users')} className={`w-full px-3 py-2 rounded-xl flex items-center gap-3 text-sm font-medium transition-colors ${activeTab === 'users' ? 'bg-white/20 text-white' : 'hover:bg-white/10 text-purple-200'}`}>
             <Users className="w-4 h-4" /> Usuários
           </button>
-          <button onClick={() => setActiveTab('courses')} className={`w-full px-3 py-2 rounded-xl flex items-center gap-3 text-sm font-medium transition-colors ${activeTab === 'courses' ? 'bg-white/20 text-white' : 'hover:bg-white/10 text-purple-200'}`}>
+          <button onClick={() => selectTab('courses')} className={`w-full px-3 py-2 rounded-xl flex items-center gap-3 text-sm font-medium transition-colors ${activeTab === 'courses' ? 'bg-white/20 text-white' : 'hover:bg-white/10 text-purple-200'}`}>
             <Video className="w-4 h-4" /> Cursos e Módulos
           </button>
-          <button onClick={() => setActiveTab('plans')} className={`w-full px-3 py-2 rounded-xl flex items-center gap-3 text-sm font-medium transition-colors ${activeTab === 'plans' ? 'bg-white/20 text-white' : 'hover:bg-white/10 text-purple-200'}`}>
+          <button onClick={() => selectTab('plans')} className={`w-full px-3 py-2 rounded-xl flex items-center gap-3 text-sm font-medium transition-colors ${activeTab === 'plans' ? 'bg-white/20 text-white' : 'hover:bg-white/10 text-purple-200'}`}>
             <CreditCard className="w-4 h-4" /> Planos e Vendas
           </button>
-          <button onClick={() => setActiveTab('subscriptions')} className={`w-full px-3 py-2 rounded-xl flex items-center gap-3 text-sm font-medium transition-colors ${activeTab === 'subscriptions' ? 'bg-white/20 text-white' : 'hover:bg-white/10 text-purple-200'}`}>
+          <button onClick={() => selectTab('subscriptions')} className={`w-full px-3 py-2 rounded-xl flex items-center gap-3 text-sm font-medium transition-colors ${activeTab === 'subscriptions' ? 'bg-white/20 text-white' : 'hover:bg-white/10 text-purple-200'}`}>
             <Key className="w-4 h-4" /> Assinaturas
           </button>
         </nav>
@@ -134,15 +151,24 @@ export default function AdminDashboard() {
       </aside>
 
       {/* Main Content */}
-      <main className="ml-64 p-8">
+      <main className={`transition-all duration-300 ${isSidebarOpen ? 'lg:ml-64' : 'lg:ml-64'} p-4 md:p-8`}>
         {/* Header */}
-        <div className="flex items-center justify-between mb-8">
-          <div>
-            <h1 className="text-2xl font-bold text-gray-900">Dashboard</h1>
-            <p className="text-gray-500 text-sm">Visão geral da plataforma</p>
+        <div className="flex items-center justify-between mb-8 gap-4">
+          <div className="flex items-center gap-4">
+            <button 
+              onClick={() => setIsSidebarOpen(true)}
+              className="lg:hidden p-2 bg-white rounded-xl shadow-sm border border-gray-200 text-gray-600 hover:bg-gray-50"
+            >
+              <Menu className="w-6 h-6" />
+            </button>
+            <div>
+              <h1 className="text-xl md:text-2xl font-bold text-gray-900">Dashboard</h1>
+              <p className="text-gray-500 text-xs md:text-sm">Visão geral da plataforma</p>
+            </div>
           </div>
-          <Button onClick={fetchData} variant="outline" size="sm" className="gap-2">
-            <RefreshCw className={`w-4 h-4 ${loading ? 'animate-spin' : ''}`} /> Atualizar
+          <Button onClick={fetchData} variant="outline" size="sm" className="gap-2 shrink-0">
+            <RefreshCw className={`w-4 h-4 ${loading ? 'animate-spin' : ''}`} /> 
+            <span className="hidden sm:inline">Atualizar</span>
           </Button>
         </div>
 

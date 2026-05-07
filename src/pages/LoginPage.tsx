@@ -4,7 +4,8 @@ import { useAuth } from '@/hooks/useAuth'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
-import { Brain, Eye, EyeOff, Loader2, AlertCircle } from 'lucide-react'
+import { Eye, EyeOff, Loader2, AlertCircle } from 'lucide-react'
+import { Logo } from '@/components/Logo'
 
 export default function LoginPage() {
   const { login } = useAuth()
@@ -41,9 +42,7 @@ export default function LoginPage() {
           style={{ backgroundImage: 'radial-gradient(circle at 2px 2px, white 1px, transparent 0)', backgroundSize: '40px 40px' }} />
         <div className="relative z-10 flex flex-col justify-center px-12 text-white">
           <div className="flex items-center gap-3 mb-12">
-            <div className="w-12 h-12 rounded-2xl bg-white/20 backdrop-blur flex items-center justify-center">
-              <Brain className="w-6 h-6 text-white" />
-            </div>
+            <Logo size="lg" variant="white" />
             <span className="font-bold text-2xl">Bibi Martins</span>
           </div>
           <h1 className="text-4xl font-bold mb-4 leading-tight">
@@ -67,9 +66,7 @@ export default function LoginPage() {
         <div className="w-full max-w-md">
           {/* Logo mobile */}
           <div className="flex items-center gap-3 mb-8 lg:hidden">
-            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-purple-600 to-orange-500 flex items-center justify-center">
-              <span className="text-white font-bold">BM</span>
-            </div>
+            <Logo size="md" />
             <span className="font-bold text-xl text-gray-900">Bibi Martins</span>
           </div>
 

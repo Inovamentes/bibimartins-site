@@ -2,6 +2,7 @@ package com.bibimartins.entity;
 
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -25,9 +26,11 @@ public class Course {
     @Column(name = "preview_video_url")
     private String previewVideoUrl;
 
+    @JsonIgnore
     @ManyToMany(mappedBy = "courses")
     private Set<Plan> plans = new HashSet<>();
 
+    @JsonIgnore
     @OneToMany(mappedBy = "course", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Lesson> lessons = new HashSet<>();
 

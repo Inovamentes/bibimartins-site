@@ -2,6 +2,7 @@ package com.bibimartins.entity;
 
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "lessons")
@@ -26,6 +27,7 @@ public class Lesson {
     @Column(name = "order_index")
     private Integer orderIndex = 0;
 
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "course_id", nullable = false)
     private Course course;
