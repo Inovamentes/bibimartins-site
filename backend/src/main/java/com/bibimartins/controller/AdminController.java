@@ -17,6 +17,7 @@ import java.util.HashMap;
 
 @RestController
 @RequestMapping("/api/admin")
+@org.springframework.transaction.annotation.Transactional
 public class AdminController {
 
     @Autowired
@@ -43,7 +44,7 @@ public class AdminController {
                 map.put("id", u.getId());
                 map.put("email", u.getEmail());
                 map.put("role", u.isAdmin() ? "ADMIN" : "CLIENT");
-                map.put("createdAt", u.getCreatedAt().toString());
+                map.put("createdAt", u.getCreatedAt() != null ? u.getCreatedAt().toString() : "");
                 map.put("fullName", u.getFullName());
                 map.put("whatsapp", u.getWhatsapp());
                 map.put("documentType", u.getDocumentType());
@@ -108,7 +109,7 @@ public class AdminController {
 
     @GetMapping("/subscriptions")
     public ResponseEntity<?> listSubscriptions() {
-        return ResponseEntity.ok(subscriptionRepository.findAll().stream().map(s -> {
+        List<Map<String, Object>> subs = subscriptionRepository.findAll().stream().map(s -> {
             Map<String, Object> m = new HashMap<>();
             m.put("id", s.getId());
             m.put("userId", s.getUser().getId());
@@ -116,15 +117,16 @@ public class AdminController {
             m.put("planId", s.getPlan().getId());
             m.put("planName", s.getPlan().getName());
             m.put("active", s.isActive());
-            m.put("createdAt", s.getCreatedAt().toString());
+            m.put("createdAt", s.getCreatedAt() != null ? s.getCreatedAt().toString() : "");
             return m;
-        }).toList());
+        }).toList();
+        return ResponseEntity.ok(subs);
     }
 
     @PostMapping("/subscriptions")
-    public ResponseEntity<?> createSubscription(@RequestBody Map<String, Long> data) {
-        Long userId = data.get("userId");
-        Long planId = data.get("planId");
+    public ResponseEntity<?> createSubscription(@RequestBody Map<String, Object> data) {
+        Long userId = Long.parseLong(data.get("userId").toString());
+        Long planId = Long.parseLong(data.get("planId").toString());
         
         User user = userRepository.findById(userId).orElseThrow();
         Plan plan = planRepository.findById(planId).orElseThrow();
@@ -133,8 +135,15 @@ public class AdminController {
         sub.setUser(user);
         sub.setPlan(plan);
         sub.setActive(true);
+        sub.setCreatedAt(java.time.LocalDateTime.now());
         
-        return ResponseEntity.ok(subscriptionRepository.save(sub));
+        UserSubscription saved = subscriptionRepository.save(sub);
+        
+        Map<String, Object> res = new HashMap<>();
+        res.put("id", saved.getId());
+        res.put("userEmail", user.getEmail());
+        res.put("planName", plan.getName());
+        return ResponseEntity.ok(res);
     }
 
     @DeleteMapping("/subscriptions/{id}")
