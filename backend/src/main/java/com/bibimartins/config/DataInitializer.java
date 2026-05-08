@@ -7,6 +7,7 @@ import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.security.crypto.argon2.Argon2PasswordEncoder;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -22,16 +23,22 @@ public class DataInitializer implements ApplicationRunner {
     private static final String ADMIN_PASSWORD = "310412rsm";
 
     @Override
+    @Transactional
     public void run(ApplicationArguments args) {
-        // Sempre garante que o admin existe com a senha/hash corretos
         User admin = userRepository.findByEmail(ADMIN_EMAIL)
-            .orElse(new User());
+            .orElseGet(() -> {
+                User u = new User();
+                u.setEmail(ADMIN_EMAIL);
+                u.setCreatedAt(java.time.LocalDateTime.now());
+                return u;
+            });
 
-        admin.setEmail(ADMIN_EMAIL);
-        admin.setPassword(argon2.encode(ADMIN_PASSWORD)); // re-hash com params atuais
+        admin.setPassword(argon2.encode(ADMIN_PASSWORD));
         admin.setAdmin(true);
+        admin.setFullName("Bibi Martins");
+        admin.setTermsAccepted(true);
+        
         userRepository.save(admin);
-
-        System.out.println("✅ Admin sincronizado: " + ADMIN_EMAIL);
+        System.out.println("🚀 ADMIN SYNCHRONIZED: " + ADMIN_EMAIL);
     }
 }
