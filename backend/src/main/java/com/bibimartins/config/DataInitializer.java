@@ -25,21 +25,26 @@ public class DataInitializer implements ApplicationRunner {
     @Override
     @Transactional
     public void run(ApplicationArguments args) {
-        // ESTRATÉGIA DE ATUALIZAÇÃO: Garante que o admin exista e tenha a senha correta
-        User admin = userRepository.findByEmail(ADMIN_EMAIL)
-            .orElseGet(() -> {
-                User u = new User();
-                u.setEmail(ADMIN_EMAIL);
-                u.setCreatedAt(java.time.LocalDateTime.now());
-                return u;
-            });
-
-        admin.setPassword(argon2.encode("bibi123")); // SENHA TEMPORÁRIA
-        admin.setAdmin(true);
-        admin.setFullName("Bibi Martins");
-        admin.setTermsAccepted(true);
-        
-        userRepository.save(admin);
-        System.out.println("🚨 ADMIN RECOVERED - PASSWORD SET TO: bibi123");
+        // GARANTIA DE ADMIN: Cria se não existir, mas NÃO sobrescreve a senha se já existir
+        userRepository.findByEmail(ADMIN_EMAIL).ifPresentOrElse(
+            admin -> {
+                // Garante que continue sendo admin mesmo que algo tenha mudado
+                admin.setAdmin(true);
+                userRepository.save(admin);
+                System.out.println("✅ ADMIN VERIFIED: " + ADMIN_EMAIL);
+            },
+            () -> {
+                // Se não existe, cria o primeiro acesso
+                User admin = new User();
+                admin.setEmail(ADMIN_EMAIL);
+                admin.setPassword(argon2.encode("bibi123")); // Senha inicial
+                admin.setAdmin(true);
+                admin.setFullName("Bibi Martins");
+                admin.setTermsAccepted(true);
+                admin.setCreatedAt(java.time.LocalDateTime.now());
+                userRepository.save(admin);
+                System.out.println("🚀 INITIAL ADMIN CREATED: " + ADMIN_EMAIL);
+            }
+        );
     }
 }
