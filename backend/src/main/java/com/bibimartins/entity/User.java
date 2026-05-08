@@ -43,8 +43,8 @@ public class User {
     @Column(name = "company_address")
     private String companyAddress;
 
-    @Column(name = "terms_accepted", nullable = false)
-    private boolean termsAccepted = false;
+    @Column(name = "terms_accepted", nullable = true)
+    private Boolean termsAccepted = false;
 
     @Column(name = "consent_date")
     private LocalDateTime consentDate;
