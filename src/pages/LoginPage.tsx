@@ -138,6 +138,15 @@ export default function LoginPage() {
                     {showPass ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
                   </button>
                 </div>
+                <div className="flex justify-end mt-1">
+                  <button 
+                    type="button"
+                    onClick={() => alert("Para recuperar sua senha, entre em contato com o suporte ou utilize seu e-mail de recuperação em breve.")}
+                    className="text-xs text-purple-600 hover:underline font-medium"
+                  >
+                    Esqueci minha senha
+                  </button>
+                </div>
               </div>
 
               <Button

@@ -75,6 +75,7 @@ public class AuthController {
         String companyName = (String) request.get("companyName");
         String companyAddress = (String) request.get("companyAddress");
         Boolean termsAccepted = (Boolean) request.get("termsAccepted");
+        String recoveryEmail = (String) request.get("recoveryEmail");
 
         if (email == null || password == null || fullName == null) {
             Map<String, String> err = new HashMap<>();
@@ -83,7 +84,7 @@ public class AuthController {
         }
 
         try {
-            String role  = authService.register(email, password, fullName, whatsapp, documentType, documentNumber, companyName, companyAddress, termsAccepted);
+            String role  = authService.register(email, password, fullName, whatsapp, documentType, documentNumber, companyName, companyAddress, termsAccepted, recoveryEmail);
             String token = jwtUtil.generateToken(email.toLowerCase(), role);
             Map<String, String> res = new HashMap<>();
             res.put("token", token);

@@ -56,8 +56,9 @@ public class AuthService {
     }
 
     @Transactional
-    public String register(String email, String password, String fullName, String whatsapp, String documentType, String documentNumber, String companyName, String companyAddress, Boolean termsAccepted) {
-        String key = email.toLowerCase();
+    public String register(String email, String password, String fullName, String whatsapp, String documentType, String documentNumber, String companyName, String companyAddress, Boolean termsAccepted, String recoveryEmail) {
+        if (email == null) throw new RuntimeException("E-mail é obrigatório");
+        String key = email.trim().toLowerCase();
 
         if (termsAccepted == null || !termsAccepted) {
             throw new RuntimeException("É obrigatório aceitar os Termos de Uso e a Política de Privacidade");
@@ -73,6 +74,7 @@ public class AuthService {
 
         User user = new User();
         user.setEmail(key);
+        user.setRecoveryEmail(recoveryEmail != null ? recoveryEmail.trim().toLowerCase() : null);
         user.setPassword(argon2.encode(password));
         user.setAdmin(false);
         user.setFullName(fullName);
@@ -82,6 +84,8 @@ public class AuthService {
         user.setCompanyName(companyName);
         user.setCompanyAddress(companyAddress);
         user.setTermsAccepted(true);
+        user.setCreatedAt(java.time.LocalDateTime.now());
+        
         userRepository.save(user);
         return "CLIENT";
     }

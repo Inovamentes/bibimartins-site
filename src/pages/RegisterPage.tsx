@@ -24,6 +24,7 @@ export default function RegisterPage() {
   const [companyName, setCompanyName] = useState('')
   const [companyAddress, setCompanyAddress] = useState('')
   const [email, setEmail]       = useState('')
+  const [recoveryEmail, setRecoveryEmail] = useState('')
   const [password, setPassword] = useState('')
   
   const [showPass, setShowPass] = useState(false)
@@ -38,7 +39,7 @@ export default function RegisterPage() {
     setLoading(true)
     try {
       const userData = {
-        email, password, fullName, whatsapp, documentType, documentNumber, companyName, companyAddress, termsAccepted
+        email, recoveryEmail, password, fullName, whatsapp, documentType, documentNumber, companyName, companyAddress, termsAccepted
       };
       await register(userData)
       navigate('/cliente', { replace: true })
@@ -51,7 +52,7 @@ export default function RegisterPage() {
 
   return (
     <div className="min-h-screen flex">
-      {/* Left Panel */}
+      {/* ... (left panel remains same) ... */}
       <div className="hidden lg:flex lg:w-5/12 relative overflow-hidden fixed h-screen">
         <div className="absolute inset-0 bg-gradient-to-br from-orange-500 via-orange-600 to-purple-800" />
         <div className="absolute inset-0 opacity-20"
@@ -149,11 +150,18 @@ export default function RegisterPage() {
                 )}
               </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div className="space-y-2">
-                  <Label htmlFor="email" className="text-gray-700 font-medium">E-mail de Acesso</Label>
-                  <Input id="email" type="email" placeholder="seu@email.com" value={email} onChange={(e) => setEmail(e.target.value)} required className="h-11 rounded-xl" />
+              <div className="space-y-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div className="space-y-2">
+                    <Label htmlFor="email" className="text-gray-700 font-medium">E-mail de Acesso</Label>
+                    <Input id="email" type="email" placeholder="seu@email.com" value={email} onChange={(e) => setEmail(e.target.value)} required className="h-11 rounded-xl" />
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="recoveryEmail" className="text-gray-700 font-medium text-purple-600">E-mail de Recuperação</Label>
+                    <Input id="recoveryEmail" type="email" placeholder="outro@email.com" value={recoveryEmail} onChange={(e) => setRecoveryEmail(e.target.value)} className="h-11 rounded-xl border-purple-100 focus:border-purple-300" />
+                  </div>
                 </div>
+
                 <div className="space-y-2">
                   <Label htmlFor="password" className="text-gray-700 font-medium">Senha</Label>
                   <div className="relative">
