@@ -30,23 +30,65 @@ public class CourseAdminController {
     // --- PLANS ---
     
     @GetMapping("/plans")
-    public ResponseEntity<List<Plan>> listPlans() {
-        return ResponseEntity.ok(planRepository.findAll());
+    @org.springframework.transaction.annotation.Transactional(readOnly = true)
+    public ResponseEntity<List<Map<String, Object>>> listPlans() {
+        List<Map<String, Object>> plans = planRepository.findAll().stream()
+            .map(p -> {
+                Map<String, Object> m = new HashMap<>();
+                m.put("id", p.getId());
+                m.put("name", p.getName());
+                m.put("description", p.getDescription());
+                m.put("price", p.getPrice());
+                
+                List<Map<String, Object>> pCourses = p.getCourses().stream()
+                    .map(c -> {
+                        Map<String, Object> cm = new HashMap<>();
+                        cm.put("id", c.getId());
+                        cm.put("title", c.getTitle());
+                        return cm;
+                    }).toList();
+                
+                m.put("courses", pCourses);
+                return m;
+            }).toList();
+        return ResponseEntity.ok(plans);
     }
 
     @PostMapping("/plans")
-    public ResponseEntity<Plan> createPlan(@RequestBody Plan plan) {
+    public ResponseEntity<Plan> createPlan(@RequestBody Map<String, Object> data) {
+        Plan plan = new Plan();
+        plan.setName(data.get("name").toString());
+        plan.setDescription(data.get("description") != null ? data.get("description").toString() : "");
+        plan.setPrice(Double.parseDouble(data.get("price").toString()));
+        
+        if (data.containsKey("courses")) {
+            List<Map<String, Object>> courseData = (List<Map<String, Object>>) data.get("courses");
+            java.util.Set<Course> courses = new java.util.HashSet<>();
+            for (Map<String, Object> cd : courseData) {
+                courseRepository.findById(Long.parseLong(cd.get("id").toString())).ifPresent(courses::add);
+            }
+            plan.setCourses(courses);
+        }
+        
         return ResponseEntity.ok(planRepository.save(plan));
     }
 
     @PutMapping("/plans/{id}")
-    public ResponseEntity<Plan> updatePlan(@PathVariable Long id, @RequestBody Plan planDetails) {
+    public ResponseEntity<Plan> updatePlan(@PathVariable Long id, @RequestBody Map<String, Object> data) {
         return planRepository.findById(id).map(plan -> {
-            plan.setName(planDetails.getName());
-            plan.setDescription(planDetails.getDescription());
-            plan.setPrice(planDetails.getPrice());
-            // Note: Manage courses separately or here? Let's allow updating the set of courses.
-            plan.setCourses(planDetails.getCourses());
+            if (data.containsKey("name")) plan.setName(data.get("name").toString());
+            if (data.containsKey("description")) plan.setDescription(data.get("description").toString());
+            if (data.containsKey("price")) plan.setPrice(Double.parseDouble(data.get("price").toString()));
+            
+            if (data.containsKey("courses")) {
+                List<Map<String, Object>> courseData = (List<Map<String, Object>>) data.get("courses");
+                java.util.Set<Course> courses = new java.util.HashSet<>();
+                for (Map<String, Object> cd : courseData) {
+                    courseRepository.findById(Long.parseLong(cd.get("id").toString())).ifPresent(courses::add);
+                }
+                plan.setCourses(courses);
+            }
+            
             return ResponseEntity.ok(planRepository.save(plan));
         }).orElse(ResponseEntity.notFound().build());
     }
