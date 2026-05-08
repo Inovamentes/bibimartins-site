@@ -43,6 +43,7 @@ public class AdminController {
                 Map<String, Object> map = new HashMap<>();
                 map.put("id", u.getId());
                 map.put("email", u.getEmail());
+                map.put("recoveryEmail", u.getRecoveryEmail());
                 map.put("role", u.isAdmin() ? "ADMIN" : "CLIENT");
                 map.put("createdAt", u.getCreatedAt() != null ? u.getCreatedAt().toString() : "");
                 map.put("fullName", u.getFullName());
@@ -57,16 +58,25 @@ public class AdminController {
         return ResponseEntity.ok(users);
     }
 
+    @Autowired @org.springframework.context.annotation.Lazy
+    private org.springframework.security.crypto.argon2.Argon2PasswordEncoder argon2;
+
     @PutMapping("/users/{id}")
     public ResponseEntity<?> updateUser(@PathVariable Long id, @RequestBody Map<String, Object> data, Authentication auth) {
         return userRepository.findById(id).map(user -> {
             if (data.containsKey("fullName")) user.setFullName(data.get("fullName") == null ? null : data.get("fullName").toString());
             if (data.containsKey("whatsapp")) user.setWhatsapp(data.get("whatsapp") == null ? null : data.get("whatsapp").toString());
+            if (data.containsKey("recoveryEmail")) user.setRecoveryEmail(data.get("recoveryEmail") == null ? null : data.get("recoveryEmail").toString());
             if (data.containsKey("documentType")) user.setDocumentType(data.get("documentType") == null ? null : data.get("documentType").toString());
             if (data.containsKey("documentNumber")) user.setDocumentNumber(data.get("documentNumber") == null ? null : data.get("documentNumber").toString());
             if (data.containsKey("companyName")) user.setCompanyName(data.get("companyName") == null ? null : data.get("companyName").toString());
             if (data.containsKey("companyAddress")) user.setCompanyAddress(data.get("companyAddress") == null ? null : data.get("companyAddress").toString());
             
+            // Suporte para Reset de Senha pelo Admin
+            if (data.containsKey("password") && data.get("password") != null && !data.get("password").toString().isBlank()) {
+                user.setPassword(argon2.encode(data.get("password").toString()));
+            }
+
             if (data.containsKey("role")) {
                 String role = data.get("role") == null ? "CLIENT" : data.get("role").toString();
                 if (user.getEmail().equals(auth.getName()) && role.equals("CLIENT")) {

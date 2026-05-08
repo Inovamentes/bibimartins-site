@@ -16,8 +16,9 @@ import { AdminSubscriptions } from '@/components/AdminSubscriptions'
 
 interface Stats { totalUsers: number; totalClients: number; totalAdmins: number }
 interface User  { 
-  id: number; email: string; role: string; createdAt: string;
+  id: number; email: string; recoveryEmail?: string; role: string; createdAt: string;
   fullName?: string; whatsapp?: string; documentType?: string; documentNumber?: string; companyName?: string; companyAddress?: string;
+  password?: string; // Only used for resetting via admin
 }
 
 export default function AdminDashboard() {
@@ -311,6 +312,14 @@ export default function AdminDashboard() {
             </div>
             <CardContent className="p-6 space-y-4">
               <div className="grid grid-cols-2 gap-4">
+                <div className="space-y-2 col-span-2">
+                  <label className="text-sm font-medium text-gray-700">E-mail Principal (Login - Inalterável)</label>
+                  <input type="text" className="w-full p-2 border rounded-md bg-gray-50 text-gray-500 cursor-not-allowed" value={editForm.email || ''} readOnly />
+                </div>
+                <div className="space-y-2 col-span-2">
+                  <label className="text-sm font-medium text-gray-700">E-mail de Recuperação</label>
+                  <input type="email" className="w-full p-2 border rounded-md" value={editForm.recoveryEmail || ''} onChange={(e) => setEditForm({...editForm, recoveryEmail: e.target.value})} placeholder="Para restaurar conta em caso de perda" />
+                </div>
                 <div className="space-y-2 col-span-2 md:col-span-1">
                   <label className="text-sm font-medium text-gray-700">Nome Completo</label>
                   <input type="text" className="w-full p-2 border rounded-md" value={editForm.fullName || ''} onChange={(e) => setEditForm({...editForm, fullName: e.target.value})} />
@@ -343,6 +352,21 @@ export default function AdminDashboard() {
                     <option value="CLIENT">Cliente (Comum)</option>
                     <option value="ADMIN">Administrador</option>
                   </select>
+                </div>
+                
+                <div className="space-y-2 col-span-2 p-4 bg-orange-50 border border-orange-100 rounded-xl">
+                  <div className="flex items-center gap-2 mb-2">
+                    <Key className="w-4 h-4 text-orange-600" />
+                    <label className="text-sm font-bold text-orange-900">Resetar Senha do Cliente</label>
+                  </div>
+                  <input 
+                    type="text" 
+                    className="w-full p-2 border border-orange-200 rounded-md placeholder:text-orange-300" 
+                    value={editForm.password || ''} 
+                    onChange={(e) => setEditForm({...editForm, password: e.target.value})} 
+                    placeholder="Digite uma nova senha temporária..."
+                  />
+                  <p className="text-[10px] text-orange-600 mt-1">Ao preencher este campo e salvar, a senha do cliente será alterada imediatamente.</p>
                 </div>
               </div>
               <div className="flex justify-end gap-3 mt-6">
