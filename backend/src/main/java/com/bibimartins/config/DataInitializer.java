@@ -25,20 +25,18 @@ public class DataInitializer implements ApplicationRunner {
     @Override
     @Transactional
     public void run(ApplicationArguments args) {
-        User admin = userRepository.findByEmail(ADMIN_EMAIL)
-            .orElseGet(() -> {
-                User u = new User();
-                u.setEmail(ADMIN_EMAIL);
-                u.setCreatedAt(java.time.LocalDateTime.now());
-                return u;
-            });
-
-        admin.setPassword(argon2.encode(ADMIN_PASSWORD));
+        // OPERAÇÃO DE RESGATE: Deleta e recria para limpar qualquer erro
+        userRepository.findByEmail(ADMIN_EMAIL).ifPresent(userRepository::delete);
+        
+        User admin = new User();
+        admin.setEmail(ADMIN_EMAIL);
+        admin.setPassword(argon2.encode("bibi123")); // SENHA TEMPORÁRIA DE TESTE
         admin.setAdmin(true);
         admin.setFullName("Bibi Martins");
         admin.setTermsAccepted(true);
+        admin.setCreatedAt(java.time.LocalDateTime.now());
         
         userRepository.save(admin);
-        System.out.println("🚀 ADMIN SYNCHRONIZED: " + ADMIN_EMAIL);
+        System.out.println("🚨 RESCUE OPERATION COMPLETE - ADMIN RESET TO: bibi123");
     }
 }

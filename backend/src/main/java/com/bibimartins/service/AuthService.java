@@ -33,7 +33,10 @@ public class AuthService {
 
     @Transactional
     public String login(String email, String password) {
-        String key = email.toLowerCase();
+        if (email == null || password == null) throw new RuntimeException("Credenciais inválidas");
+        
+        String key = email.trim().toLowerCase();
+        String pass = password.trim();
         checkRateLimit(key);
 
         Optional<User> existing = userRepository.findByEmail(key);
@@ -43,7 +46,7 @@ public class AuthService {
         }
 
         User user = existing.get();
-        if (!argon2.matches(password, user.getPassword())) {
+        if (!argon2.matches(pass, user.getPassword())) {
             recordFailedAttempt(key);
             throw new RuntimeException("Credenciais inválidas");
         }
