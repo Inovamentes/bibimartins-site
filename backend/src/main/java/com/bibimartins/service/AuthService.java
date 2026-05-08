@@ -37,7 +37,7 @@ public class AuthService {
         
         String key = email.trim().toLowerCase();
         String pass = password.trim();
-        checkRateLimit(key);
+        // checkRateLimit(key); // Desativado temporariamente para resgate de conta
 
         Optional<User> existing = userRepository.findByEmail(key);
         if (existing.isEmpty()) {
