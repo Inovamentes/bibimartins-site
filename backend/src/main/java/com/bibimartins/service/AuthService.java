@@ -42,13 +42,13 @@ public class AuthService {
         Optional<User> existing = userRepository.findByEmail(key);
         if (existing.isEmpty()) {
             recordFailedAttempt(key);
-            throw new RuntimeException("Credenciais inválidas");
+            throw new RuntimeException("E-mail não encontrado. Por favor, realize seu cadastro.");
         }
 
         User user = existing.get();
         if (!argon2.matches(pass, user.getPassword())) {
             recordFailedAttempt(key);
-            throw new RuntimeException("Credenciais inválidas");
+            throw new RuntimeException("Senha incorreta");
         }
 
         resetAttempts(key);
@@ -59,6 +59,10 @@ public class AuthService {
     public String register(String email, String password, String fullName, String whatsapp, String documentType, String documentNumber, String companyName, String companyAddress, Boolean termsAccepted, String recoveryEmail) {
         if (email == null) throw new RuntimeException("E-mail é obrigatório");
         String key = email.trim().toLowerCase();
+
+        if (documentNumber == null || documentNumber.trim().isEmpty()) {
+            throw new RuntimeException("CPF ou CNPJ é obrigatório");
+        }
 
         if (termsAccepted == null || !termsAccepted) {
             throw new RuntimeException("É obrigatório aceitar os Termos de Uso e a Política de Privacidade");

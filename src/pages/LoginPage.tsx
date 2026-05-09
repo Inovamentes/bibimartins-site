@@ -87,9 +87,16 @@ export default function LoginPage() {
             </p>
 
             {error && (
-              <div className="mb-6 flex items-center gap-3 p-4 bg-red-50 border border-red-200 rounded-xl text-red-700 text-sm">
-                <AlertCircle className="w-5 h-5 shrink-0" />
-                {error}
+              <div className="mb-6 flex flex-col gap-2 p-4 bg-red-50 border border-red-200 rounded-xl text-red-700 text-sm">
+                <div className="flex items-center gap-3">
+                  <AlertCircle className="w-5 h-5 shrink-0" />
+                  {error}
+                </div>
+                {error.includes('cadastro') && (
+                  <Link to="/registro" className="ml-8 text-purple-600 font-bold hover:underline flex items-center gap-1">
+                    Criar minha conta agora →
+                  </Link>
+                )}
               </div>
             )}
 

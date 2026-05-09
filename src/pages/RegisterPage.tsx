@@ -130,13 +130,13 @@ export default function RegisterPage() {
                 {documentType === 'CPF' ? (
                   <div className="space-y-2">
                     <Label htmlFor="cpf" className="text-gray-700 font-medium">CPF</Label>
-                    <Input id="cpf" placeholder="000.000.000-00" value={documentNumber} onChange={(e) => setDocumentNumber(e.target.value)} className="h-11 rounded-xl bg-white" />
+                    <Input id="cpf" placeholder="000.000.000-00" value={documentNumber} onChange={(e) => setDocumentNumber(e.target.value)} required className="h-11 rounded-xl bg-white" />
                   </div>
                 ) : (
                   <div className="space-y-4 animate-in fade-in slide-in-from-top-2">
                     <div className="space-y-2">
                       <Label htmlFor="cnpj" className="text-gray-700 font-medium">CNPJ</Label>
-                      <Input id="cnpj" placeholder="00.000.000/0000-00" value={documentNumber} onChange={(e) => setDocumentNumber(e.target.value)} className="h-11 rounded-xl bg-white" />
+                      <Input id="cnpj" placeholder="00.000.000/0000-00" value={documentNumber} onChange={(e) => setDocumentNumber(e.target.value)} required className="h-11 rounded-xl bg-white" />
                     </div>
                     <div className="space-y-2">
                       <Label htmlFor="companyName" className="text-gray-700 font-medium">Razão Social / Nome Fantasia</Label>

@@ -292,14 +292,14 @@ export default function ClientDashboard() {
                     {editForm.documentType === 'CPF' ? (
                       <div className="space-y-2">
                         <Label>CPF</Label>
-                        <Input value={editForm.documentNumber || ''} onChange={e => setEditForm({...editForm, documentNumber: e.target.value})} className="h-11 rounded-xl" />
+                        <Input value={editForm.documentNumber || ''} onChange={e => setEditForm({...editForm, documentNumber: e.target.value})} required className="h-11 rounded-xl" />
                       </div>
                     ) : (
                       <div className="space-y-4">
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                           <div className="space-y-2">
                             <Label>CNPJ</Label>
-                            <Input value={editForm.documentNumber || ''} onChange={e => setEditForm({...editForm, documentNumber: e.target.value})} className="h-11 rounded-xl" />
+                            <Input value={editForm.documentNumber || ''} onChange={e => setEditForm({...editForm, documentNumber: e.target.value})} required className="h-11 rounded-xl" />
                           </div>
                           <div className="space-y-2">
                             <Label>Razão Social / Nome Fantasia</Label>
