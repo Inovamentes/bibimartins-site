@@ -4,6 +4,7 @@ import api from '@/lib/api'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { ChevronLeft, PlayCircle, FileText, CheckCircle, Loader2 } from 'lucide-react'
+import VideoPlayer from '@/components/VideoPlayer'
 
 interface Lesson {
   id: number;
@@ -101,24 +102,10 @@ export default function CoursePage() {
           <>
             {/* Player Container */}
             <div className="aspect-video bg-black w-full shadow-2xl relative group">
-              {selectedLesson.videoUrl ? (
-                /* Simple iframe for YT/Vimeo/Panda */
-                <iframe
-                  className="w-full h-full"
-                  src={selectedLesson.videoUrl.includes('youtube.com') 
-                    ? selectedLesson.videoUrl.replace('watch?v=', 'embed/') 
-                    : selectedLesson.videoUrl}
-                  title={selectedLesson.title}
-                  frameBorder="0"
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                  allowFullScreen
-                ></iframe>
-              ) : (
-                <div className="w-full h-full flex flex-col items-center justify-center text-gray-500 bg-gray-900">
-                  <PlayCircle className="w-16 h-16 mb-4 opacity-20" />
-                  <p>Vídeo não disponível para esta aula.</p>
-                </div>
-              )}
+              <VideoPlayer
+                videoUrl={selectedLesson.videoUrl}
+                title={selectedLesson.title}
+              />
             </div>
 
             {/* Lesson Details */}

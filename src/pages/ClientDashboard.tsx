@@ -9,6 +9,8 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { LogOut, LayoutDashboard, User, Mail, Loader2, Save, CheckCircle2, Lock, Unlock, PlayCircle } from 'lucide-react'
 import { Logo } from '@/components/Logo'
+import VideoPlayer from '@/components/VideoPlayer'
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog'
 
 interface Profile { 
   id: number; email: string; role: string; createdAt: string;
@@ -24,6 +26,7 @@ export default function ClientDashboard() {
   const [saveSuccess, setSaveSuccess] = useState(false)
   const [catalog, setCatalog] = useState<any[]>([])
   const [loadingCatalog, setLoadingCatalog] = useState(true)
+  const [previewVideo, setPreviewVideo] = useState<{ url: string; title: string } | null>(null)
 
   // Edit form state
   const [editForm, setEditForm] = useState<Partial<Profile>>({})
@@ -204,7 +207,11 @@ export default function ClientDashboard() {
                         ) : (
                            <>
                              {c.previewVideoUrl && (
-                               <Button variant="outline" onClick={() => window.open(c.previewVideoUrl, '_blank')} className="flex-1 border-orange-200 text-orange-700 hover:bg-orange-50">
+                               <Button 
+                                 variant="outline" 
+                                 onClick={() => setPreviewVideo({ url: c.previewVideoUrl, title: `Prévia: ${c.title}` })} 
+                                 className="flex-1 border-orange-200 text-orange-700 hover:bg-orange-50"
+                               >
                                  <PlayCircle className="w-4 h-4 mr-2" /> Prévia
                                </Button>
                              )}
@@ -326,6 +333,23 @@ export default function ClientDashboard() {
           </div>
         )}
       </main>
+
+      {/* Video Preview Dialog */}
+      <Dialog open={!!previewVideo} onOpenChange={(open) => !open && setPreviewVideo(null)}>
+        <DialogContent className="max-w-3xl bg-gray-950 text-white border-gray-800 p-6 rounded-2xl">
+          <DialogHeader className="mb-4">
+            <DialogTitle className="text-xl font-bold text-white">{previewVideo?.title}</DialogTitle>
+            <DialogDescription className="text-gray-400 text-sm">
+              Assista à prévia gratuita deste módulo.
+            </DialogDescription>
+          </DialogHeader>
+          {previewVideo && (
+            <div className="aspect-video bg-black rounded-xl overflow-hidden border border-gray-800">
+              <VideoPlayer videoUrl={previewVideo.url} title={previewVideo.title} />
+            </div>
+          )}
+        </DialogContent>
+      </Dialog>
     </div>
   )
 }
