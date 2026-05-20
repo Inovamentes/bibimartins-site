@@ -3,6 +3,30 @@
   publish = "dist"
 
 [[redirects]]
+  from = "http://inovamentes.com.br/*"
+  to = "https://bibimartins.com/:splat"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "https://inovamentes.com.br/*"
+  to = "https://bibimartins.com/:splat"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "http://www.inovamentes.com.br/*"
+  to = "https://bibimartins.com/:splat"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "https://www.inovamentes.com.br/*"
+  to = "https://bibimartins.com/:splat"
+  status = 301
+  force = true
+
+[[redirects]]
   from = "/*"
   to = "/index.html"
   status = 200
