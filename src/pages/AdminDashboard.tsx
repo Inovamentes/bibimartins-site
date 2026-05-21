@@ -7,12 +7,13 @@ import { Card, CardContent } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import {
   Users, LogOut, Trash2, RefreshCw, Menu,
-  LayoutDashboard, Shield, TrendingUp, Edit, X, Video, CreditCard, Key
+  LayoutDashboard, Shield, TrendingUp, Edit, X, Video, CreditCard, Key, Wrench
 } from 'lucide-react'
 import { Logo } from '@/components/Logo'
 import { AdminCourses } from '@/components/AdminCourses'
 import { AdminPlans } from '@/components/AdminPlans'
 import { AdminSubscriptions } from '@/components/AdminSubscriptions'
+import { AdminTools } from '@/components/AdminTools'
 
 interface Stats { totalUsers: number; totalClients: number; totalAdmins: number }
 interface User  { 
@@ -31,7 +32,7 @@ export default function AdminDashboard() {
   const [editingUser, setEditingUser] = useState<User | null>(null)
   const [editForm, setEditForm] = useState<Partial<User>>({})
   const [isSaving, setIsSaving] = useState(false)
-  const [activeTab, setActiveTab] = useState<'dashboard' | 'users' | 'courses' | 'plans' | 'subscriptions'>('dashboard')
+  const [activeTab, setActiveTab] = useState<'dashboard' | 'users' | 'courses' | 'plans' | 'subscriptions' | 'tools'>('dashboard')
   const [isSidebarOpen, setIsSidebarOpen] = useState(false)
 
   const fetchData = async () => {
@@ -131,6 +132,9 @@ export default function AdminDashboard() {
           </button>
           <button onClick={() => selectTab('subscriptions')} className={`w-full px-3 py-2 rounded-xl flex items-center gap-3 text-sm font-medium transition-colors ${activeTab === 'subscriptions' ? 'bg-white/20 text-white' : 'hover:bg-white/10 text-purple-200'}`}>
             <Key className="w-4 h-4" /> Assinaturas
+          </button>
+          <button onClick={() => selectTab('tools')} className={`w-full px-3 py-2 rounded-xl flex items-center gap-3 text-sm font-medium transition-colors ${activeTab === 'tools' ? 'bg-white/20 text-white' : 'hover:bg-white/10 text-purple-200'}`}>
+            <Wrench className="w-4 h-4" /> Ferramentas
           </button>
         </nav>
 
@@ -293,6 +297,10 @@ export default function AdminDashboard() {
 
         {activeTab === 'subscriptions' && (
           <AdminSubscriptions />
+        )}
+
+        {activeTab === 'tools' && (
+          <AdminTools />
         )}
 
         <p className="mt-6 text-center text-sm text-gray-400">
