@@ -565,7 +565,7 @@ export function AdminCourses() {
                       alt="Preview Capa" 
                       className="h-full w-full object-cover"
                       onError={(e) => {
-                        (e.target as HTMLElement).style.display = 'none';
+                        e.currentTarget.src = 'https://placehold.co/600x400/f3f4f6/6b7280?text=Imagem+Invalida';
                       }}
                     />
                   </div>

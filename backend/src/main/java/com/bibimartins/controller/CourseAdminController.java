@@ -16,6 +16,7 @@ import java.util.HashMap;
 
 @RestController
 @RequestMapping("/api/admin/courses")
+@org.springframework.transaction.annotation.Transactional
 public class CourseAdminController {
 
     @Autowired
