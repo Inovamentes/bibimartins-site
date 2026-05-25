@@ -20,10 +20,10 @@ public class Course {
     @Column(columnDefinition = "TEXT")
     private String description;
 
-    @Column(name = "thumbnail_url")
+    @Column(name = "thumbnail_url", columnDefinition = "TEXT")
     private String thumbnailUrl;
 
-    @Column(name = "preview_video_url")
+    @Column(name = "preview_video_url", columnDefinition = "TEXT")
     private String previewVideoUrl;
 
     @JsonIgnore

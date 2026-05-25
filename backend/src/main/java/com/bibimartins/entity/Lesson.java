@@ -18,10 +18,10 @@ public class Lesson {
     @Column(columnDefinition = "TEXT")
     private String description;
 
-    @Column(name = "video_url")
+    @Column(name = "video_url", columnDefinition = "TEXT")
     private String videoUrl; // Link for Panda Video or Vimeo
 
-    @Column(name = "attachment_url")
+    @Column(name = "attachment_url", columnDefinition = "TEXT")
     private String attachmentUrl; // Link for PDF, resources, etc
 
     @Column(name = "order_index")

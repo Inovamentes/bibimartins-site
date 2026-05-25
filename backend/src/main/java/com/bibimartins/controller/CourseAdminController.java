@@ -139,6 +139,10 @@ public class CourseAdminController {
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteCourse(@PathVariable Long id) {
         return courseRepository.findById(id).map(course -> {
+            course.getPlans().forEach(plan -> {
+                plan.getCourses().remove(course);
+                planRepository.save(plan);
+            });
             courseRepository.delete(course);
             return ResponseEntity.ok().build();
         }).orElse(ResponseEntity.notFound().build());
