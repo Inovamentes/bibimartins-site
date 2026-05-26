@@ -40,6 +40,8 @@ public class CourseAdminController {
                 m.put("name", p.getName());
                 m.put("description", p.getDescription());
                 m.put("price", p.getPrice());
+                m.put("durationMonths", p.getDurationMonths());
+                
                 
                 List<Map<String, Object>> pCourses = p.getCourses().stream()
                     .map(c -> {
@@ -61,6 +63,9 @@ public class CourseAdminController {
         plan.setName(data.get("name").toString());
         plan.setDescription(data.get("description") != null ? data.get("description").toString() : "");
         plan.setPrice(Double.parseDouble(data.get("price").toString()));
+        if (data.containsKey("durationMonths") && data.get("durationMonths") != null) {
+            plan.setDurationMonths(Integer.parseInt(data.get("durationMonths").toString()));
+        }
         
         if (data.containsKey("courses")) {
             List<Map<String, Object>> courseData = (List<Map<String, Object>>) data.get("courses");
@@ -80,6 +85,7 @@ public class CourseAdminController {
             if (data.containsKey("name")) plan.setName(data.get("name").toString());
             if (data.containsKey("description")) plan.setDescription(data.get("description").toString());
             if (data.containsKey("price")) plan.setPrice(Double.parseDouble(data.get("price").toString()));
+            if (data.containsKey("durationMonths") && data.get("durationMonths") != null) plan.setDurationMonths(Integer.parseInt(data.get("durationMonths").toString()));
             
             if (data.containsKey("courses")) {
                 List<Map<String, Object>> courseData = (List<Map<String, Object>>) data.get("courses");

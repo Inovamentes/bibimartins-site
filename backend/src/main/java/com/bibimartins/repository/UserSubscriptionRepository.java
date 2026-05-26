@@ -7,5 +7,6 @@ import java.util.List;
 
 @Repository
 public interface UserSubscriptionRepository extends JpaRepository<UserSubscription, Long> {
-    List<UserSubscription> findByUserIdAndActiveTrue(Long userId);
+    @org.springframework.data.jpa.repository.Query("SELECT us FROM UserSubscription us WHERE us.user.id = :userId AND us.active = true AND (us.expiresAt IS NULL OR us.expiresAt > CURRENT_TIMESTAMP)")
+    List<UserSubscription> findByUserIdAndActiveTrue(@org.springframework.data.repository.query.Param("userId") Long userId);
 }

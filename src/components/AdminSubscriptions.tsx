@@ -15,6 +15,7 @@ interface Subscription {
   planName: string;
   active: boolean;
   createdAt: string;
+  expiresAt: string;
 }
 
 interface User {
@@ -78,6 +79,15 @@ export function AdminSubscriptions() {
     }
   }
 
+  const handleToggleSub = async (id: number) => {
+    try {
+      await api.put(`/api/admin/subscriptions/${id}/toggle-active`)
+      fetchData()
+    } catch (err) {
+      alert("Erro ao alterar status da assinatura")
+    }
+  }
+
   const filteredSubs = subscriptions.filter(s => 
     s.userEmail.toLowerCase().includes(searchTerm.toLowerCase()) || 
     s.planName.toLowerCase().includes(searchTerm.toLowerCase())
@@ -113,7 +123,7 @@ export function AdminSubscriptions() {
                 <tr className="bg-gray-50 border-b border-gray-100">
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Usuário</th>
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Plano Liberado</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Data Liberação</th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Validade</th>
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Status</th>
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Ações</th>
                 </tr>
@@ -136,15 +146,25 @@ export function AdminSubscriptions() {
                       </div>
                     </td>
                     <td className="px-6 py-4 text-sm text-gray-500">
-                      {new Date(s.createdAt).toLocaleDateString('pt-BR')}
+                      <p>Início: {new Date(s.createdAt).toLocaleDateString('pt-BR')}</p>
+                      <p className="text-xs mt-1">Fim: {s.expiresAt ? new Date(s.expiresAt).toLocaleDateString('pt-BR') : 'Vitalício'}</p>
                     </td>
                     <td className="px-6 py-4">
-                      <Badge className="bg-green-100 text-green-700 border-green-200">ATIVO</Badge>
+                      {s.active ? (
+                        <Badge className="bg-green-100 text-green-700 border-green-200">ATIVO</Badge>
+                      ) : (
+                        <Badge className="bg-red-100 text-red-700 border-red-200">BLOQUEADO</Badge>
+                      )}
                     </td>
                     <td className="px-6 py-4">
-                      <Button variant="ghost" size="sm" onClick={() => handleDeleteSub(s.id)} className="text-red-500 hover:text-red-700 hover:bg-red-50">
-                        <Trash2 className="w-4 h-4" />
-                      </Button>
+                      <div className="flex gap-2">
+                        <Button variant="outline" size="sm" onClick={() => handleToggleSub(s.id)} className={s.active ? "text-orange-600 border-orange-200 hover:bg-orange-50" : "text-green-600 border-green-200 hover:bg-green-50"}>
+                          {s.active ? 'Bloquear' : 'Desbloquear'}
+                        </Button>
+                        <Button variant="ghost" size="sm" onClick={() => handleDeleteSub(s.id)} className="text-red-500 hover:text-red-700 hover:bg-red-50">
+                          <Trash2 className="w-4 h-4" />
+                        </Button>
+                      </div>
                     </td>
                   </tr>
                 ))}

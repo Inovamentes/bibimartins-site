@@ -16,6 +16,7 @@ interface Plan {
   name: string;
   description: string;
   price: number;
+  durationMonths: number;
   courses: Course[];
 }
 
@@ -89,7 +90,7 @@ export function AdminPlans() {
           <h2 className="text-xl font-bold text-gray-900">Gerenciar Planos de Assinatura</h2>
           <p className="text-sm text-gray-500">Crie os pacotes que os clientes poderão comprar</p>
         </div>
-        <Button onClick={() => setEditingPlan({ name: '', description: '', price: 0, courses: [] })} className="bg-purple-600 hover:bg-purple-700">
+        <Button onClick={() => setEditingPlan({ name: '', description: '', price: 0, durationMonths: 0, courses: [] })} className="bg-purple-600 hover:bg-purple-700">
           <Plus className="w-4 h-4 mr-2" /> Novo Plano
         </Button>
       </div>
@@ -115,6 +116,9 @@ export function AdminPlans() {
                   <p className="text-2xl font-bold text-purple-600">R$ {p.price.toFixed(2)}</p>
                 </div>
                 <h3 className="font-bold text-lg mb-1">{p.name}</h3>
+                <p className="text-xs font-semibold text-purple-600 mb-2">
+                  {p.durationMonths ? `Acesso por ${p.durationMonths} meses` : 'Acesso Vitalício'}
+                </p>
                 <p className="text-sm text-gray-500 mb-4">{p.description}</p>
                 
                 <div className="mb-4">
@@ -158,6 +162,11 @@ export function AdminPlans() {
                 <div className="space-y-2 col-span-2 md:col-span-1">
                   <Label>Preço (R$)</Label>
                   <Input type="number" value={editingPlan.price || 0} onChange={e => setEditingPlan({...editingPlan, price: parseFloat(e.target.value)})} placeholder="0.00" />
+                </div>
+                <div className="space-y-2 col-span-2">
+                  <Label>Duração do Acesso (Meses)</Label>
+                  <Input type="number" value={editingPlan.durationMonths || 0} onChange={e => setEditingPlan({...editingPlan, durationMonths: parseInt(e.target.value)})} placeholder="0" />
+                  <p className="text-xs text-gray-500">Deixe 0 para acesso vitalício (sem expiração).</p>
                 </div>
                 <div className="space-y-2 col-span-2">
                   <Label>Descrição</Label>

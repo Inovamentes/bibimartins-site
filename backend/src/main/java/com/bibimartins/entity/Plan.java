@@ -20,6 +20,9 @@ public class Plan {
     @Column(nullable = false)
     private Double price;
 
+    @Column(name = "duration_months")
+    private Integer durationMonths = 0; // 0 = lifetime
+
     @ManyToMany
     @JoinTable(
         name = "plan_courses",
@@ -68,6 +71,14 @@ public class Plan {
 
     public void setPrice(Double price) {
         this.price = price;
+    }
+
+    public Integer getDurationMonths() {
+        return durationMonths;
+    }
+
+    public void setDurationMonths(Integer durationMonths) {
+        this.durationMonths = durationMonths;
     }
 
     public java.util.Set<Course> getCourses() {

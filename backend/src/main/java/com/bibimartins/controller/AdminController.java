@@ -128,6 +128,7 @@ public class AdminController {
             m.put("planName", s.getPlan().getName());
             m.put("active", s.isActive());
             m.put("createdAt", s.getCreatedAt() != null ? s.getCreatedAt().toString() : "");
+            m.put("expiresAt", s.getExpiresAt() != null ? s.getExpiresAt().toString() : "");
             return m;
         }).toList();
         return ResponseEntity.ok(subs);
@@ -147,6 +148,10 @@ public class AdminController {
         sub.setActive(true);
         sub.setCreatedAt(java.time.LocalDateTime.now());
         
+        if (plan.getDurationMonths() != null && plan.getDurationMonths() > 0) {
+            sub.setExpiresAt(java.time.LocalDateTime.now().plusMonths(plan.getDurationMonths()));
+        }
+        
         UserSubscription saved = subscriptionRepository.save(sub);
         
         Map<String, Object> res = new HashMap<>();
@@ -160,5 +165,17 @@ public class AdminController {
     public ResponseEntity<?> deleteSubscription(@PathVariable Long id) {
         subscriptionRepository.deleteById(id);
         return ResponseEntity.ok().build();
+    }
+
+    @PutMapping("/subscriptions/{id}/toggle-active")
+    public ResponseEntity<?> toggleSubscriptionActive(@PathVariable Long id) {
+        return subscriptionRepository.findById(id).map(sub -> {
+            sub.setActive(!sub.isActive());
+            subscriptionRepository.save(sub);
+            Map<String, Object> res = new HashMap<>();
+            res.put("message", "Status atualizado");
+            res.put("active", sub.isActive());
+            return ResponseEntity.ok().<Object>body(res);
+        }).orElse(ResponseEntity.notFound().<Object>build());
     }
 }
