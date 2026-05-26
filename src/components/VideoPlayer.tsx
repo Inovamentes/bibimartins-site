@@ -1,9 +1,11 @@
-import { PlayCircle } from 'lucide-react'
+import { PlayCircle, Lock } from 'lucide-react'
+import { useState, useEffect } from 'react'
 
 interface VideoPlayerProps {
   videoUrl: string;
   title?: string;
   className?: string;
+  isPreview?: boolean;
 }
 
 export function parseVideoUrl(input: string): {
@@ -85,8 +87,28 @@ export function parseVideoUrl(input: string): {
   return { embedUrl: '', type: 'invalid' };
 }
 
-export default function VideoPlayer({ videoUrl, title = 'Vídeo Aula', className = '' }: VideoPlayerProps) {
+export default function VideoPlayer({ videoUrl, title = 'Vídeo Aula', className = '', isPreview = false }: VideoPlayerProps) {
   const { embedUrl, type } = parseVideoUrl(videoUrl);
+  const [previewExpired, setPreviewExpired] = useState(false);
+
+  useEffect(() => {
+    if (isPreview) {
+      const timer = setTimeout(() => {
+        setPreviewExpired(true);
+      }, 60000); // 60 seconds
+      return () => clearTimeout(timer);
+    }
+  }, [isPreview]);
+
+  if (previewExpired) {
+    return (
+      <div className={`w-full h-full flex flex-col items-center justify-center text-white bg-gray-900 rounded-2xl p-6 ${className}`}>
+        <Lock className="w-12 h-12 mb-4 text-orange-500 animate-pulse" />
+        <h3 className="text-xl font-bold mb-2 text-center">Tempo de Prévia Esgotado</h3>
+        <p className="text-gray-400 text-center max-w-md">Você atingiu o limite de 1 minuto de prévia gratuita. Adquira o curso para desbloquear o acesso completo a esta e todas as outras aulas.</p>
+      </div>
+    );
+  }
 
   if (type === 'invalid' || !embedUrl) {
     return (

@@ -345,7 +345,7 @@ export default function ClientDashboard() {
           </DialogHeader>
           {previewVideo && (
             <div className="aspect-video bg-black rounded-xl overflow-hidden border border-gray-800">
-              <VideoPlayer videoUrl={previewVideo.url} title={previewVideo.title} />
+              <VideoPlayer videoUrl={previewVideo.url} title={previewVideo.title} isPreview={true} />
             </div>
           )}
         </DialogContent>
