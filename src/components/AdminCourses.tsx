@@ -488,11 +488,10 @@ export function AdminCourses() {
               onClick={() => setSelectedCourse(c)}
             >
               {c.thumbnailUrl ? (
-                <div 
-                  className="h-44 bg-cover bg-center relative" 
-                  style={{backgroundImage: `url(${c.thumbnailUrl})`}}
-                >
-                  <div className="absolute inset-0 bg-black/10 group-hover:bg-black/0 transition-colors" />
+                <div className="h-44 w-full bg-gray-50 relative flex items-center justify-center overflow-hidden">
+                  <div className="absolute inset-0 bg-cover bg-center opacity-30 blur-md scale-110" style={{backgroundImage: `url(${c.thumbnailUrl})`}} />
+                  <img src={c.thumbnailUrl} alt={c.title} className="relative z-10 w-full h-full object-contain" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent z-20 pointer-events-none" />
                 </div>
               ) : (
                 <div className="h-44 bg-purple-50 flex items-center justify-center text-purple-300">
@@ -559,11 +558,11 @@ export function AdminCourses() {
                   placeholder="https://exemplo.com/imagem.jpg" 
                 />
                 {editingCourse.thumbnailUrl && (
-                  <div className="mt-2 h-28 w-full rounded-2xl overflow-hidden border border-gray-150 bg-gray-50 flex items-center justify-center shadow-inner">
+                  <div className="mt-2 h-28 w-full rounded-2xl overflow-hidden border border-gray-150 bg-gray-50 flex items-center justify-center shadow-inner relative">
                     <img 
                       src={editingCourse.thumbnailUrl} 
                       alt="Preview Capa" 
-                      className="h-full w-full object-cover"
+                      className="h-full w-full object-contain relative z-10"
                       onError={(e) => {
                         e.currentTarget.src = 'https://placehold.co/600x400/f3f4f6/6b7280?text=Imagem+Invalida';
                       }}

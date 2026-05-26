@@ -179,7 +179,10 @@ export default function ClientDashboard() {
                 {catalog.map((c) => (
                   <Card key={c.id} className={`border-0 shadow-lg transition-all duration-300 hover:-translate-y-1 ${c.isUnlocked ? 'ring-2 ring-orange-500/50' : 'opacity-90'}`}>
                     {c.thumbnailUrl && (
-                      <div className="h-32 w-full bg-cover bg-center rounded-t-xl" style={{ backgroundImage: `url(${c.thumbnailUrl})` }} />
+                      <div className="h-32 w-full bg-gray-100 relative flex items-center justify-center overflow-hidden rounded-t-xl">
+                        <div className="absolute inset-0 bg-cover bg-center opacity-30 blur-md scale-110" style={{backgroundImage: `url(${c.thumbnailUrl})`}} />
+                        <img src={c.thumbnailUrl} alt={c.title} className="relative z-10 w-full h-full object-contain" />
+                      </div>
                     )}
                     <CardContent className="p-6">
                       <div className="flex items-start justify-between gap-4 mb-2">
