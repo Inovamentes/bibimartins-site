@@ -13,6 +13,21 @@ const rules = [
   { label: 'Um número',           test: (p: string) => /\d/.test(p) },
 ]
 
+function isValidCPF(cpf: string) {
+  cpf = cpf.replace(/[^\d]+/g, '');
+  if (cpf.length !== 11 || !!cpf.match(/(\d)\1{10}/)) return false;
+  let split = cpf.split('');
+  let rest, count;
+  for (let type = 9; type < 11; type++) {
+    for (count = 0, rest = 0; rest < type; rest++) {
+      count += parseInt(split[rest]) * ((type + 1) - rest);
+    }
+    count = ((count * 10) % 11) % 10;
+    if (count !== parseInt(split[type])) return false;
+  }
+  return true;
+}
+
 export default function RegisterPage() {
   const { register } = useAuth()
   const navigate = useNavigate()
@@ -36,6 +51,12 @@ export default function RegisterPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setError('')
+    
+    if (documentType === 'CPF' && !isValidCPF(documentNumber)) {
+      setError('O CPF informado é inválido. Verifique os números digitados.')
+      return
+    }
+
     setLoading(true)
     try {
       const userData = {
