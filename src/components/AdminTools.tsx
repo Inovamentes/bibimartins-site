@@ -2,7 +2,10 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { Upload, FileText, Lock, PlusCircle, Link as LinkIcon, Brain, Target, MessageCircle, Zap, Shield } from 'lucide-react';
+import { Dialog, DialogContent, DialogTitle } from '@/components/ui/dialog';
+import { Upload, FileText, Lock, PlusCircle, Link as LinkIcon, Brain, Target, MessageCircle, Zap, Shield, Play } from 'lucide-react';
+import { useState } from 'react';
+import { MapaCognitivo } from './tools/MapaCognitivo';
 
 const pillars = [
   {
@@ -77,8 +80,16 @@ const pillars = [
 ];
 
 export function AdminTools() {
+  const [activeTool, setActiveTool] = useState<string | null>(null);
+
   return (
     <div className="space-y-6">
+      <Dialog open={!!activeTool} onOpenChange={(open) => !open && setActiveTool(null)}>
+        <DialogContent className="max-w-5xl bg-slate-900 border-slate-800 p-0 overflow-hidden" aria-describedby="tool-content">
+          <DialogTitle className="sr-only">Ferramenta Sinapse</DialogTitle>
+          {activeTool === 'Mapa de Func. Cognitivo' && <MapaCognitivo />}
+        </DialogContent>
+      </Dialog>
       <div className="flex items-center justify-between">
         <div>
           <h2 className="text-2xl font-bold text-gray-900">Ferramentas Sinapse 360°</h2>
@@ -153,12 +164,20 @@ export function AdminTools() {
                           </div>
                         </div>
                         <div className="flex flex-col gap-2 shrink-0 opacity-0 group-hover:opacity-100 transition-opacity">
-                          <Button size="icon" variant="outline" className="w-8 h-8 text-gray-500 hover:text-purple-600 hover:bg-purple-50 hover:border-purple-200" title="Upload de Arquivo (PDF, Excel, etc)">
-                            <Upload className="w-4 h-4" />
-                          </Button>
-                          <Button size="icon" variant="outline" className="w-8 h-8 text-gray-500 hover:text-blue-600 hover:bg-blue-50 hover:border-blue-200" title="Adicionar Link Externo">
-                            <LinkIcon className="w-4 h-4" />
-                          </Button>
+                          {tool === 'Mapa de Func. Cognitivo' ? (
+                            <Button size="icon" variant="outline" className="w-8 h-8 text-cyan-600 hover:text-cyan-700 hover:bg-cyan-50 hover:border-cyan-200" title="Abrir Ferramenta Interativa" onClick={() => setActiveTool(tool)}>
+                              <Play className="w-4 h-4" />
+                            </Button>
+                          ) : (
+                            <>
+                              <Button size="icon" variant="outline" className="w-8 h-8 text-gray-500 hover:text-purple-600 hover:bg-purple-50 hover:border-purple-200" title="Upload de Arquivo (PDF, Excel, etc)">
+                                <Upload className="w-4 h-4" />
+                              </Button>
+                              <Button size="icon" variant="outline" className="w-8 h-8 text-gray-500 hover:text-blue-600 hover:bg-blue-50 hover:border-blue-200" title="Adicionar Link Externo">
+                                <LinkIcon className="w-4 h-4" />
+                              </Button>
+                            </>
+                          )}
                         </div>
                       </div>
                     </li>
