@@ -6,6 +6,7 @@ import { Dialog, DialogContent, DialogTitle } from '@/components/ui/dialog';
 import { Upload, FileText, Lock, PlusCircle, Link as LinkIcon, Brain, Target, MessageCircle, Zap, Shield, Play } from 'lucide-react';
 import { useState } from 'react';
 import { MapaCognitivo } from './tools/MapaCognitivo';
+import { FerramentaNR1 } from './tools/FerramentaNR1';
 
 const pillars = [
   {
@@ -77,6 +78,16 @@ const pillars = [
       'Plano P.A.S.S.O.',
     ],
   },
+  {
+    id: 'nr1',
+    title: 'Assessment NR-1',
+    description: 'Risco Psicossocial',
+    color: 'teal',
+    icon: Target,
+    tools: [
+      'Ferramenta de Identificação NR-1',
+    ],
+  },
 ];
 
 export function AdminTools() {
@@ -88,6 +99,7 @@ export function AdminTools() {
         <DialogContent className="max-w-5xl bg-slate-900 border-slate-800 p-0 overflow-hidden" aria-describedby="tool-content">
           <DialogTitle className="sr-only">Ferramenta Sinapse</DialogTitle>
           {activeTool === 'Mapa de Func. Cognitivo' && <MapaCognitivo />}
+          {activeTool === 'Ferramenta de Identificação NR-1' && <FerramentaNR1 />}
         </DialogContent>
       </Dialog>
       <div className="flex items-center justify-between">
@@ -164,7 +176,7 @@ export function AdminTools() {
                           </div>
                         </div>
                         <div className="flex flex-col gap-2 shrink-0 opacity-0 group-hover:opacity-100 transition-opacity">
-                          {tool === 'Mapa de Func. Cognitivo' ? (
+                          {tool === 'Mapa de Func. Cognitivo' || tool === 'Ferramenta de Identificação NR-1' ? (
                             <Button size="icon" variant="outline" className="w-8 h-8 text-cyan-600 hover:text-cyan-700 hover:bg-cyan-50 hover:border-cyan-200" title="Abrir Ferramenta Interativa" onClick={() => setActiveTool(tool)}>
                               <Play className="w-4 h-4" />
                             </Button>

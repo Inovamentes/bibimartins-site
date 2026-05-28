@@ -27,25 +27,18 @@ const questions = [
   { id: 22, dim: 4, text: "Costuma interromper os outros durante reuniões para terminar as frases deles?" },
   { id: 23, dim: 4, text: "Toma decisões impulsivas e depois se arrepende, especialmente sob estresse?" },
   { id: 24, dim: 4, text: "Oscila entre dias de hiperprodutividade insana e dias de exaustão e procrastinação profunda?" },
-  { id: 25, dim: 4, text: "Tem dificuldade crônica em relaxar a mente ou 'desligar' durante finais de semana?" },
-  { id: 26, dim: 5, text: "[NR-1] Sente que o volume de trabalho exigido pela empresa ultrapassa sua capacidade mental saudável?" },
-  { id: 27, dim: 5, text: "[NR-1] As metas e expectativas sobre sua função são confusas, gerando insegurança constante?" },
-  { id: 28, dim: 5, text: "[NR-1] Sente falta de apoio psicológico ou estrutural por parte das lideranças imediatas?" },
-  { id: 29, dim: 5, text: "[NR-1] O clima da equipe envolve fofocas, hostilidade ou exclusão que prejudicam seu emocional?" },
-  { id: 30, dim: 5, text: "[NR-1] Percebe sintomas físicos (taquicardia, insônia, dores) relacionados exclusivamente ao ambiente de trabalho?" }
+  { id: 25, dim: 4, text: "Tem dificuldade crônica em relaxar a mente ou 'desligar' durante finais de semana?" }
 ];
 
-const dims = [
   "Déficit Executivo e Foco",
   "Sobrecarga Sensorial",
   "Fadiga de Interação Social",
   "Rigidez e Hiperfoco",
-  "Impulsividade e Inquietação",
-  "Risco Psicossocial (NR-1)"
+  "Impulsividade e Inquietação"
 ];
 
 export function MapaCognitivo() {
-  const [responses, setResponses] = useState<number[]>(Array(30).fill(-1));
+  const [responses, setResponses] = useState<number[]>(Array(25).fill(-1));
 
   const handleScore = (qId: number, value: number) => {
     const newResponses = [...responses];
@@ -54,8 +47,8 @@ export function MapaCognitivo() {
   };
 
   const getScores = () => {
-    const scores = [0, 0, 0, 0, 0, 0];
-    for (let i = 0; i < 6; i++) {
+    const scores = [0, 0, 0, 0, 0];
+    for (let i = 0; i < 5; i++) {
       const dimQuestions = questions.filter(q => q.dim === i);
       const dimResponses = dimQuestions.map(q => responses[q.id - 1]).filter(v => v !== -1);
       if (dimResponses.length > 0) {
@@ -82,8 +75,7 @@ export function MapaCognitivo() {
   });
 
   const totalResponded = responses.filter(v => v !== -1).length;
-  const isHighRiskNR1 = scores[5] >= 70;
-  const radarColor = isHighRiskNR1 ? "#ef4444" : "#06b6d4";
+  const radarColor = "#06b6d4";
 
   const getInsight = () => {
     if (totalResponded < 15) {
@@ -95,12 +87,10 @@ export function MapaCognitivo() {
 
     const adhdProb = (scores[0] + scores[4]) / 2;
     const asdProb = (scores[1] + scores[2] + scores[3]) / 3;
-    const nr1Risk = scores[5];
 
     const flags = [];
     if (adhdProb >= 70) flags.push({ type: 'danger', msg: 'Probabilidade TDAH: Padrão de déficit executivo e hiperatividade elevado. Recomenda-se orientação para avaliação neuropsicológica e estruturação de rotinas.' });
     if (asdProb >= 70) flags.push({ type: 'danger', msg: 'Probabilidade TEA / Sensorial: Alta correlação com sobrecarga sensorial e rigidez. O ambiente de trabalho pode precisar de adaptações.' });
-    if (nr1Risk >= 70) flags.push({ type: 'warning', msg: 'Alerta NR-1 (Clima/Burnout): O ambiente organizacional atual apresenta altíssimo risco psicossocial. Intervenção sistêmica recomendada.' });
 
     if (flags.length === 0) {
       return {
@@ -121,8 +111,7 @@ export function MapaCognitivo() {
     const report = `RELATÓRIO DE MAPEAMENTO - MÉTODO SINAPSE 360\nCONFIDENCIAL - NÃO É DIAGNÓSTICO CLÍNICO\n\n` +
       dims.map((d, i) => `${d}: ${Math.round(scores[i])}%`).join('\n') +
       `\n\nResultados Preditivos:\nTDAH (Função Executiva): ${Math.round((scores[0] + scores[4]) / 2)}%\n` +
-      `TEA (Sensorial/Social): ${Math.round((scores[1] + scores[2] + scores[3]) / 3)}%\n` +
-      `Risco NR-1 (Clima Org): ${Math.round(scores[5])}%\n`;
+      `TEA (Sensorial/Social): ${Math.round((scores[1] + scores[2] + scores[3]) / 3)}%\n`;
     navigator.clipboard.writeText(report);
     alert('Relatório Copiado com Sucesso!');
   };
@@ -131,18 +120,17 @@ export function MapaCognitivo() {
     <div className="bg-slate-900 text-slate-50 p-4 md:p-8 rounded-xl h-[80vh] overflow-y-auto">
       <header className="mb-8 text-center md:text-left">
         <div className="inline-block px-3 py-1 rounded-full bg-cyan-900/30 border border-cyan-800 text-cyan-400 text-xs font-bold uppercase tracking-widest mb-4">
-          Pilar 1: Autoconsciência Cognitiva & Clima (NR-1)
+          Pilar 1: Autoconsciência Cognitiva
         </div>
         <h1 className="text-3xl font-extrabold mb-4">Mapa de <span className="text-cyan-500">Funcionamento</span></h1>
       </header>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+      <div className="flex flex-col-reverse lg:grid lg:grid-cols-2 gap-8">
         <div className="space-y-8">
           {dims.map((dimName, dIndex) => {
-            const isNR1 = dIndex === 5;
-            const borderClass = isNR1 ? "border-purple-500" : "border-cyan-500";
-            const textClass = isNR1 ? "text-purple-400" : "text-cyan-400";
-            const bgClass = isNR1 ? "bg-purple-900/10" : "bg-slate-800/30";
+            const borderClass = "border-cyan-500";
+            const textClass = "text-cyan-400";
+            const bgClass = "bg-slate-800/30";
 
             return (
               <div key={dIndex} className={`p-6 rounded-2xl border-l-4 ${borderClass} ${bgClass}`}>
@@ -178,7 +166,7 @@ export function MapaCognitivo() {
         </div>
 
         <div className="relative">
-          <div className="sticky top-4 bg-slate-800/50 p-6 rounded-3xl border border-slate-700 shadow-2xl">
+          <div className="lg:sticky lg:top-4 bg-slate-800/50 p-6 rounded-3xl border border-slate-700 shadow-2xl">
             <h3 className="text-xl font-bold mb-4 text-center text-white italic">Seu Mapa Sinapse 360</h3>
             <div className="h-[300px] w-full">
               <ResponsiveContainer width="100%" height="100%">
