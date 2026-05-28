@@ -4,7 +4,7 @@ import {
   Menu, Phone, Mail, Instagram, Facebook, Youtube, 
   ChevronRight, Star, Quote, Brain, Users, MessageCircle, 
   Target, Zap, Award, TrendingUp, ArrowRight, Play, Building2,
-  Sparkles, Lightbulb, Heart, CheckCircle2, User
+  Sparkles, Lightbulb, Heart, CheckCircle2, User, ShieldCheck
 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
@@ -105,6 +105,14 @@ function App() {
             {/* CTA Button */}
             <div className="hidden lg:flex items-center gap-3">
               <Button 
+                variant="outline"
+                onClick={() => window.open('https://wa.me/5511932143117?text=Olá Bibi, gostaria de saber mais sobre a Plataforma NR-1 COPSOQ para minha empresa.', '_blank')}
+                className={`transition-colors font-medium border-orange-400 ${isScrolled ? 'text-orange-600 hover:bg-orange-50' : 'text-white border-white/50 hover:bg-white/10'}`}
+              >
+                <ShieldCheck className="w-4 h-4 mr-2" />
+                Plataforma NR-1
+              </Button>
+              <Button 
                 variant="ghost"
                 onClick={() => window.location.href = '/login'}
                 className={`transition-colors font-medium ${isScrolled ? 'text-purple-700 hover:bg-purple-50 hover:text-purple-800' : 'text-white hover:bg-white/10'}`}
@@ -160,6 +168,14 @@ function App() {
                     ))}
                   </nav>
                   <div className="flex flex-col gap-3 mt-2">
+                    <Button 
+                      variant="outline"
+                      onClick={() => window.open('https://wa.me/5511932143117?text=Olá Bibi, gostaria de saber mais sobre a Plataforma NR-1 COPSOQ para minha empresa.', '_blank')}
+                      className="border-orange-200 text-orange-700 hover:bg-orange-50 w-full"
+                    >
+                      <ShieldCheck className="w-4 h-4 mr-2" />
+                      Plataforma NR-1
+                    </Button>
                     <Button 
                       variant="outline"
                       onClick={() => window.location.href = '/login'}
@@ -492,13 +508,23 @@ function App() {
                     Aqui, não formamos gestores tradicionais — formamos líderes que antecipam mudanças, potencializam talentos 
                     neurodivergentes e transformam desafios em vantagem competitiva.
                   </p>
-                  <Button 
-                    onClick={() => window.open('https://wa.me/5511932143117', '_blank')}
-                    className="bg-gradient-to-r from-purple-600 to-purple-700 hover:from-purple-700 hover:to-purple-800 text-white"
-                  >
-                    Saiba Mais
-                    <ArrowRight className="w-4 h-4 ml-2" />
-                  </Button>
+                  <div className="flex flex-col sm:flex-row gap-4">
+                    <Button 
+                      onClick={() => window.open('https://wa.me/5511932143117?text=Olá Bibi, gostaria de saber mais sobre a formação de líderes na BM Academy.', '_blank')}
+                      className="bg-gradient-to-r from-purple-600 to-purple-700 hover:from-purple-700 hover:to-purple-800 text-white"
+                    >
+                      Saiba Mais
+                      <ArrowRight className="w-4 h-4 ml-2" />
+                    </Button>
+                    <Button 
+                      onClick={() => window.open('https://wa.me/5511932143117?text=Olá Bibi, gostaria de implantar a Plataforma NR-1 COPSOQ na minha empresa.', '_blank')}
+                      variant="outline"
+                      className="border-orange-500 text-orange-600 hover:bg-orange-50"
+                    >
+                      <ShieldCheck className="w-4 h-4 mr-2" />
+                      Comprar Plataforma NR-1
+                    </Button>
+                  </div>
                 </div>
                 <div className="relative hidden lg:block">
                   <img 
