@@ -30,6 +30,7 @@ const questions = [
   { id: 25, dim: 4, text: "Tem dificuldade crônica em relaxar a mente ou 'desligar' durante finais de semana?" }
 ];
 
+const dims = [
   "Déficit Executivo e Foco",
   "Sobrecarga Sensorial",
   "Fadiga de Interação Social",

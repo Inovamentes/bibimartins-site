@@ -6,7 +6,7 @@ import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import {
-  Users, LogOut, Trash2, RefreshCw, Menu,
+  Users, LogOut, Trash2, RefreshCw, Menu, Building2,
   LayoutDashboard, Shield, TrendingUp, Edit, X, Video, CreditCard, Key, Wrench
 } from 'lucide-react'
 import { Logo } from '@/components/Logo'
@@ -133,6 +133,17 @@ export default function AdminDashboard() {
           <button onClick={() => selectTab('subscriptions')} className={`w-full px-3 py-2 rounded-xl flex items-center gap-3 text-sm font-medium transition-colors ${activeTab === 'subscriptions' ? 'bg-white/20 text-white' : 'hover:bg-white/10 text-purple-200'}`}>
             <Key className="w-4 h-4" /> Assinaturas
           </button>
+          
+          <div className="pt-2 pb-1">
+            <p className="px-3 text-[10px] font-medium uppercase tracking-wider text-purple-400">SaaS Corporativo</p>
+          </div>
+          <a href="https://bmacademy.com.br/admin/login" target="_blank" rel="noopener noreferrer" className="w-full px-3 py-2 rounded-xl flex items-center justify-between text-sm font-medium transition-colors bg-purple-950/40 text-purple-300 hover:bg-purple-900 border border-purple-800">
+            <div className="flex items-center gap-3">
+              <Building2 className="w-4 h-4" /> BMAcademy (NR-1)
+            </div>
+          </a>
+
+          <div className="pt-2"></div>
           <button onClick={() => selectTab('tools')} className={`w-full px-3 py-2 rounded-xl flex items-center gap-3 text-sm font-medium transition-colors ${activeTab === 'tools' ? 'bg-white/20 text-white' : 'hover:bg-white/10 text-purple-200'}`}>
             <Wrench className="w-4 h-4" /> Ferramentas
           </button>

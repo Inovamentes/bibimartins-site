@@ -109,7 +109,7 @@ export function FerramentaNR1() {
                 {Math.round(score)}%
               </span>
               <div className="w-full bg-slate-700 rounded-full h-4 mb-2 overflow-hidden">
-                <div className={`h-4 transition-all duration-1000 ${progressColor}`} style={{ width: \`\${score}%\` }}></div>
+                <div className={`h-4 transition-all duration-1000 ${progressColor}`} style={{ width: `${score}%` }}></div>
               </div>
               <div className="flex justify-between w-full text-[10px] text-slate-500 uppercase font-bold">
                 <span>0% (Seguro)</span>
