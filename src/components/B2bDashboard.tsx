@@ -8,7 +8,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } f
 import { 
   Lock, ShieldAlert, BarChart3, Settings, 
   Calendar, Download, PlusCircle, Trash2, Eye, 
-  Sparkles, TrendingUp, TrendingDown
+  Sparkles, TrendingUp, TrendingDown, PlayCircle
 } from 'lucide-react';
 import { 
   BarChart, Bar, XAxis, YAxis, CartesianGrid, 
@@ -485,7 +485,7 @@ ADQUIRA A SUA LICENÇA NO HOTMART: https://pay.hotmart.com/mock-nr1
             <Badge className="bg-purple-600 text-white animate-pulse">MODO DEMO</Badge>
             <div>
               <p className="text-xs font-bold text-slate-200">Demonstração Corporativa Ativa</p>
-              <p className="text-[11px] text-slate-400">Você pode ler gráficos e atestados de simulação. Use os links de teste na aba de links.</p>
+              <p className="text-[11px] text-slate-400">Você pode navegar pelos instrumentos abaixo, abrir a pesquisa de teste do COPSOQ II e visualizar gráficos e atestados simulados.</p>
             </div>
           </div>
           <Button onClick={handleToggleDemo} size="sm" variant="outline" className="border-purple-600 text-purple-400 hover:bg-purple-900/40">
@@ -573,13 +573,13 @@ ADQUIRA A SUA LICENÇA NO HOTMART: https://pay.hotmart.com/mock-nr1
               <Card key={tool.id} className="bg-slate-950 border-slate-800 relative overflow-hidden group shadow-lg flex flex-col justify-between min-h-[220px]">
                 
                 {/* Locked Mask (Locked unless full license bought, which we mock as locked unless user is admin or isDemoActive handles dashboard. BUT the actual instrument questionnaires remain locked for purchase redirects) */}
-                {!tool.unlocked && (
+                {!tool.unlocked && !isDemoActive && (
                   <div className="absolute inset-0 bg-slate-950/85 backdrop-blur-[2px] z-10 flex flex-col items-center justify-center p-6 text-center transition-all group-hover:bg-slate-950/90">
                     <div className="w-12 h-12 bg-orange-500/20 border border-orange-500/40 rounded-full flex items-center justify-center mb-4 text-orange-400 shadow-lg shadow-orange-500/10">
                       <Lock className="w-5 h-5 animate-pulse" />
                     </div>
                     <h4 className="text-sm font-bold text-white mb-2">{tool.title}</h4>
-                    <p className="text-slate-400 text-[11px] mb-4 max-w-[200px] leading-relaxed">Instrumento bloqueado. Adquira a licença comercial ou ative o modo demonstração.</p>
+                    <p className="text-slate-400 text-[11px] mb-4 max-w-[200px] leading-relaxed">Instrumento bloqueado. Adquira a licença comercial ou ative o modo demonstração no rodapé.</p>
                     
                     <div className="flex flex-col gap-2 w-full">
                       <Button 
@@ -588,20 +588,6 @@ ADQUIRA A SUA LICENÇA NO HOTMART: https://pay.hotmart.com/mock-nr1
                       >
                         Liberar no Hotmart
                       </Button>
-                      
-                      {isDemoActive && (
-                        <Button 
-                          onClick={() => {
-                            setSelectedScale(tool.id as any);
-                            setIsQuestionModalOpen(true);
-                          }}
-                          variant="secondary"
-                          className="w-full bg-slate-800 hover:bg-slate-700 text-white text-xs h-9 rounded-lg border border-slate-700"
-                        >
-                          <Eye className="w-3.5 h-3.5 mr-1" />
-                          Visualizar Escalas
-                        </Button>
-                      )}
                     </div>
                   </div>
                 )}
@@ -610,24 +596,38 @@ ADQUIRA A SUA LICENÇA NO HOTMART: https://pay.hotmart.com/mock-nr1
                   <div>
                     <div className="flex items-center justify-between gap-2 mb-3">
                       <Badge className="bg-slate-800 text-slate-300 border-slate-700">{tool.badge}</Badge>
-                      {tool.unlocked && (
+                      {tool.unlocked ? (
                         <Badge className="bg-green-500/20 text-green-400 border-green-500/30">✓ Ativo</Badge>
-                      )}
+                      ) : isDemoActive ? (
+                        <Badge className="bg-purple-500/20 text-purple-400 border-purple-500/30">✓ Demo</Badge>
+                      ) : null}
                     </div>
                     <h3 className="font-bold text-white mb-2 text-sm">{tool.title}</h3>
                     <p className="text-slate-400 text-xs leading-relaxed">{tool.desc}</p>
                   </div>
-                  {tool.unlocked && (
-                    <Button 
-                      onClick={() => {
-                        setSelectedScale(tool.id as any);
-                        setIsQuestionModalOpen(true);
-                      }}
-                      className="w-full bg-slate-800 hover:bg-slate-700 text-white text-xs h-9 rounded-lg border border-slate-700 mt-4"
-                    >
-                      <Eye className="w-3.5 h-3.5 mr-1" />
-                      Visualizar Escalas
-                    </Button>
+                  {(tool.unlocked || isDemoActive) && (
+                    <div className="flex flex-col gap-2 mt-4">
+                      <Button 
+                        onClick={() => {
+                          setSelectedScale(tool.id as any);
+                          setIsQuestionModalOpen(true);
+                        }}
+                        className="w-full bg-slate-800 hover:bg-slate-700 text-white text-xs h-9 rounded-lg border border-slate-700"
+                      >
+                        <Eye className="w-3.5 h-3.5 mr-1" />
+                        Visualizar Escalas
+                      </Button>
+                      
+                      {isDemoActive && tool.id === 'copsoq' && (
+                        <Button 
+                          onClick={() => window.open('/pesquisa/demo', '_blank')}
+                          className="w-full bg-purple-600 hover:bg-purple-700 text-white text-xs font-bold h-9 rounded-lg"
+                        >
+                          <PlayCircle className="w-3.5 h-3.5 mr-1" />
+                          Abrir Pesquisa de Teste
+                        </Button>
+                      )}
+                    </div>
                   )}
                 </CardContent>
               </Card>
