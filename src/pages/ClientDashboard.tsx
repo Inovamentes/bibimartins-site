@@ -16,6 +16,9 @@ import { B2bDashboard } from '@/components/B2bDashboard'
 interface Profile { 
   id: number; email: string; role: string; createdAt: string;
   fullName?: string; whatsapp?: string; documentType?: string; documentNumber?: string; companyName?: string; companyAddress?: string;
+  copsoqUnlocked?: boolean;
+  hseUnlocked?: boolean;
+  clinicalUnlocked?: boolean;
 }
 
 export default function ClientDashboard() {
@@ -137,7 +140,7 @@ export default function ClientDashboard() {
           </button>
         </div>
         {activeTab === 'b2b' ? (
-          <B2bDashboard />
+          <B2bDashboard profile={profile} />
         ) : activeTab === 'inicio' ? (
           <>
             {/* Welcome Header */}

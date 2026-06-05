@@ -20,6 +20,9 @@ interface User  {
   id: number; email: string; recoveryEmail?: string; role: string; createdAt: string;
   fullName?: string; whatsapp?: string; documentType?: string; documentNumber?: string; companyName?: string; companyAddress?: string;
   password?: string; // Only used for resetting via admin
+  copsoqUnlocked?: boolean;
+  hseUnlocked?: boolean;
+  clinicalUnlocked?: boolean;
 }
 
 export default function AdminDashboard() {
@@ -275,6 +278,16 @@ export default function AdminDashboard() {
                           : 'bg-green-100 text-green-700 border-green-200'}>
                           {u.role}
                         </Badge>
+                        {u.role !== 'ADMIN' && (
+                          <div className="flex flex-wrap gap-1 mt-1.5 max-w-[150px]">
+                            {u.copsoqUnlocked && <Badge className="text-[9px] bg-purple-50 text-purple-600 border-purple-100 uppercase">COPSOQ</Badge>}
+                            {u.hseUnlocked && <Badge className="text-[9px] bg-orange-50 text-orange-600 border-orange-100 uppercase">HSE</Badge>}
+                            {u.clinicalUnlocked && <Badge className="text-[9px] bg-teal-50 text-teal-600 border-teal-100 uppercase">Clínico</Badge>}
+                            {!u.copsoqUnlocked && !u.hseUnlocked && !u.clinicalUnlocked && (
+                              <span className="text-[10px] text-gray-400 font-medium italic">Nenhuma</span>
+                            )}
+                          </div>
+                        )}
                       </td>
                       <td className="px-6 py-4 text-sm text-gray-500">{new Date(u.createdAt).toLocaleDateString('pt-BR')}</td>
                       <td className="px-6 py-4 flex items-center gap-2">
@@ -365,13 +378,48 @@ export default function AdminDashboard() {
                     <input type="text" className="w-full p-2 border rounded-md" value={editForm.companyName || ''} onChange={(e) => setEditForm({...editForm, companyName: e.target.value})} />
                   </div>
                 )}
-                <div className="space-y-2 col-span-2">
+                 <div className="space-y-2 col-span-2">
                   <label className="text-sm font-medium text-gray-700">Nível de Acesso</label>
                   <select className="w-full p-2 border rounded-md" value={editForm.role || 'CLIENT'} onChange={(e) => setEditForm({...editForm, role: e.target.value})}>
                     <option value="CLIENT">Cliente (Comum)</option>
                     <option value="ADMIN">Administrador</option>
                   </select>
                 </div>
+
+                {editForm.role === 'CLIENT' && (
+                  <div className="space-y-3 col-span-2 p-4 bg-purple-50/50 border border-purple-100 rounded-xl">
+                    <label className="text-sm font-bold text-purple-900 block mb-2">Liberação de Ferramentas B2B (NR-1)</label>
+                    <div className="flex flex-col gap-2">
+                      <label className="flex items-center gap-2 cursor-pointer">
+                        <input 
+                          type="checkbox" 
+                          checked={!!editForm.copsoqUnlocked} 
+                          onChange={(e) => setEditForm({...editForm, copsoqUnlocked: e.target.checked})} 
+                          className="w-4 h-4 text-purple-600 focus:ring-purple-500 rounded border-gray-300"
+                        />
+                        <span className="text-xs font-semibold text-gray-750">Desbloquear COPSOQ II (41 Questões)</span>
+                      </label>
+                      <label className="flex items-center gap-2 cursor-pointer">
+                        <input 
+                          type="checkbox" 
+                          checked={!!editForm.hseUnlocked} 
+                          onChange={(e) => setEditForm({...editForm, hseUnlocked: e.target.checked})} 
+                          className="w-4 h-4 text-purple-600 focus:ring-purple-500 rounded border-gray-300"
+                        />
+                        <span className="text-xs font-semibold text-gray-750">Desbloquear HSE Stress Indicator Tool</span>
+                      </label>
+                      <label className="flex items-center gap-2 cursor-pointer">
+                        <input 
+                          type="checkbox" 
+                          checked={!!editForm.clinicalUnlocked} 
+                          onChange={(e) => setEditForm({...editForm, clinicalUnlocked: e.target.checked})} 
+                          className="w-4 h-4 text-purple-600 focus:ring-purple-500 rounded border-gray-300"
+                        />
+                        <span className="text-xs font-semibold text-gray-750">Desbloquear Diagnóstico Clínico BMA</span>
+                      </label>
+                    </div>
+                  </div>
+                )}
                 
                 <div className="space-y-2 col-span-2 p-4 bg-orange-50 border border-orange-100 rounded-xl">
                   <div className="flex items-center gap-2 mb-2">

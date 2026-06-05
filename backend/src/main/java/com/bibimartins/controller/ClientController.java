@@ -32,6 +32,9 @@ public class ClientController {
                 res.put("documentNumber", u.getDocumentNumber() != null ? u.getDocumentNumber() : "");
                 res.put("companyName", u.getCompanyName() != null ? u.getCompanyName() : "");
                 res.put("companyAddress", u.getCompanyAddress() != null ? u.getCompanyAddress() : "");
+                res.put("copsoqUnlocked", u.isCopsoqUnlocked());
+                res.put("hseUnlocked", u.isHseUnlocked());
+                res.put("clinicalUnlocked", u.isClinicalUnlocked());
                 return ResponseEntity.ok(res);
             })
             .orElse(ResponseEntity.notFound().build());

@@ -52,6 +52,15 @@ public class User {
     @Column(name = "consent_date")
     private LocalDateTime consentDate;
 
+    @Column(name = "copsoq_unlocked", nullable = false)
+    private boolean copsoqUnlocked = false;
+
+    @Column(name = "hse_unlocked", nullable = false)
+    private boolean hseUnlocked = false;
+
+    @Column(name = "clinical_unlocked", nullable = false)
+    private boolean clinicalUnlocked = false;
+
     @PrePersist
     protected void onCreate() {
         this.createdAt = LocalDateTime.now();
@@ -172,5 +181,29 @@ public class User {
 
     public void setConsentDate(LocalDateTime consentDate) {
         this.consentDate = consentDate;
+    }
+
+    public boolean isCopsoqUnlocked() {
+        return copsoqUnlocked;
+    }
+
+    public void setCopsoqUnlocked(boolean copsoqUnlocked) {
+        this.copsoqUnlocked = copsoqUnlocked;
+    }
+
+    public boolean isHseUnlocked() {
+        return hseUnlocked;
+    }
+
+    public void setHseUnlocked(boolean hseUnlocked) {
+        this.hseUnlocked = hseUnlocked;
+    }
+
+    public boolean isClinicalUnlocked() {
+        return clinicalUnlocked;
+    }
+
+    public void setClinicalUnlocked(boolean clinicalUnlocked) {
+        this.clinicalUnlocked = clinicalUnlocked;
     }
 }

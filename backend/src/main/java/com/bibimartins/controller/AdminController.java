@@ -52,6 +52,9 @@ public class AdminController {
                 map.put("documentNumber", u.getDocumentNumber());
                 map.put("companyName", u.getCompanyName());
                 map.put("companyAddress", u.getCompanyAddress());
+                map.put("copsoqUnlocked", u.isCopsoqUnlocked());
+                map.put("hseUnlocked", u.isHseUnlocked());
+                map.put("clinicalUnlocked", u.isClinicalUnlocked());
                 return map;
             })
             .toList();
@@ -71,6 +74,9 @@ public class AdminController {
             if (data.containsKey("documentNumber")) user.setDocumentNumber(data.get("documentNumber") == null ? null : data.get("documentNumber").toString());
             if (data.containsKey("companyName")) user.setCompanyName(data.get("companyName") == null ? null : data.get("companyName").toString());
             if (data.containsKey("companyAddress")) user.setCompanyAddress(data.get("companyAddress") == null ? null : data.get("companyAddress").toString());
+            if (data.containsKey("copsoqUnlocked")) user.setCopsoqUnlocked(Boolean.parseBoolean(data.get("copsoqUnlocked").toString()));
+            if (data.containsKey("hseUnlocked")) user.setHseUnlocked(Boolean.parseBoolean(data.get("hseUnlocked").toString()));
+            if (data.containsKey("clinicalUnlocked")) user.setClinicalUnlocked(Boolean.parseBoolean(data.get("clinicalUnlocked").toString()));
             
             // Suporte para Reset de Senha pelo Admin
             if (data.containsKey("password") && data.get("password") != null && !data.get("password").toString().isBlank()) {

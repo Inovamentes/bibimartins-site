@@ -42,7 +42,21 @@ const initialCampaigns = [
   { id: 'c3', name: "Avaliação Preventiva Q1 2026", startDate: "2026-05-01", endDate: "2026-05-15", status: "Aberta", score: 45 }
 ];
 
-export function B2bDashboard() {
+interface B2bDashboardProps {
+  profile: {
+    copsoqUnlocked?: boolean;
+    hseUnlocked?: boolean;
+    clinicalUnlocked?: boolean;
+    companyName?: string;
+  } | null;
+}
+
+export function B2bDashboard({ profile }: B2bDashboardProps) {
+  const isCopsoqUnlockedReal = !!profile?.copsoqUnlocked;
+  const isHseUnlockedReal = !!profile?.hseUnlocked;
+  const isClinicalUnlockedReal = !!profile?.clinicalUnlocked;
+  const isAnyToolUnlockedReal = isCopsoqUnlockedReal || isHseUnlockedReal || isClinicalUnlockedReal;
+
   // Demo Mode state
   const [isDemoActive, setIsDemoActive] = useState<boolean>(() => {
     return localStorage.getItem('bm_demo_active') === 'true';
@@ -138,7 +152,7 @@ export function B2bDashboard() {
 
   // Sector operations
   const handleAddSector = () => {
-    if (isDemoActive) {
+    if (isDemoActive && !isAnyToolUnlockedReal) {
       triggerToast("🚫 Não é possível alterar setores no Modo Demonstração. Adquira a licença completa.");
       return;
     }
@@ -153,7 +167,7 @@ export function B2bDashboard() {
   };
 
   const handleRemoveSector = (sec: string) => {
-    if (isDemoActive) {
+    if (isDemoActive && !isAnyToolUnlockedReal) {
       triggerToast("🚫 Não é possível remover setores no Modo Demonstração. Adquira a licença completa.");
       return;
     }
@@ -165,7 +179,7 @@ export function B2bDashboard() {
 
   // Atestados operations
   const handleAddAtestado = () => {
-    if (isDemoActive) {
+    if (isDemoActive && !isAnyToolUnlockedReal) {
       triggerToast("🚫 Não é possível cadastrar atestados no Modo Demonstração. Adquira a licença completa.");
       return;
     }
@@ -189,7 +203,7 @@ export function B2bDashboard() {
   };
 
   const handleRemoveAtestado = (id: string) => {
-    if (isDemoActive) {
+    if (isDemoActive && !isAnyToolUnlockedReal) {
       triggerToast("🚫 Não é possível remover atestados no Modo Demonstração.");
       return;
     }
@@ -254,7 +268,7 @@ export function B2bDashboard() {
 
   // Campaigns operations
   const handleAddCampaign = () => {
-    if (isDemoActive) {
+    if (isDemoActive && !isAnyToolUnlockedReal) {
       triggerToast("🚫 Não é possível criar campanhas no Modo Demonstração. Adquira a licença completa.");
       return;
     }
@@ -278,7 +292,7 @@ export function B2bDashboard() {
   };
 
   const handleCloseCampaign = (id: string) => {
-    if (isDemoActive) {
+    if (isDemoActive && !isAnyToolUnlockedReal) {
       triggerToast("🚫 Não é possível fechar campanhas no Modo Demonstração. Compre para salvar histórico.");
       return;
     }
@@ -357,7 +371,7 @@ export function B2bDashboard() {
                          BIBI MARTINS ACADEMY B2B
 ========================================================================
 Gerado em: ${new Date().toLocaleDateString('pt-BR')} (MODO DEMONSTRAÇÃO)
-Empresa: Mapeamento de Teste Ltda
+Empresa: ${profile?.companyName || 'Mapeamento de Teste Ltda'}
 Total de Respostas: ${surveyResponses.length + 42} colaboradores (dados simulados + testes)
 
 ------------------------------------------------------------------------
@@ -536,61 +550,85 @@ ADQUIRA A SUA LICENÇA NO HOTMART: https://pay.hotmart.com/mock-nr1
                 title: 'COPSOQ II (41 Questões)',
                 desc: 'Avaliação de riscos psicossociais baseado no questionário dinamarquês. Mede estresse, burnout e assédio de forma anônima.',
                 hotmart: 'https://pay.hotmart.com/mock-nr1',
-                badge: 'Saúde Mental & Clima'
+                badge: 'Saúde Mental & Clima',
+                unlocked: isCopsoqUnlockedReal
               },
               {
                 id: 'hse',
                 title: 'HSE Stress Indicator Tool',
                 desc: 'Desenvolvido pelo órgão britânico de segurança do trabalho para identificar e intervir nas 6 dimensões de estresse ocupacional.',
                 hotmart: 'https://pay.hotmart.com/mock-nr1',
-                badge: 'Estresse Ocupacional'
+                badge: 'Estresse Ocupacional',
+                unlocked: isHseUnlockedReal
               },
               {
                 id: 'clinical',
                 title: 'Diagnóstico Clínico BMA',
                 desc: 'Avaliação personalizada para mapear adaptações razoáveis e necessidades sensoriais de profissionais neurodivergentes na empresa.',
                 hotmart: 'https://pay.hotmart.com/mock-nr1',
-                badge: 'Inclusão & Neurodiversidade'
+                badge: 'Inclusão & Neurodiversidade',
+                unlocked: isClinicalUnlockedReal
               }
             ].map(tool => (
-              <Card key={tool.id} className="bg-slate-950 border-slate-800 relative overflow-hidden group shadow-lg flex flex-col justify-between">
+              <Card key={tool.id} className="bg-slate-950 border-slate-800 relative overflow-hidden group shadow-lg flex flex-col justify-between min-h-[220px]">
                 
                 {/* Locked Mask (Locked unless full license bought, which we mock as locked unless user is admin or isDemoActive handles dashboard. BUT the actual instrument questionnaires remain locked for purchase redirects) */}
-                <div className="absolute inset-0 bg-slate-950/85 backdrop-blur-[2px] z-10 flex flex-col items-center justify-center p-6 text-center transition-all group-hover:bg-slate-950/90">
-                  <div className="w-12 h-12 bg-orange-500/20 border border-orange-500/40 rounded-full flex items-center justify-center mb-4 text-orange-400 shadow-lg shadow-orange-500/10">
-                    <Lock className="w-5 h-5 animate-pulse" />
-                  </div>
-                  <h4 className="text-sm font-bold text-white mb-2">{tool.title}</h4>
-                  <p className="text-slate-400 text-[11px] mb-4 max-w-[200px] leading-relaxed">Instrumento bloqueado. Adquira a licença comercial ou ative o modo demonstração.</p>
-                  
-                  <div className="flex flex-col gap-2 w-full">
-                    <Button 
-                      onClick={() => window.open(tool.hotmart, '_blank')}
-                      className="w-full bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white text-xs font-bold h-9 rounded-lg"
-                    >
-                      Liberar no Hotmart
-                    </Button>
+                {!tool.unlocked && (
+                  <div className="absolute inset-0 bg-slate-950/85 backdrop-blur-[2px] z-10 flex flex-col items-center justify-center p-6 text-center transition-all group-hover:bg-slate-950/90">
+                    <div className="w-12 h-12 bg-orange-500/20 border border-orange-500/40 rounded-full flex items-center justify-center mb-4 text-orange-400 shadow-lg shadow-orange-500/10">
+                      <Lock className="w-5 h-5 animate-pulse" />
+                    </div>
+                    <h4 className="text-sm font-bold text-white mb-2">{tool.title}</h4>
+                    <p className="text-slate-400 text-[11px] mb-4 max-w-[200px] leading-relaxed">Instrumento bloqueado. Adquira a licença comercial ou ative o modo demonstração.</p>
                     
-                    {isDemoActive && (
+                    <div className="flex flex-col gap-2 w-full">
                       <Button 
-                        onClick={() => {
-                          setSelectedScale(tool.id as any);
-                          setIsQuestionModalOpen(true);
-                        }}
-                        variant="secondary"
-                        className="w-full bg-slate-800 hover:bg-slate-700 text-white text-xs h-9 rounded-lg border border-slate-700"
+                        onClick={() => window.open(tool.hotmart, '_blank')}
+                        className="w-full bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white text-xs font-bold h-9 rounded-lg"
                       >
-                        <Eye className="w-3.5 h-3.5 mr-1" />
-                        Visualizar Escalas
+                        Liberar no Hotmart
                       </Button>
-                    )}
+                      
+                      {isDemoActive && (
+                        <Button 
+                          onClick={() => {
+                            setSelectedScale(tool.id as any);
+                            setIsQuestionModalOpen(true);
+                          }}
+                          variant="secondary"
+                          className="w-full bg-slate-800 hover:bg-slate-700 text-white text-xs h-9 rounded-lg border border-slate-700"
+                        >
+                          <Eye className="w-3.5 h-3.5 mr-1" />
+                          Visualizar Escalas
+                        </Button>
+                      )}
+                    </div>
                   </div>
-                </div>
+                )}
 
-                <CardContent className="p-5">
-                  <Badge className="bg-slate-800 text-slate-300 border-slate-700 mb-3">{tool.badge}</Badge>
-                  <h3 className="font-bold text-white mb-2 text-sm">{tool.title}</h3>
-                  <p className="text-slate-400 text-xs leading-relaxed">{tool.desc}</p>
+                <CardContent className="p-5 flex flex-col justify-between h-full">
+                  <div>
+                    <div className="flex items-center justify-between gap-2 mb-3">
+                      <Badge className="bg-slate-800 text-slate-300 border-slate-700">{tool.badge}</Badge>
+                      {tool.unlocked && (
+                        <Badge className="bg-green-500/20 text-green-400 border-green-500/30">✓ Ativo</Badge>
+                      )}
+                    </div>
+                    <h3 className="font-bold text-white mb-2 text-sm">{tool.title}</h3>
+                    <p className="text-slate-400 text-xs leading-relaxed">{tool.desc}</p>
+                  </div>
+                  {tool.unlocked && (
+                    <Button 
+                      onClick={() => {
+                        setSelectedScale(tool.id as any);
+                        setIsQuestionModalOpen(true);
+                      }}
+                      className="w-full bg-slate-800 hover:bg-slate-700 text-white text-xs h-9 rounded-lg border border-slate-700 mt-4"
+                    >
+                      <Eye className="w-3.5 h-3.5 mr-1" />
+                      Visualizar Escalas
+                    </Button>
+                  )}
                 </CardContent>
               </Card>
             ))}
@@ -617,7 +655,7 @@ ADQUIRA A SUA LICENÇA NO HOTMART: https://pay.hotmart.com/mock-nr1
       {/* ======================= TAB: GRÁFICOS E RESULTADOS ======================= */}
       {activeSubTab === 'graficos' && (
         <div className="space-y-6 animate-in fade-in-50">
-          {!isDemoActive && (
+          {!isDemoActive && !isAnyToolUnlockedReal && (
             <div className="text-center py-12 bg-slate-950 rounded-3xl border border-slate-800 flex flex-col items-center justify-center p-6">
               <Lock className="w-12 h-12 text-slate-600 mb-4" />
               <h3 className="text-lg font-bold">Gráficos de Resultados Bloqueados</h3>
@@ -630,7 +668,7 @@ ADQUIRA A SUA LICENÇA NO HOTMART: https://pay.hotmart.com/mock-nr1
             </div>
           )}
 
-          {isDemoActive && (
+          {(isDemoActive || isAnyToolUnlockedReal) && (
             <>
               {/* Top Banner Stats */}
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
@@ -725,7 +763,7 @@ ADQUIRA A SUA LICENÇA NO HOTMART: https://pay.hotmart.com/mock-nr1
       {/* ======================= TAB: CAMPANHAS ======================= */}
       {activeSubTab === 'campanhas' && (
         <div className="space-y-6 animate-in fade-in-50">
-          {!isDemoActive && (
+          {!isDemoActive && !isAnyToolUnlockedReal && (
             <div className="text-center py-12 bg-slate-950 rounded-3xl border border-slate-800 flex flex-col items-center justify-center p-6">
               <Lock className="w-12 h-12 text-slate-600 mb-4" />
               <h3 className="text-lg font-bold">Gestão de Campanhas Bloqueada</h3>
@@ -738,7 +776,7 @@ ADQUIRA A SUA LICENÇA NO HOTMART: https://pay.hotmart.com/mock-nr1
             </div>
           )}
 
-          {isDemoActive && (
+          {(isDemoActive || isAnyToolUnlockedReal) && (
             <>
               {/* Comparative Delta Report */}
               {comparison && (
@@ -881,7 +919,7 @@ ADQUIRA A SUA LICENÇA NO HOTMART: https://pay.hotmart.com/mock-nr1
       {/* ======================= TAB: ATESTADOS ======================= */}
       {activeSubTab === 'atestados' && (
         <div className="space-y-6 animate-in fade-in-50">
-          {!isDemoActive && (
+          {!isDemoActive && !isAnyToolUnlockedReal && (
             <div className="text-center py-12 bg-slate-950 rounded-3xl border border-slate-800 flex flex-col items-center justify-center p-6">
               <Lock className="w-12 h-12 text-slate-600 mb-4" />
               <h3 className="text-lg font-bold">Gestão de Atestados Bloqueada</h3>
@@ -894,7 +932,7 @@ ADQUIRA A SUA LICENÇA NO HOTMART: https://pay.hotmart.com/mock-nr1
             </div>
           )}
 
-          {isDemoActive && (
+          {(isDemoActive || isAnyToolUnlockedReal) && (
             <>
               {/* CID Alert warnings if active */}
               {cidAlerts.length > 0 && (
@@ -1022,7 +1060,7 @@ ADQUIRA A SUA LICENÇA NO HOTMART: https://pay.hotmart.com/mock-nr1
       {/* ======================= TAB: SETORES ======================= */}
       {activeSubTab === 'setores' && (
         <div className="space-y-6 animate-in fade-in-50">
-          {!isDemoActive && (
+          {!isDemoActive && !isAnyToolUnlockedReal && (
             <div className="text-center py-12 bg-slate-950 rounded-3xl border border-slate-800 flex flex-col items-center justify-center p-6">
               <Lock className="w-12 h-12 text-slate-600 mb-4" />
               <h3 className="text-lg font-bold">Configuração de Setores Bloqueada</h3>
@@ -1035,7 +1073,7 @@ ADQUIRA A SUA LICENÇA NO HOTMART: https://pay.hotmart.com/mock-nr1
             </div>
           )}
 
-          {isDemoActive && (
+          {(isDemoActive || isAnyToolUnlockedReal) && (
             <div className="grid lg:grid-cols-3 gap-6">
               {/* Form Add Sector */}
               <Card className="bg-slate-950 border-slate-800 h-max">
