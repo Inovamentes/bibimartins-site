@@ -7,10 +7,11 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
-import { LogOut, LayoutDashboard, User, Mail, Loader2, Save, CheckCircle2, Lock, Unlock, PlayCircle } from 'lucide-react'
+import { LogOut, LayoutDashboard, User, Mail, Loader2, Save, CheckCircle2, Lock, Unlock, PlayCircle, ShieldCheck } from 'lucide-react'
 import { Logo } from '@/components/Logo'
 import VideoPlayer from '@/components/VideoPlayer'
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog'
+import { B2bDashboard } from '@/components/B2bDashboard'
 
 interface Profile { 
   id: number; email: string; role: string; createdAt: string;
@@ -21,7 +22,7 @@ export default function ClientDashboard() {
   const { user, logout } = useAuth()
   const navigate = useNavigate()
   const [profile, setProfile] = useState<Profile | null>(null)
-  const [activeTab, setActiveTab] = useState<'inicio' | 'perfil'>('inicio')
+  const [activeTab, setActiveTab] = useState<'inicio' | 'b2b' | 'perfil'>('inicio')
   const [loading, setLoading] = useState(false)
   const [saveSuccess, setSaveSuccess] = useState(false)
   const [catalog, setCatalog] = useState<any[]>([])
@@ -35,6 +36,9 @@ export default function ClientDashboard() {
     api.get('/api/client/profile').then(res => {
       setProfile(res.data)
       setEditForm(res.data)
+      if (res.data.documentType === 'CNPJ' || res.data.companyName) {
+        setActiveTab('b2b')
+      }
     }).catch(() => {})
 
     api.get('/api/client/courses/catalog').then(res => {
@@ -84,7 +88,13 @@ export default function ClientDashboard() {
             onClick={() => setActiveTab('inicio')}
             className={`flex-1 md:w-full px-3 py-2 rounded-xl flex items-center justify-center md:justify-start gap-2 text-sm font-medium transition-colors ${activeTab === 'inicio' ? 'bg-white/20 text-white' : 'hover:bg-white/10 text-orange-100'}`}
           >
-            <LayoutDashboard className="w-4 h-4 shrink-0" /> Início
+            <LayoutDashboard className="w-4 h-4 shrink-0" /> Meus Cursos
+          </button>
+          <button 
+            onClick={() => setActiveTab('b2b')}
+            className={`flex-1 md:w-full px-3 py-2 rounded-xl flex items-center justify-center md:justify-start gap-2 text-sm font-medium transition-colors ${activeTab === 'b2b' ? 'bg-white/20 text-white' : 'hover:bg-white/10 text-orange-100'}`}
+          >
+            <ShieldCheck className="w-4 h-4 shrink-0" /> Plataforma NR-1 B2B
           </button>
           <button 
             onClick={() => setActiveTab('perfil')}
@@ -126,7 +136,9 @@ export default function ClientDashboard() {
             Sair
           </button>
         </div>
-        {activeTab === 'inicio' ? (
+        {activeTab === 'b2b' ? (
+          <B2bDashboard />
+        ) : activeTab === 'inicio' ? (
           <>
             {/* Welcome Header */}
             <div className="mb-8">

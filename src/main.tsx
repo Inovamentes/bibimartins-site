@@ -9,6 +9,7 @@ import RegisterPage from './pages/RegisterPage.tsx'
 import AdminDashboard from './pages/AdminDashboard.tsx'
 import ClientDashboard from './pages/ClientDashboard.tsx'
 import CoursePage from './pages/CoursePage.tsx'
+import CollaboratorSurvey from './pages/CollaboratorSurvey.tsx'
 import './index.css'
 
 createRoot(document.getElementById('root')!).render(
@@ -20,6 +21,7 @@ createRoot(document.getElementById('root')!).render(
           <Route path="/"         element={<App />} />
           <Route path="/login"    element={<LoginPage />} />
           <Route path="/registro" element={<RegisterPage />} />
+          <Route path="/pesquisa/:campaignId" element={<CollaboratorSurvey />} />
 
           {/* Protected - Admin */}
           <Route path="/admin" element={
