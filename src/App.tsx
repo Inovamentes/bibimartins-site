@@ -107,7 +107,7 @@ function App() {
               <Button 
                 variant="outline"
                 onClick={() => window.open('https://wa.me/5511932143117?text=Olá Bibi, gostaria de saber mais sobre a Plataforma NR-1 COPSOQ para minha empresa.', '_blank')}
-                className={`transition-colors font-medium border-orange-400 ${isScrolled ? 'text-orange-600 hover:bg-orange-50' : 'text-white border-white/50 hover:bg-white/10'}`}
+                className={`bg-transparent transition-colors font-medium border-orange-400 ${isScrolled ? 'text-orange-600 hover:bg-orange-50' : 'text-white border-white/50 hover:bg-white/10'}`}
               >
                 <ShieldCheck className="w-4 h-4 mr-2" />
                 Plataforma NR-1
@@ -223,7 +223,7 @@ function App() {
         <div className="absolute bottom-20 left-20 w-96 h-96 bg-purple-500/20 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '1s' }} />
 
         {/* Content */}
-        <div className="relative z-10 container mx-auto px-4 lg:px-8 pt-24">
+        <div className="relative z-10 container mx-auto px-4 lg:px-8 pt-36 sm:pt-44 pb-12">
           <div className="max-w-2xl">
             <Badge className="mb-6 bg-white/20 text-white backdrop-blur-sm border-white/30 hover:bg-white/30">
               <Sparkles className="w-3 h-3 mr-1" />
@@ -258,7 +258,7 @@ function App() {
                 size="lg"
                 variant="outline"
                 onClick={() => window.open('https://wa.me/5511932143117', '_blank')}
-                className="border-white/50 text-white hover:bg-white/10 px-8"
+                className="bg-transparent border-white/50 text-white hover:bg-white/10 px-8"
               >
                 <Phone className="w-5 h-5 mr-2" />
                 Solicitar Orçamento
