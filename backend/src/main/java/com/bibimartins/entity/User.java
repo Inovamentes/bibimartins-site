@@ -52,13 +52,13 @@ public class User {
     @Column(name = "consent_date")
     private LocalDateTime consentDate;
 
-    @Column(name = "copsoq_unlocked", nullable = false)
+    @Column(name = "copsoq_unlocked", nullable = false, columnDefinition = "boolean default false")
     private boolean copsoqUnlocked = false;
 
-    @Column(name = "hse_unlocked", nullable = false)
+    @Column(name = "hse_unlocked", nullable = false, columnDefinition = "boolean default false")
     private boolean hseUnlocked = false;
 
-    @Column(name = "clinical_unlocked", nullable = false)
+    @Column(name = "clinical_unlocked", nullable = false, columnDefinition = "boolean default false")
     private boolean clinicalUnlocked = false;
 
     @PrePersist
