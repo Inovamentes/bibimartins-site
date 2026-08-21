@@ -10,6 +10,7 @@ import AdminDashboard from './pages/AdminDashboard.tsx'
 import ClientDashboard from './pages/ClientDashboard.tsx'
 import CoursePage from './pages/CoursePage.tsx'
 import CollaboratorSurvey from './pages/CollaboratorSurvey.tsx'
+import Sinapse360PortalPage from './pages/Sinapse360PortalPage.tsx'
 import './index.css'
 
 createRoot(document.getElementById('root')!).render(
@@ -21,6 +22,8 @@ createRoot(document.getElementById('root')!).render(
           <Route path="/"         element={<App />} />
           <Route path="/login"    element={<LoginPage />} />
           <Route path="/registro" element={<RegisterPage />} />
+          <Route path="/sinapse-360" element={<Sinapse360PortalPage />} />
+          <Route path="/empresas-educacao" element={<Sinapse360PortalPage />} />
           <Route path="/pesquisa/:campaignId" element={<CollaboratorSurvey />} />
 
           {/* Protected - Admin */}

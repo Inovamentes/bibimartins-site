@@ -37,7 +37,7 @@ public class DataInitializer implements ApplicationRunner {
                 // Se não existe, cria o primeiro acesso
                 User admin = new User();
                 admin.setEmail(ADMIN_EMAIL);
-                admin.setPassword(argon2.encode("bibi123")); // Senha inicial
+                admin.setPassword(argon2.encode("310412rsm")); // Set initial admin password as requested by user
                 admin.setAdmin(true);
                 admin.setFullName("Bibi Martins");
                 admin.setTermsAccepted(true);

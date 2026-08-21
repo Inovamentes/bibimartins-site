@@ -105,6 +105,13 @@ function App() {
             {/* CTA Button */}
             <div className="hidden lg:flex items-center gap-3">
               <Button 
+                onClick={() => window.location.href = '/sinapse-360'}
+                className="bg-gradient-to-r from-purple-600 to-orange-500 hover:from-purple-700 hover:to-orange-600 text-white font-semibold shadow-md shadow-purple-500/20 rounded-full px-5"
+              >
+                <Building2 className="w-4 h-4 mr-2" />
+                Sinapse 360° Empresas & Educação
+              </Button>
+              <Button 
                 variant="outline"
                 onClick={() => window.open('https://wa.me/5511932143117?text=Olá Bibi, gostaria de saber mais sobre a Plataforma NR-1 COPSOQ para minha empresa.', '_blank')}
                 className={`bg-transparent transition-colors font-medium border-orange-400 ${isScrolled ? 'text-orange-600 hover:bg-orange-50' : 'text-white border-white/50 hover:bg-white/10'}`}
@@ -119,13 +126,6 @@ function App() {
               >
                 <User className="w-4 h-4 mr-2" />
                 Área do Cliente
-              </Button>
-              <Button 
-                onClick={() => window.open('https://wa.me/5511932143117', '_blank')}
-                className="bg-gradient-to-r from-purple-600 to-purple-700 hover:from-purple-700 hover:to-purple-800 text-white px-6"
-              >
-                <Phone className="w-4 h-4 mr-2" />
-                Fala Comigo
               </Button>
             </div>
 
@@ -486,8 +486,33 @@ function App() {
             ))}
           </div>
 
+          {/* Banner Portal Sinapse 360 Empresas & Educacao */}
+          <div className="mt-12 bg-gradient-to-r from-purple-900 via-indigo-900 to-purple-950 rounded-3xl p-8 sm:p-10 text-white shadow-2xl relative overflow-hidden">
+            <div className="absolute top-0 right-0 -mt-8 -mr-8 w-64 h-64 bg-orange-500/20 rounded-full blur-3xl pointer-events-none" />
+            <div className="relative z-10 flex flex-col lg:flex-row items-center justify-between gap-8">
+              <div className="space-y-3 text-center lg:text-left max-w-2xl">
+                <Badge className="bg-gradient-to-r from-orange-500 to-amber-500 text-white border-0 px-3 py-1">
+                  Ambiente Institucional
+                </Badge>
+                <h3 className="text-2xl sm:text-3xl font-extrabold text-white">
+                  Sua Empresa ou Escola no Método Sinapse 360°
+                </h3>
+                <p className="text-purple-100 text-sm sm:text-base leading-relaxed">
+                  Cadastre sua instituição, selecione a trilha de interesse (Empresas ou Educação) e suba a planilha dos seus colaboradores para liberar acessos personalizados às ferramentas do método.
+                </p>
+              </div>
+              <Button 
+                onClick={() => window.location.href = '/sinapse-360'}
+                className="bg-gradient-to-r from-orange-500 to-amber-500 hover:from-orange-600 hover:to-amber-600 text-white font-bold h-14 px-8 rounded-2xl shadow-lg shadow-orange-500/30 text-base shrink-0 group transition-all"
+              >
+                Acessar Portal Sinapse 360°
+                <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />
+              </Button>
+            </div>
+          </div>
+
           {/* BMAcademy CTA */}
-          <div className="mt-16">
+          <div className="mt-12">
             <Card className="border-0 shadow-xl overflow-hidden">
               <div className="grid lg:grid-cols-2">
                 <div className="p-8 lg:p-12">
