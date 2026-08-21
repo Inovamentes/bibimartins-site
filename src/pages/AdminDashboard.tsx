@@ -1,25 +1,31 @@
 import { useEffect, useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import { useAuth } from '@/hooks/useAuth'
 import api from '@/lib/api'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
+import { Input } from '@/components/ui/input'
 import { Badge } from '@/components/ui/badge'
 import {
   Users, LogOut, Trash2, RefreshCw, Menu, Building2,
-  LayoutDashboard, Shield, TrendingUp, Edit, X, Video, CreditCard, Key, Wrench
+  LayoutDashboard, Shield, TrendingUp, Edit, X, Video, CreditCard, Key, Wrench,
+  GraduationCap, ChevronDown, ChevronUp, Download, School, FileSpreadsheet,
+  CheckCircle2, ArrowRight
 } from 'lucide-react'
 import { Logo } from '@/components/Logo'
 import { AdminCourses } from '@/components/AdminCourses'
 import { AdminPlans } from '@/components/AdminPlans'
 import { AdminSubscriptions } from '@/components/AdminSubscriptions'
 import { AdminTools } from '@/components/AdminTools'
+import { AdminEducationControl } from '@/components/admin/AdminEducationControl'
+import { AdminCompanyControl } from '@/components/admin/AdminCompanyControl'
+import { companyService } from '@/services/companyService'
 
 interface Stats { totalUsers: number; totalClients: number; totalAdmins: number }
 interface User  { 
   id: number; email: string; recoveryEmail?: string; role: string; createdAt: string;
   fullName?: string; whatsapp?: string; documentType?: string; documentNumber?: string; companyName?: string; companyAddress?: string;
-  password?: string; // Only used for resetting via admin
+  password?: string;
   copsoqUnlocked?: boolean;
   hseUnlocked?: boolean;
   clinicalUnlocked?: boolean;
@@ -28,15 +34,25 @@ interface User  {
 export default function AdminDashboard() {
   const { user, logout } = useAuth()
   const navigate = useNavigate()
-  const [stats, setStats]     = useState<Stats | null>(null)
-  const [users, setUsers]     = useState<User[]>([])
+  const [stats, setStats] = useState<Stats | null>(null)
+  const [users, setUsers] = useState<User[]>([])
   const [loading, setLoading] = useState(true)
   const [apiError, setApiError] = useState<string | null>(null)
   const [editingUser, setEditingUser] = useState<User | null>(null)
   const [editForm, setEditForm] = useState<Partial<User>>({})
   const [isSaving, setIsSaving] = useState(false)
-  const [activeTab, setActiveTab] = useState<'dashboard' | 'users' | 'courses' | 'plans' | 'subscriptions' | 'tools'>('dashboard')
+  
+  // Tabs: 'dashboard' | 'education' | 'companies' | 'users' | 'courses' | 'plans' | 'subscriptions' | 'tools'
+  const [activeTab, setActiveTab] = useState<'dashboard' | 'education' | 'companies' | 'users' | 'courses' | 'plans' | 'subscriptions' | 'tools'>('dashboard')
   const [isSidebarOpen, setIsSidebarOpen] = useState(false)
+
+  // Controle das listas retráteis no Dashboard
+  const [isEducationExpanded, setIsEducationExpanded] = useState(true)
+  const [isCompanyExpanded, setIsCompanyExpanded] = useState(true)
+
+  // Contadores Institucionais
+  const [totalSchools, setTotalSchools] = useState(0)
+  const [totalCompanies, setTotalCompanies] = useState(0)
 
   const fetchData = async () => {
     setLoading(true)
@@ -48,6 +64,19 @@ export default function AdminDashboard() {
       ])
       setStats(statsRes.data)
       setUsers(usersRes.data)
+
+      // Carregar totais de empresas e escolas
+      try {
+        const [schoolsList, companiesList] = await Promise.all([
+          companyService.listCompaniesByProduct('SINAPSE_360_EDUCACAO'),
+          companyService.listCompaniesByProduct('SINAPSE_360_EMPRESAS'),
+        ])
+        setTotalSchools(schoolsList.length)
+        setTotalCompanies(companiesList.length)
+      } catch (e) {
+        console.warn('Erro ao listar instituições:', e)
+      }
+
     } catch (err: any) {
       console.error('Erro ao carregar dados admin:', err)
       setApiError(err?.response?.data?.error || err?.message || 'Erro ao carregar dados')
@@ -96,7 +125,7 @@ export default function AdminDashboard() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-slate-50">
       {/* Mobile Overlay */}
       {isSidebarOpen && (
         <div 
@@ -106,13 +135,13 @@ export default function AdminDashboard() {
       )}
 
       {/* Sidebar */}
-      <aside className={`fixed top-0 left-0 h-full w-64 bg-gradient-to-b from-purple-900 to-purple-800 text-white flex flex-col z-50 shadow-2xl transition-transform duration-300 lg:translate-x-0 ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full'}`}>
-        <div className="p-6 border-b border-purple-700 flex items-center justify-between">
+      <aside className={`fixed top-0 left-0 h-full w-64 bg-gradient-to-b from-purple-950 via-purple-900 to-purple-950 text-white flex flex-col z-50 shadow-2xl transition-transform duration-300 lg:translate-x-0 ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full'}`}>
+        <div className="p-6 border-b border-purple-800 flex items-center justify-between">
           <div className="flex items-center gap-3">
             <Logo size="md" variant="white" />
             <div>
               <p className="font-bold text-sm">Bibi Martins</p>
-              <p className="text-xs text-purple-300">Painel Admin</p>
+              <p className="text-xs text-purple-300">Admin Geral</p>
             </div>
           </div>
           <button onClick={closeSidebar} className="lg:hidden p-2 hover:bg-white/10 rounded-lg">
@@ -120,15 +149,44 @@ export default function AdminDashboard() {
           </button>
         </div>
 
-        <nav className="flex-1 p-4 space-y-1">
-          <button onClick={() => selectTab('dashboard')} className={`w-full px-3 py-2 rounded-xl flex items-center gap-3 text-sm font-medium transition-colors ${activeTab === 'dashboard' ? 'bg-white/20 text-white' : 'hover:bg-white/10 text-purple-200'}`}>
-            <LayoutDashboard className="w-4 h-4" /> Dashboard
+        <nav className="flex-1 p-4 space-y-1 overflow-y-auto">
+          <button onClick={() => selectTab('dashboard')} className={`w-full px-3 py-2 rounded-xl flex items-center gap-3 text-sm font-medium transition-colors ${activeTab === 'dashboard' ? 'bg-white/20 text-white shadow-sm' : 'hover:bg-white/10 text-purple-200'}`}>
+            <LayoutDashboard className="w-4 h-4" /> Visão Geral
           </button>
+
+          {/* Seção Sinapse 360 */}
+          <div className="pt-3 pb-1">
+            <p className="px-3 text-[10px] font-bold uppercase tracking-wider text-purple-400">Pilares Sinapse 360°</p>
+          </div>
+
+          <button onClick={() => selectTab('education')} className={`w-full px-3 py-2 rounded-xl flex items-center justify-between text-sm font-medium transition-colors ${activeTab === 'education' ? 'bg-orange-500 text-white shadow-sm' : 'hover:bg-white/10 text-orange-300'}`}>
+            <div className="flex items-center gap-3">
+              <GraduationCap className="w-4 h-4" /> Sinapse Educação
+            </div>
+            {totalSchools > 0 && (
+              <Badge className="bg-orange-600 text-white text-[10px] px-1.5 py-0">{totalSchools}</Badge>
+            )}
+          </button>
+
+          <button onClick={() => selectTab('companies')} className={`w-full px-3 py-2 rounded-xl flex items-center justify-between text-sm font-medium transition-colors ${activeTab === 'companies' ? 'bg-purple-600 text-white shadow-sm' : 'hover:bg-white/10 text-purple-200'}`}>
+            <div className="flex items-center gap-3">
+              <Building2 className="w-4 h-4" /> Sinapse Empresas
+            </div>
+            {totalCompanies > 0 && (
+              <Badge className="bg-purple-700 text-white text-[10px] px-1.5 py-0">{totalCompanies}</Badge>
+            )}
+          </button>
+
+          {/* Gestão do Sistema */}
+          <div className="pt-3 pb-1">
+            <p className="px-3 text-[10px] font-bold uppercase tracking-wider text-purple-400">Gestão Geral</p>
+          </div>
+
           <button onClick={() => selectTab('users')} className={`w-full px-3 py-2 rounded-xl flex items-center gap-3 text-sm font-medium transition-colors ${activeTab === 'users' ? 'bg-white/20 text-white' : 'hover:bg-white/10 text-purple-200'}`}>
             <Users className="w-4 h-4" /> Usuários
           </button>
           <button onClick={() => selectTab('courses')} className={`w-full px-3 py-2 rounded-xl flex items-center gap-3 text-sm font-medium transition-colors ${activeTab === 'courses' ? 'bg-white/20 text-white' : 'hover:bg-white/10 text-purple-200'}`}>
-            <Video className="w-4 h-4" /> Cursos e Módulos
+            <Video className="w-4 h-4" /> Cursos e Aulas
           </button>
           <button onClick={() => selectTab('plans')} className={`w-full px-3 py-2 rounded-xl flex items-center gap-3 text-sm font-medium transition-colors ${activeTab === 'plans' ? 'bg-white/20 text-white' : 'hover:bg-white/10 text-purple-200'}`}>
             <CreditCard className="w-4 h-4" /> Planos e Vendas
@@ -136,30 +194,19 @@ export default function AdminDashboard() {
           <button onClick={() => selectTab('subscriptions')} className={`w-full px-3 py-2 rounded-xl flex items-center gap-3 text-sm font-medium transition-colors ${activeTab === 'subscriptions' ? 'bg-white/20 text-white' : 'hover:bg-white/10 text-purple-200'}`}>
             <Key className="w-4 h-4" /> Assinaturas
           </button>
-          
-          <div className="pt-2 pb-1">
-            <p className="px-3 text-[10px] font-medium uppercase tracking-wider text-purple-400">SaaS Corporativo</p>
-          </div>
-          <a href="https://bmacademy.com.br/admin/login" target="_blank" rel="noopener noreferrer" className="w-full px-3 py-2 rounded-xl flex items-center justify-between text-sm font-medium transition-colors bg-purple-950/40 text-purple-300 hover:bg-purple-900 border border-purple-800">
-            <div className="flex items-center gap-3">
-              <Building2 className="w-4 h-4" /> BMAcademy (NR-1)
-            </div>
-          </a>
-
-          <div className="pt-2"></div>
           <button onClick={() => selectTab('tools')} className={`w-full px-3 py-2 rounded-xl flex items-center gap-3 text-sm font-medium transition-colors ${activeTab === 'tools' ? 'bg-white/20 text-white' : 'hover:bg-white/10 text-purple-200'}`}>
             <Wrench className="w-4 h-4" /> Ferramentas
           </button>
         </nav>
 
-        <div className="p-4 border-t border-purple-700">
+        <div className="p-4 border-t border-purple-800">
           <div className="flex items-center gap-3 mb-4">
             <div className="w-9 h-9 rounded-full bg-gradient-to-br from-orange-400 to-orange-500 flex items-center justify-center text-white text-xs font-bold">
               {user?.email?.[0]?.toUpperCase()}
             </div>
             <div className="flex-1 min-w-0">
               <p className="text-xs font-medium truncate">{user?.email}</p>
-              <Badge className="text-[10px] bg-orange-500/20 text-orange-300 border-orange-500/30 mt-0.5">ADMIN</Badge>
+              <Badge className="text-[10px] bg-orange-500/20 text-orange-300 border-orange-500/30 mt-0.5">ADMIN TOTAL</Badge>
             </div>
           </div>
           <Button onClick={handleLogout} variant="ghost"
@@ -181,11 +228,22 @@ export default function AdminDashboard() {
               <Menu className="w-6 h-6" />
             </button>
             <div>
-              <h1 className="text-xl md:text-2xl font-bold text-gray-900">Dashboard</h1>
-              <p className="text-gray-500 text-xs md:text-sm">Visão geral da plataforma</p>
+              <h1 className="text-xl md:text-2xl font-bold text-gray-900">
+                {activeTab === 'dashboard' && 'Painel de Controle Bibi Martins'}
+                {activeTab === 'education' && 'Controle Sinapse 360° Educação'}
+                {activeTab === 'companies' && 'Controle Sinapse 360° Empresas'}
+                {activeTab === 'users' && 'Gestão de Usuários'}
+                {activeTab === 'courses' && 'Cursos e Módulos'}
+                {activeTab === 'plans' && 'Planos e Vendas'}
+                {activeTab === 'subscriptions' && 'Assinaturas'}
+                {activeTab === 'tools' && 'Ferramentas do Método'}
+              </h1>
+              <p className="text-gray-500 text-xs md:text-sm">
+                Gestão centralizada de todas as operações, ferramentas e equipes.
+              </p>
             </div>
           </div>
-          <Button onClick={fetchData} variant="outline" size="sm" className="gap-2 shrink-0">
+          <Button onClick={fetchData} variant="outline" size="sm" className="gap-2 shrink-0 rounded-xl">
             <RefreshCw className={`w-4 h-4 ${loading ? 'animate-spin' : ''}`} /> 
             <span className="hidden sm:inline">Atualizar</span>
           </Button>
@@ -193,257 +251,379 @@ export default function AdminDashboard() {
 
         {/* Error Banner */}
         {apiError && (
-          <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-xl text-red-700 text-sm flex items-center gap-3">
+          <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-2xl text-red-700 text-sm flex items-center gap-3">
             <span className="font-bold">⚠️ Erro:</span> {apiError}
           </div>
         )}
 
-
+        {/* ========================================================================= */}
+        {/* ABA: DASHBOARD COM AS DUAS LISTAS RETRÁTEIS EM DESTAQUE */}
+        {/* ========================================================================= */}
         {activeTab === 'dashboard' && (
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-            {[
-              { label: 'Total Usuários', value: stats?.totalUsers ?? '—', icon: Users, color: 'purple', bg: 'from-purple-500 to-purple-600' },
-              { label: 'Clientes',       value: stats?.totalClients ?? '—', icon: TrendingUp, color: 'orange', bg: 'from-orange-400 to-orange-500' },
-              { label: 'Admins',         value: stats?.totalAdmins ?? '—', icon: Shield, color: 'teal', bg: 'from-teal-500 to-teal-600' },
-            ].map((card) => (
-              <Card key={card.label} className="border-0 shadow-lg overflow-hidden">
-                <CardContent className="p-6 flex items-center gap-4">
-                  <div className={`w-14 h-14 rounded-2xl bg-gradient-to-br ${card.bg} flex items-center justify-center shadow-lg`}>
-                    <card.icon className="w-7 h-7 text-white" />
+          <div className="space-y-8 animate-in fade-in duration-300">
+            {/* Cards de Métricas Rápidas */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+              {[
+                { label: 'Total Usuários', value: stats?.totalUsers ?? '—', icon: Users, bg: 'from-purple-600 to-indigo-600' },
+                { label: 'Clientes Ativos', value: stats?.totalClients ?? '—', icon: TrendingUp, bg: 'from-orange-500 to-amber-500' },
+                { label: 'Escolas Cadastradas', value: totalSchools, icon: School, bg: 'from-amber-500 to-orange-600' },
+                { label: 'Empresas Cadastradas', value: totalCompanies, icon: Building2, bg: 'from-indigo-600 to-purple-800' },
+              ].map((card) => (
+                <Card key={card.label} className="border-0 shadow-md rounded-3xl overflow-hidden bg-white">
+                  <CardContent className="p-6 flex items-center gap-4">
+                    <div className={`w-12 h-12 rounded-2xl bg-gradient-to-br ${card.bg} flex items-center justify-center shadow-md text-white shrink-0`}>
+                      <card.icon className="w-6 h-6" />
+                    </div>
+                    <div>
+                      <p className="text-2xl font-extrabold text-gray-900">{card.value}</p>
+                      <p className="text-gray-500 text-xs font-medium">{card.label}</p>
+                    </div>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+
+            {/* =================================================================== */}
+            {/* LISTA RETRÁTIL 1: SINAPSE 360° EDUCAÇÃO */}
+            {/* =================================================================== */}
+            <div className="border border-orange-200/80 bg-white rounded-3xl shadow-lg overflow-hidden transition-all">
+              <button
+                onClick={() => setIsEducationExpanded(!isEducationExpanded)}
+                className="w-full p-6 sm:p-7 flex items-center justify-between bg-gradient-to-r from-orange-50/80 via-white to-amber-50/50 hover:bg-orange-50 transition-colors text-left"
+              >
+                <div className="flex items-center gap-4">
+                  <div className="w-12 h-12 rounded-2xl bg-orange-500 text-white flex items-center justify-center shadow-md shrink-0">
+                    <GraduationCap className="w-7 h-7" />
                   </div>
                   <div>
-                    <p className="text-3xl font-bold text-gray-900">{card.value}</p>
-                    <p className="text-gray-500 text-sm">{card.label}</p>
+                    <div className="flex items-center gap-2">
+                      <h3 className="text-xl font-bold text-gray-900">🎓 Sinapse 360° Educação</h3>
+                      <Badge className="bg-orange-100 text-orange-700 border-orange-300 text-xs">
+                        {totalSchools} Escola(s)
+                      </Badge>
+                    </div>
+                    <p className="text-xs sm:text-sm text-gray-500 mt-0.5">
+                      Operações e ferramentas de controle para instituições de ensino, educadores e inclusão neurodivergente.
+                    </p>
                   </div>
-                </CardContent>
-              </Card>
-            ))}
+                </div>
+
+                <div className="flex items-center gap-3">
+                  <span className="text-xs font-semibold text-orange-600 hidden sm:inline">
+                    {isEducationExpanded ? 'Recolher Opções' : 'Expandir Opções'}
+                  </span>
+                  <div className="w-9 h-9 rounded-xl bg-white border border-gray-200 flex items-center justify-center text-gray-600">
+                    {isEducationExpanded ? <ChevronUp className="w-5 h-5" /> : <ChevronDown className="w-5 h-5" />}
+                  </div>
+                </div>
+              </button>
+
+              {isEducationExpanded && (
+                <div className="p-6 sm:p-8 border-t border-orange-100 bg-orange-50/20 space-y-6 animate-in fade-in duration-200">
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    {/* Item 1 */}
+                    <div 
+                      onClick={() => selectTab('education')}
+                      className="p-5 rounded-2xl bg-white border border-orange-100 shadow-sm hover:shadow-md hover:border-orange-300 cursor-pointer transition-all space-y-2 group"
+                    >
+                      <div className="w-10 h-10 rounded-xl bg-orange-100 text-orange-600 flex items-center justify-center group-hover:scale-105 transition-transform">
+                        <School className="w-5 h-5" />
+                      </div>
+                      <h4 className="font-bold text-sm text-gray-900 group-hover:text-orange-600 transition-colors">
+                        Gestão de Escolas & Docentes
+                      </h4>
+                      <p className="text-xs text-gray-500 leading-relaxed">
+                        Visualize as instituições de ensino, controle o corpo docente e os acessos liberados.
+                      </p>
+                    </div>
+
+                    {/* Item 2 */}
+                    <div 
+                      onClick={() => selectTab('education')}
+                      className="p-5 rounded-2xl bg-white border border-orange-100 shadow-sm hover:shadow-md hover:border-orange-300 cursor-pointer transition-all space-y-2 group"
+                    >
+                      <div className="w-10 h-10 rounded-xl bg-orange-100 text-orange-600 flex items-center justify-center group-hover:scale-105 transition-transform">
+                        <FileSpreadsheet className="w-5 h-5" />
+                      </div>
+                      <h4 className="font-bold text-sm text-gray-900 group-hover:text-orange-600 transition-colors">
+                        Upload de Planilhas Escolares
+                      </h4>
+                      <p className="text-xs text-gray-500 leading-relaxed">
+                        Suba listas em lote de professores, psicopedagogos e coordenadores via CSV.
+                      </p>
+                    </div>
+
+                    {/* Item 3 */}
+                    <div 
+                      onClick={() => selectTab('tools')}
+                      className="p-5 rounded-2xl bg-white border border-orange-100 shadow-sm hover:shadow-md hover:border-orange-300 cursor-pointer transition-all space-y-2 group"
+                    >
+                      <div className="w-10 h-10 rounded-xl bg-orange-100 text-orange-600 flex items-center justify-center group-hover:scale-105 transition-transform">
+                        <CheckCircle2 className="w-5 h-5" />
+                      </div>
+                      <h4 className="font-bold text-sm text-gray-900 group-hover:text-orange-600 transition-colors">
+                        Inclusão & Clima Educacional
+                      </h4>
+                      <p className="text-xs text-gray-500 leading-relaxed">
+                        Acesse as ferramentas diagnósticas de adaptação escolar e bem-estar do educador.
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="flex flex-wrap items-center justify-between gap-4 pt-2">
+                    <Button 
+                      variant="outline"
+                      size="sm"
+                      onClick={() => companyService.downloadSampleCsv('SINAPSE_360_EDUCACAO')}
+                      className="border-orange-200 text-orange-700 hover:bg-orange-50 rounded-xl text-xs flex items-center gap-1.5"
+                    >
+                      <Download className="w-3.5 h-3.5" />
+                      Baixar Planilha Modelo da Educação (.CSV)
+                    </Button>
+
+                    <Button
+                      size="sm"
+                      onClick={() => selectTab('education')}
+                      className="bg-orange-500 hover:bg-orange-600 text-white rounded-xl text-xs font-semibold px-4 flex items-center gap-1.5 shadow-sm"
+                    >
+                      Abrir Painel Completo da Educação
+                      <ArrowRight className="w-3.5 h-3.5" />
+                    </Button>
+                  </div>
+                </div>
+              )}
+            </div>
+
+            {/* =================================================================== */}
+            {/* LISTA RETRÁTIL 2: SINAPSE 360° EMPRESAS */}
+            {/* =================================================================== */}
+            <div className="border border-purple-200/80 bg-white rounded-3xl shadow-lg overflow-hidden transition-all">
+              <button
+                onClick={() => setIsCompanyExpanded(!isCompanyExpanded)}
+                className="w-full p-6 sm:p-7 flex items-center justify-between bg-gradient-to-r from-purple-50/80 via-white to-indigo-50/50 hover:bg-purple-50 transition-colors text-left"
+              >
+                <div className="flex items-center gap-4">
+                  <div className="w-12 h-12 rounded-2xl bg-purple-600 text-white flex items-center justify-center shadow-md shrink-0">
+                    <Building2 className="w-7 h-7" />
+                  </div>
+                  <div>
+                    <div className="flex items-center gap-2">
+                      <h3 className="text-xl font-bold text-gray-900">🏢 Sinapse 360° Empresas</h3>
+                      <Badge className="bg-purple-100 text-purple-700 border-purple-300 text-xs">
+                        {totalCompanies} Empresa(s)
+                      </Badge>
+                    </div>
+                    <p className="text-xs sm:text-sm text-gray-500 mt-0.5">
+                      Opções e ferramentas corporativas para gestão de liderança, NR-1, atestados e diagnósticos B2B.
+                    </p>
+                  </div>
+                </div>
+
+                <div className="flex items-center gap-3">
+                  <span className="text-xs font-semibold text-purple-700 hidden sm:inline">
+                    {isCompanyExpanded ? 'Recolher Opções' : 'Expandir Opções'}
+                  </span>
+                  <div className="w-9 h-9 rounded-xl bg-white border border-gray-200 flex items-center justify-center text-gray-600">
+                    {isCompanyExpanded ? <ChevronUp className="w-5 h-5" /> : <ChevronDown className="w-5 h-5" />}
+                  </div>
+                </div>
+              </button>
+
+              {isCompanyExpanded && (
+                <div className="p-6 sm:p-8 border-t border-purple-100 bg-purple-50/20 space-y-6 animate-in fade-in duration-200">
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    {/* Item 1 */}
+                    <div 
+                      onClick={() => selectTab('companies')}
+                      className="p-5 rounded-2xl bg-white border border-purple-100 shadow-sm hover:shadow-md hover:border-purple-300 cursor-pointer transition-all space-y-2 group"
+                    >
+                      <div className="w-10 h-10 rounded-xl bg-purple-100 text-purple-600 flex items-center justify-center group-hover:scale-105 transition-transform">
+                        <Building2 className="w-5 h-5" />
+                      </div>
+                      <h4 className="font-bold text-sm text-gray-900 group-hover:text-purple-700 transition-colors">
+                        Gestão de Empresas & Colaboradores
+                      </h4>
+                      <p className="text-xs text-gray-500 leading-relaxed">
+                        Acompanhe empresas clientes e gerencie as permissões e colaboradores de cada setor.
+                      </p>
+                    </div>
+
+                    {/* Item 2 */}
+                    <div 
+                      onClick={() => selectTab('companies')}
+                      className="p-5 rounded-2xl bg-white border border-purple-100 shadow-sm hover:shadow-md hover:border-purple-300 cursor-pointer transition-all space-y-2 group"
+                    >
+                      <div className="w-10 h-10 rounded-xl bg-purple-100 text-purple-600 flex items-center justify-center group-hover:scale-105 transition-transform">
+                        <FileSpreadsheet className="w-5 h-5" />
+                      </div>
+                      <h4 className="font-bold text-sm text-gray-900 group-hover:text-purple-700 transition-colors">
+                        Upload de Planilhas B2B
+                      </h4>
+                      <p className="text-xs text-gray-500 leading-relaxed">
+                        Suba planilhas corporativas com notificação em tempo real de importação de funcionários.
+                      </p>
+                    </div>
+
+                    {/* Item 3 */}
+                    <div 
+                      onClick={() => selectTab('tools')}
+                      className="p-5 rounded-2xl bg-white border border-purple-100 shadow-sm hover:shadow-md hover:border-purple-300 cursor-pointer transition-all space-y-2 group"
+                    >
+                      <div className="w-10 h-10 rounded-xl bg-purple-100 text-purple-600 flex items-center justify-center group-hover:scale-105 transition-transform">
+                        <Shield className="w-5 h-5" />
+                      </div>
+                      <h4 className="font-bold text-sm text-gray-900 group-hover:text-purple-700 transition-colors">
+                        Diagnósticos NR-1 & Atestados
+                      </h4>
+                      <p className="text-xs text-gray-500 leading-relaxed">
+                        Controle COPSOQ, HSE, risco psicossocial e atestados médicos de cada cliente.
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="flex flex-wrap items-center justify-between gap-4 pt-2">
+                    <Button 
+                      variant="outline"
+                      size="sm"
+                      onClick={() => companyService.downloadSampleCsv('SINAPSE_360_EMPRESAS')}
+                      className="border-purple-200 text-purple-700 hover:bg-purple-50 rounded-xl text-xs flex items-center gap-1.5"
+                    >
+                      <Download className="w-3.5 h-3.5" />
+                      Baixar Planilha Modelo Empresas (.CSV)
+                    </Button>
+
+                    <Button
+                      size="sm"
+                      onClick={() => selectTab('companies')}
+                      className="bg-purple-600 hover:bg-purple-700 text-white rounded-xl text-xs font-semibold px-4 flex items-center gap-1.5 shadow-sm"
+                    >
+                      Abrir Painel Completo de Empresas
+                      <ArrowRight className="w-3.5 h-3.5" />
+                    </Button>
+                  </div>
+                </div>
+              )}
+            </div>
           </div>
         )}
 
-        {/* Users Table */}
+        {/* ABA: CONTROLE DA EDUCAÇÃO */}
+        {activeTab === 'education' && <AdminEducationControl />}
+
+        {/* ABA: CONTROLE DAS EMPRESAS */}
+        {activeTab === 'companies' && <AdminCompanyControl />}
+
+        {/* ABA: USUÁRIOS */}
         {activeTab === 'users' && (
-          <Card className="border-0 shadow-lg">
-          <CardContent className="p-0">
-            <div className="p-6 border-b border-gray-100">
-              <h2 className="text-lg font-bold text-gray-900">Usuários Cadastrados</h2>
-              <p className="text-sm text-gray-500">{users.length} usuário(s) no total</p>
-            </div>
-            <div className="overflow-x-auto">
-              <table className="w-full">
-                <thead>
-                  <tr className="bg-gray-50">
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">ID</th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Usuário</th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Contato</th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Doc/Empresa</th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Perfil</th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Cadastro</th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Ações</th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-gray-100">
-                  {loading ? (
-                    <tr><td colSpan={7} className="px-6 py-12 text-center text-gray-400">Carregando...</td></tr>
-                  ) : users.length === 0 ? (
-                    <tr><td colSpan={7} className="px-6 py-12 text-center text-gray-400">Nenhum usuário ainda</td></tr>
-                  ) : users.map((u) => (
-                    <tr key={u.id} className="hover:bg-gray-50 transition-colors">
-                      <td className="px-6 py-4 text-sm text-gray-500">#{u.id}</td>
-                      <td className="px-6 py-4">
-                        <div className="flex items-center gap-3">
-                          <div className="w-8 h-8 rounded-full bg-gradient-to-br from-purple-500 to-orange-500 flex items-center justify-center text-white text-xs font-bold shrink-0">
-                            {(u.fullName ? u.fullName[0] : u.email[0]).toUpperCase()}
-                          </div>
-                          <div>
-                            <span className="text-sm font-medium text-gray-900 block">{u.fullName || 'Sem nome'}</span>
-                            <span className="text-xs text-gray-500">{u.email}</span>
-                          </div>
-                        </div>
-                      </td>
-                      <td className="px-6 py-4">
-                        <span className="text-sm text-gray-900 block">{u.whatsapp || '—'}</span>
-                      </td>
-                      <td className="px-6 py-4">
-                        {u.documentType ? (
-                          <div className="flex flex-col">
-                            <span className="text-sm font-medium text-gray-900">{u.documentType}: {u.documentNumber}</span>
-                            {u.companyName && <span className="text-xs text-gray-500">{u.companyName}</span>}
-                          </div>
-                        ) : <span className="text-sm text-gray-500">—</span>}
-                      </td>
-                      <td className="px-6 py-4">
-                        <Badge className={u.role === 'ADMIN'
-                          ? 'bg-purple-100 text-purple-700 border-purple-200'
-                          : 'bg-green-100 text-green-700 border-green-200'}>
-                          {u.role}
-                        </Badge>
-                        {u.role !== 'ADMIN' && (
-                          <div className="flex flex-wrap gap-1 mt-1.5 max-w-[150px]">
-                            {u.copsoqUnlocked && <Badge className="text-[9px] bg-purple-50 text-purple-600 border-purple-100 uppercase">COPSOQ</Badge>}
-                            {u.hseUnlocked && <Badge className="text-[9px] bg-orange-50 text-orange-600 border-orange-100 uppercase">HSE</Badge>}
-                            {u.clinicalUnlocked && <Badge className="text-[9px] bg-teal-50 text-teal-600 border-teal-100 uppercase">Clínico</Badge>}
-                            {!u.copsoqUnlocked && !u.hseUnlocked && !u.clinicalUnlocked && (
-                              <span className="text-[10px] text-gray-400 font-medium italic">Nenhuma</span>
-                            )}
-                          </div>
-                        )}
-                      </td>
-                      <td className="px-6 py-4 text-sm text-gray-500">{new Date(u.createdAt).toLocaleDateString('pt-BR')}</td>
-                      <td className="px-6 py-4 flex items-center gap-2">
-                        <Button onClick={() => handleEdit(u)} variant="ghost" size="sm"
-                          className="text-blue-500 hover:text-blue-700 hover:bg-blue-50 gap-1">
-                          <Edit className="w-4 h-4" /> Editar
-                        </Button>
-                        {u.email !== user?.email && (
-                          <Button onClick={() => handleDelete(u.id)} variant="ghost" size="sm"
-                            className="text-red-500 hover:text-red-700 hover:bg-red-50 gap-1">
-                            <Trash2 className="w-4 h-4" /> Remover
-                          </Button>
-                        )}
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          </CardContent>
-        </Card>
-        )}
-
-        {activeTab === 'courses' && (
-          <AdminCourses />
-        )}
-
-        {activeTab === 'plans' && (
-          <AdminPlans />
-        )}
-
-        {activeTab === 'subscriptions' && (
-          <AdminSubscriptions />
-        )}
-
-        {activeTab === 'tools' && (
-          <AdminTools />
-        )}
-
-        <p className="mt-6 text-center text-sm text-gray-400">
-          <Link to="/" className="hover:text-purple-600 transition-colors">← Ver site público</Link>
-        </p>
-      </main>
-
-      {/* Edit Modal */}
-      {editingUser && (
-        <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
-          <Card className="w-full max-w-xl max-h-[90vh] overflow-y-auto">
-            <div className="p-6 border-b flex justify-between items-center sticky top-0 bg-white">
-              <h2 className="text-xl font-bold">Editar Cliente: {editingUser.email}</h2>
-              <Button variant="ghost" size="sm" onClick={() => setEditingUser(null)}>
-                <X className="w-5 h-5" />
-              </Button>
-            </div>
-            <CardContent className="p-6 space-y-4">
-              <div className="grid grid-cols-2 gap-4">
-                <div className="space-y-2 col-span-2">
-                  <label className="text-sm font-medium text-gray-700">E-mail Principal (Login - Inalterável)</label>
-                  <input type="text" className="w-full p-2 border rounded-md bg-gray-50 text-gray-500 cursor-not-allowed" value={editForm.email || ''} readOnly />
-                </div>
-                <div className="space-y-2 col-span-2">
-                  <label className="text-sm font-medium text-gray-700">E-mail de Recuperação</label>
-                  <input type="email" className="w-full p-2 border rounded-md" value={editForm.recoveryEmail || ''} onChange={(e) => setEditForm({...editForm, recoveryEmail: e.target.value})} placeholder="Para restaurar conta em caso de perda" />
-                </div>
-                <div className="space-y-2 col-span-2 md:col-span-1">
-                  <label className="text-sm font-medium text-gray-700">Nome Completo</label>
-                  <input type="text" className="w-full p-2 border rounded-md" value={editForm.fullName || ''} onChange={(e) => setEditForm({...editForm, fullName: e.target.value})} />
-                </div>
-                <div className="space-y-2 col-span-2 md:col-span-1">
-                  <label className="text-sm font-medium text-gray-700">WhatsApp</label>
-                  <input type="text" className="w-full p-2 border rounded-md" value={editForm.whatsapp || ''} onChange={(e) => setEditForm({...editForm, whatsapp: e.target.value})} />
-                </div>
-                <div className="space-y-2 col-span-2 md:col-span-1">
-                  <label className="text-sm font-medium text-gray-700">Tipo (CPF/CNPJ)</label>
-                  <select className="w-full p-2 border rounded-md" value={editForm.documentType || ''} onChange={(e) => setEditForm({...editForm, documentType: e.target.value})}>
-                    <option value="">Selecione...</option>
-                    <option value="CPF">Pessoa Física (CPF)</option>
-                    <option value="CNPJ">Empresa (CNPJ)</option>
-                  </select>
-                </div>
-                <div className="space-y-2 col-span-2 md:col-span-1">
-                  <label className="text-sm font-medium text-gray-700">Número do Documento</label>
-                  <input type="text" className="w-full p-2 border rounded-md" value={editForm.documentNumber || ''} onChange={(e) => setEditForm({...editForm, documentNumber: e.target.value})} />
-                </div>
-                {editForm.documentType === 'CNPJ' && (
-                  <div className="space-y-2 col-span-2">
-                    <label className="text-sm font-medium text-gray-700">Razão Social</label>
-                    <input type="text" className="w-full p-2 border rounded-md" value={editForm.companyName || ''} onChange={(e) => setEditForm({...editForm, companyName: e.target.value})} />
-                  </div>
-                )}
-                 <div className="space-y-2 col-span-2">
-                  <label className="text-sm font-medium text-gray-700">Nível de Acesso</label>
-                  <select className="w-full p-2 border rounded-md" value={editForm.role || 'CLIENT'} onChange={(e) => setEditForm({...editForm, role: e.target.value})}>
-                    <option value="CLIENT">Cliente (Comum)</option>
-                    <option value="ADMIN">Administrador</option>
-                  </select>
-                </div>
-
-                {editForm.role === 'CLIENT' && (
-                  <div className="space-y-3 col-span-2 p-4 bg-purple-50/50 border border-purple-100 rounded-xl">
-                    <label className="text-sm font-bold text-purple-900 block mb-2">Liberação de Ferramentas B2B (NR-1)</label>
-                    <div className="flex flex-col gap-2">
-                      <label className="flex items-center gap-2 cursor-pointer">
-                        <input 
-                          type="checkbox" 
-                          checked={!!editForm.copsoqUnlocked} 
-                          onChange={(e) => setEditForm({...editForm, copsoqUnlocked: e.target.checked})} 
-                          className="w-4 h-4 text-purple-600 focus:ring-purple-500 rounded border-gray-300"
-                        />
-                        <span className="text-xs font-semibold text-gray-750">Desbloquear COPSOQ II (41 Questões)</span>
-                      </label>
-                      <label className="flex items-center gap-2 cursor-pointer">
-                        <input 
-                          type="checkbox" 
-                          checked={!!editForm.hseUnlocked} 
-                          onChange={(e) => setEditForm({...editForm, hseUnlocked: e.target.checked})} 
-                          className="w-4 h-4 text-purple-600 focus:ring-purple-500 rounded border-gray-300"
-                        />
-                        <span className="text-xs font-semibold text-gray-750">Desbloquear HSE Stress Indicator Tool</span>
-                      </label>
-                      <label className="flex items-center gap-2 cursor-pointer">
-                        <input 
-                          type="checkbox" 
-                          checked={!!editForm.clinicalUnlocked} 
-                          onChange={(e) => setEditForm({...editForm, clinicalUnlocked: e.target.checked})} 
-                          className="w-4 h-4 text-purple-600 focus:ring-purple-500 rounded border-gray-300"
-                        />
-                        <span className="text-xs font-semibold text-gray-750">Desbloquear Diagnóstico Clínico BMA</span>
-                      </label>
-                    </div>
-                  </div>
-                )}
-                
-                <div className="space-y-2 col-span-2 p-4 bg-orange-50 border border-orange-100 rounded-xl">
-                  <div className="flex items-center gap-2 mb-2">
-                    <Key className="w-4 h-4 text-orange-600" />
-                    <label className="text-sm font-bold text-orange-900">Resetar Senha do Cliente</label>
-                  </div>
-                  <input 
-                    type="text" 
-                    className="w-full p-2 border border-orange-200 rounded-md placeholder:text-orange-300" 
-                    value={editForm.password || ''} 
-                    onChange={(e) => setEditForm({...editForm, password: e.target.value})} 
-                    placeholder="Digite uma nova senha temporária..."
-                  />
-                  <p className="text-[10px] text-orange-600 mt-1">Ao preencher este campo e salvar, a senha do cliente será alterada imediatamente.</p>
+          <Card className="border-0 shadow-lg rounded-3xl overflow-hidden bg-white">
+            <CardContent className="p-0">
+              <div className="p-6 border-b border-gray-100 flex items-center justify-between">
+                <div>
+                  <h2 className="text-lg font-bold text-gray-900">Usuários Cadastrados no Sistema</h2>
+                  <p className="text-sm text-gray-500">{users.length} usuário(s) no total</p>
                 </div>
               </div>
-              <div className="flex justify-end gap-3 mt-6">
-                <Button variant="outline" onClick={() => setEditingUser(null)}>Cancelar</Button>
-                <Button onClick={handleSaveEdit} disabled={isSaving}>
-                  {isSaving ? 'Salvando...' : 'Salvar Alterações'}
-                </Button>
+              <div className="overflow-x-auto">
+                <table className="w-full">
+                  <thead>
+                    <tr className="bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      <th className="px-6 py-3">ID</th>
+                      <th className="px-6 py-3">Usuário</th>
+                      <th className="px-6 py-3">Contato</th>
+                      <th className="px-6 py-3">Doc/Empresa</th>
+                      <th className="px-6 py-3">Perfil</th>
+                      <th className="px-6 py-3">Cadastro</th>
+                      <th className="px-6 py-3">Ações</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-gray-100 text-xs text-gray-600">
+                    {loading ? (
+                      <tr><td colSpan={7} className="px-6 py-12 text-center text-gray-400">Carregando...</td></tr>
+                    ) : users.length === 0 ? (
+                      <tr><td colSpan={7} className="px-6 py-12 text-center text-gray-400">Nenhum usuário ainda</td></tr>
+                    ) : users.map((u) => (
+                      <tr key={u.id} className="hover:bg-purple-50/20 transition-colors">
+                        <td className="px-6 py-4 font-mono text-gray-400">#{u.id}</td>
+                        <td className="px-6 py-4">
+                          <p className="font-semibold text-gray-900">{u.fullName || 'Sem nome'}</p>
+                          <p className="text-gray-500">{u.email}</p>
+                        </td>
+                        <td className="px-6 py-4">
+                          <p>{u.whatsapp || '-'}</p>
+                        </td>
+                        <td className="px-6 py-4">
+                          <p className="font-medium text-gray-800">{u.companyName || '-'}</p>
+                          <p className="text-gray-400 text-[11px]">{u.documentNumber ? `${u.documentType}: ${u.documentNumber}` : '-'}</p>
+                        </td>
+                        <td className="px-6 py-4">
+                          <Badge className={u.role === 'ADMIN' ? 'bg-purple-100 text-purple-800 border-purple-200' : 'bg-gray-100 text-gray-700'}>
+                            {u.role}
+                          </Badge>
+                        </td>
+                        <td className="px-6 py-4 text-gray-400">
+                          {new Date(u.createdAt).toLocaleDateString('pt-BR')}
+                        </td>
+                        <td className="px-6 py-4">
+                          <div className="flex items-center gap-2">
+                            <Button size="sm" variant="ghost" onClick={() => handleEdit(u)} className="h-8 w-8 p-0 text-purple-600 hover:bg-purple-50">
+                              <Edit className="w-3.5 h-3.5" />
+                            </Button>
+                            {u.email !== user?.email && (
+                              <Button size="sm" variant="ghost" onClick={() => handleDelete(u.id)} className="h-8 w-8 p-0 text-red-500 hover:bg-red-50">
+                                <Trash2 className="w-3.5 h-3.5" />
+                              </Button>
+                            )}
+                          </div>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
               </div>
             </CardContent>
           </Card>
+        )}
+
+        {/* ABA: CURSOS */}
+        {activeTab === 'courses' && <AdminCourses />}
+
+        {/* ABA: PLANOS */}
+        {activeTab === 'plans' && <AdminPlans />}
+
+        {/* ABA: ASSINATURAS */}
+        {activeTab === 'subscriptions' && <AdminSubscriptions />}
+
+        {/* ABA: FERRAMENTAS */}
+        {activeTab === 'tools' && <AdminTools />}
+
+      </main>
+
+      {/* Modal de Edição de Usuário */}
+      {editingUser && (
+        <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
+          <div className="bg-white rounded-3xl max-w-md w-full p-6 space-y-4 shadow-2xl">
+            <h3 className="text-lg font-bold text-gray-900">Editar Usuário #{editingUser.id}</h3>
+            <div className="space-y-3 text-xs">
+              <div>
+                <label className="font-semibold text-gray-700">Nome</label>
+                <Input value={editForm.fullName || ''} onChange={(e: React.ChangeEvent<HTMLInputElement>) => setEditForm({...editForm, fullName: e.target.value})} className="h-9 rounded-xl mt-1" />
+              </div>
+              <div>
+                <label className="font-semibold text-gray-700">E-mail</label>
+                <Input value={editForm.email || ''} onChange={(e: React.ChangeEvent<HTMLInputElement>) => setEditForm({...editForm, email: e.target.value})} className="h-9 rounded-xl mt-1" />
+              </div>
+              <div>
+                <label className="font-semibold text-gray-700">Perfil (ADMIN / CLIENT)</label>
+                <Input value={editForm.role || ''} onChange={(e: React.ChangeEvent<HTMLInputElement>) => setEditForm({...editForm, role: e.target.value})} className="h-9 rounded-xl mt-1" />
+              </div>
+            </div>
+            <div className="flex justify-end gap-2 pt-2">
+              <Button variant="outline" size="sm" onClick={() => setEditingUser(null)} className="rounded-xl">Cancelar</Button>
+              <Button size="sm" onClick={handleSaveEdit} disabled={isSaving} className="bg-purple-600 hover:bg-purple-700 text-white rounded-xl">
+                {isSaving ? 'Salvando...' : 'Salvar Alterações'}
+              </Button>
+            </div>
+          </div>
         </div>
       )}
     </div>

@@ -61,6 +61,11 @@ export const companyService = {
     return res.data
   },
 
+  async listCompaniesByProduct(product: ProductInterest): Promise<CompanyResponse[]> {
+    const all = await this.listCompanies()
+    return all.filter((c) => c.productInterest === product)
+  },
+
   async uploadEmployeesCsv(companyId: number, file: File): Promise<EmployeeUploadResponse> {
     const formData = new FormData()
     formData.append('file', file)
@@ -82,33 +87,30 @@ export const companyService = {
     return res.data
   },
 
-  downloadSampleCsv(type: ProductInterest) {
+  /**
+   * Modelo oficial base para importação de colaboradores (Sinapse 360 Empresas e Educação)
+   */
+  downloadSampleCsv(type?: ProductInterest) {
     const headers = 'Nome,email,cargo,setor,escola,empresa,cidade,estado,cep'
-    let sampleRows = ''
-
-    if (type === 'SINAPSE_360_EDUCACAO') {
-      sampleRows = [
-        'Maria Souza,maria.souza@escola.com.br,Coordenadora Pedagogica,Ensino Fundamental,Colegio Futuro,,Sao Paulo,SP,01310-100',
-        'Carlos Alberto,carlos.alberto@escola.com.br,Professor de Matematica,Corpo Docente,Colegio Futuro,,Sao Paulo,SP,01310-100',
-        'Fernanda Lima,fernanda.lima@escola.com.br,Psicopedagoga,Apoio ao Aluno,Colegio Futuro,,Sao Paulo,SP,01310-100'
-      ].join('\n')
-    } else {
-      sampleRows = [
-        'Joao Silva,joao.silva@empresa.com.br,Gerente de Operacoes,Operacoes,,Inova Tech Ltda,Sao Paulo,SP,04543-011',
-        'Ana Paula,ana.paula@empresa.com.br,Analista de RH,Recursos Humanos,,Inova Tech Ltda,Sao Paulo,SP,04543-011',
-        'Roberto Santos,roberto.santos@empresa.com.br,Lider Tecnico,Engenharia,,Inova Tech Ltda,Sao Paulo,SP,04543-011'
-      ].join('\n')
-    }
+    const sampleRows = [
+      'Maria Souza,maria.souza@escola.com.br,Coordenadora Pedagogica,Ensino Fundamental,Colegio Futuro,,Sao Paulo,SP,01310-100',
+      'Carlos Alberto,carlos.alberto@escola.com.br,Professor de Matematica,Corpo Docente,Colegio Futuro,,Sao Paulo,SP,01310-100',
+      'Fernanda Lima,fernanda.lima@escola.com.br,Psicopedagoga,Apoio ao Aluno,Colegio Futuro,,Sao Paulo,SP,01310-100',
+    ].join('\n')
 
     const csvContent = `${headers}\n${sampleRows}`
     const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' })
     const url = URL.createObjectURL(blob)
     const link = document.createElement('a')
     link.setAttribute('href', url)
-    link.setAttribute(
-      'download',
-      `modelo_colaboradores_${type === 'SINAPSE_360_EDUCACAO' ? 'educacao' : 'empresas'}.csv`
-    )
+
+    const filename = type === 'SINAPSE_360_EDUCACAO'
+      ? 'modelo_colaboradores_sinapse_educacao.csv'
+      : type === 'SINAPSE_360_EMPRESAS'
+      ? 'modelo_colaboradores_sinapse_empresas.csv'
+      : 'modelo_colaboradores_sinapse_360.csv'
+
+    link.setAttribute('download', filename)
     document.body.appendChild(link)
     link.click()
     document.body.removeChild(link)
