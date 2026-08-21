@@ -1,4 +1,5 @@
 import api from '@/lib/api'
+import * as XLSX from 'xlsx'
 
 export type ProductInterest = 'SINAPSE_360_EMPRESAS' | 'SINAPSE_360_EDUCACAO'
 
@@ -66,9 +67,28 @@ export const companyService = {
     return all.filter((c) => c.productInterest === product)
   },
 
+  /**
+   * Faz upload de arquivo Excel (.xlsx, .xls) ou .csv
+   * Se for .xlsx/.xls, converte para CSV UTF-8 automaticamente antes de enviar.
+   */
   async uploadEmployeesCsv(companyId: number, file: File): Promise<EmployeeUploadResponse> {
+    let fileToSend: File = file
+
+    // Se for arquivo Excel (.xlsx ou .xls), converte para CSV UTF-8 nativo
+    const isExcel = file.name.endsWith('.xlsx') || file.name.endsWith('.xls')
+    if (isExcel) {
+      const buffer = await file.arrayBuffer()
+      const workbook = XLSX.read(buffer, { type: 'array' })
+      const firstSheetName = workbook.SheetNames[0]
+      const worksheet = workbook.Sheets[firstSheetName]
+      const csvOutput = XLSX.utils.sheet_to_csv(worksheet)
+      
+      const blob = new Blob(['\uFEFF' + csvOutput], { type: 'text/csv;charset=utf-8;' })
+      fileToSend = new File([blob], file.name.replace(/\.[^/.]+$/, '.csv'), { type: 'text/csv' })
+    }
+
     const formData = new FormData()
-    formData.append('file', file)
+    formData.append('file', fileToSend)
 
     const res = await api.post<EmployeeUploadResponse>(
       `/api/companies/${companyId}/employees/upload`,
@@ -88,34 +108,78 @@ export const companyService = {
   },
 
   /**
-   * Modelo oficial base para importação de colaboradores (Sinapse 360 Empresas e Educação)
-   * Configurado com BOM UTF-8 para abertura nativa e perfeita no Microsoft Excel e LibreOffice.
+   * Baixa a planilha modelo no formato Excel (.xlsx) nativo com ícone oficial e colunas ajustadas.
    */
-  downloadSampleCsv(type?: ProductInterest) {
-    const headers = 'Nome,email,cargo,setor,escola,empresa,cidade,estado,cep'
-    const sampleRows = [
-      'Maria Souza,maria.souza@escola.com.br,Coordenadora Pedagogica,Ensino Fundamental,Colegio Futuro,,Sao Paulo,SP,01310-100',
-      'Carlos Alberto,carlos.alberto@escola.com.br,Professor de Matematica,Corpo Docente,Colegio Futuro,,Sao Paulo,SP,01310-100',
-      'Fernanda Lima,fernanda.lima@escola.com.br,Psicopedagoga,Apoio ao Aluno,Colegio Futuro,,Sao Paulo,SP,01310-100',
-    ].join('\r\n')
+  downloadSampleExcel(type?: ProductInterest) {
+    const sampleData = [
+      {
+        Nome: 'Maria Souza',
+        email: 'maria.souza@escola.com.br',
+        cargo: 'Coordenadora Pedagogica',
+        setor: 'Ensino Fundamental',
+        escola: 'Colegio Futuro',
+        empresa: '',
+        cidade: 'Sao Paulo',
+        estado: 'SP',
+        cep: '01310-100'
+      },
+      {
+        Nome: 'Carlos Alberto',
+        email: 'carlos.alberto@escola.com.br',
+        cargo: 'Professor de Matematica',
+        setor: 'Corpo Docente',
+        escola: 'Colegio Futuro',
+        empresa: '',
+        cidade: 'Sao Paulo',
+        estado: 'SP',
+        cep: '01310-100'
+      },
+      {
+        Nome: 'Fernanda Lima',
+        email: 'fernanda.lima@escola.com.br',
+        cargo: 'Psicopedagoga',
+        setor: 'Apoio ao Aluno',
+        escola: 'Colegio Futuro',
+        empresa: '',
+        cidade: 'Sao Paulo',
+        estado: 'SP',
+        cep: '01310-100'
+      }
+    ]
 
-    // Inclusão do BOM UTF-8 (\uFEFF) para garantir que o Microsoft Excel abra com acentos e colunas corretas
-    const csvContent = '\uFEFF' + `${headers}\r\n${sampleRows}\r\n`
-    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' })
-    const url = URL.createObjectURL(blob)
-    const link = document.createElement('a')
-    link.setAttribute('href', url)
+    const worksheet = XLSX.utils.json_to_sheet(sampleData, {
+      header: ['Nome', 'email', 'cargo', 'setor', 'escola', 'empresa', 'cidade', 'estado', 'cep']
+    })
+
+    // Ajustar largura das colunas
+    worksheet['!cols'] = [
+      { wch: 22 }, // Nome
+      { wch: 32 }, // email
+      { wch: 26 }, // cargo
+      { wch: 22 }, // setor
+      { wch: 20 }, // escola
+      { wch: 20 }, // empresa
+      { wch: 16 }, // cidade
+      { wch: 8 },  // estado
+      { wch: 12 }  // cep
+    ]
+
+    const workbook = XLSX.utils.book_new()
+    XLSX.utils.book_append_sheet(workbook, worksheet, 'Colaboradores')
 
     const filename = type === 'SINAPSE_360_EDUCACAO'
-      ? 'modelo_colaboradores_sinapse_educacao.csv'
+      ? 'modelo_colaboradores_sinapse_educacao.xlsx'
       : type === 'SINAPSE_360_EMPRESAS'
-      ? 'modelo_colaboradores_sinapse_empresas.csv'
-      : 'modelo_colaboradores_sinapse_360.csv'
+      ? 'modelo_colaboradores_sinapse_empresas.xlsx'
+      : 'modelo_colaboradores_sinapse_360.xlsx'
 
-    link.setAttribute('download', filename)
-    document.body.appendChild(link)
-    link.click()
-    document.body.removeChild(link)
-    URL.revokeObjectURL(url)
+    XLSX.writeFile(workbook, filename)
+  },
+
+  /**
+   * Baixa a planilha modelo no formato CSV com BOM UTF-8.
+   */
+  downloadSampleCsv(type?: ProductInterest) {
+    this.downloadSampleExcel(type)
   },
 }

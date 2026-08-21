@@ -114,7 +114,7 @@ export function AdminEducationControl() {
           className="bg-white text-orange-700 hover:bg-orange-50 border-0 font-semibold rounded-xl h-11 shrink-0 flex items-center gap-2"
         >
           <Download className="w-4 h-4" />
-          Baixar Planilha Modelo da Educação
+          Baixar Planilha Excel Oficial (.xlsx)
         </Button>
       </div>
 
@@ -174,7 +174,7 @@ export function AdminEducationControl() {
                     Subir Planilha de Docentes / Equipe • {selectedSchool.name}
                   </CardTitle>
                   <CardDescription className="text-xs text-gray-500">
-                    Importe novos professores e colaboradores diretamente para esta escola.
+                    Importe novos professores e colaboradores via Excel (.xlsx) ou CSV.
                   </CardDescription>
                 </CardHeader>
 
@@ -182,7 +182,7 @@ export function AdminEducationControl() {
                   <div className="flex flex-col sm:flex-row items-center gap-3">
                     <Input 
                       type="file" 
-                      accept=".csv,text/csv"
+                      accept=".xlsx,.xls,.csv,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel,text/csv"
                       onChange={(e) => {
                         if (e.target.files && e.target.files[0]) {
                           setSelectedFile(e.target.files[0])

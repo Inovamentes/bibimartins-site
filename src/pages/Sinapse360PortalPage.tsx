@@ -463,7 +463,7 @@ export default function Sinapse360PortalPage() {
                     className="border-purple-200 text-purple-700 hover:bg-purple-50 rounded-xl h-11 shrink-0 flex items-center gap-2"
                   >
                     <Download className="w-4 h-4" />
-                    Baixar Planilha Modelo (.CSV)
+                    Baixar Planilha Excel (.xlsx)
                   </Button>
                 </div>
               </CardHeader>
@@ -488,7 +488,7 @@ export default function Sinapse360PortalPage() {
                   <input 
                     type="file" 
                     id="csvUploadInput" 
-                    accept=".csv,text/csv" 
+                    accept=".xlsx,.xls,.csv,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel,text/csv" 
                     onChange={handleFileChange}
                     className="hidden" 
                   />
@@ -503,7 +503,7 @@ export default function Sinapse360PortalPage() {
                       <p className="text-xs text-gray-500 mt-1">
                         {selectedFile 
                           ? `${(selectedFile.size / 1024).toFixed(1)} KB pronto para envio` 
-                          : 'Formatos aceitos: CSV (.csv) com codificação UTF-8'}
+                          : 'Formatos aceitos: Planilha Excel (.xlsx, .xls) ou CSV (.csv)'}
                       </p>
                     </div>
                   </label>
