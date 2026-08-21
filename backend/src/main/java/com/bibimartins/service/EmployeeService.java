@@ -14,6 +14,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.io.StringReader;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
@@ -48,68 +49,91 @@ public class EmployeeService {
         int importedCount = 0;
         int errorCount = 0;
 
-        try (BufferedReader reader = new BufferedReader(new InputStreamReader(file.getInputStream(), StandardCharsets.UTF_8))) {
+        try {
+            // Ler todo o conteudo com UTF-8 e remover BOM se existir
+            String content = new String(file.getBytes(), StandardCharsets.UTF_8);
+            if (content.startsWith("\uFEFF")) {
+                content = content.substring(1);
+            }
+
+            // Detectar automaticamente se o delimitador e ponto-e-virgula (padrao Excel PT-BR) ou virgula
+            char delimiter = ',';
+            String firstLine = content.lines().findFirst().orElse("");
+            if (firstLine.contains(";") && !firstLine.contains(",")) {
+                delimiter = ';';
+            } else if (firstLine.contains(";") && firstLine.contains(",")) {
+                // Se tiver ambos, conta qual aparece mais no cabecalho
+                long countSemi = firstLine.chars().filter(ch -> ch == ';').count();
+                long countComma = firstLine.chars().filter(ch -> ch == ',').count();
+                if (countSemi > countComma) {
+                    delimiter = ';';
+                }
+            }
+
             CSVFormat format = CSVFormat.DEFAULT.builder()
+                    .setDelimiter(delimiter)
                     .setHeader()
                     .setSkipHeaderRecord(true)
                     .setIgnoreHeaderCase(true)
                     .setTrim(true)
                     .build();
 
-            CSVParser parser = format.parse(reader);
+            try (BufferedReader reader = new BufferedReader(new StringReader(content));
+                 CSVParser parser = format.parse(reader)) {
 
-            for (CSVRecord record : parser) {
-                processedCount++;
-                long lineNumber = record.getRecordNumber() + 1;
+                for (CSVRecord record : parser) {
+                    processedCount++;
+                    long lineNumber = record.getRecordNumber() + 1;
 
-                String name = getField(record, "nome", "Nome");
-                String email = getField(record, "email", "Email", "E-mail");
-                String role = getField(record, "cargo", "Cargo");
-                String department = getField(record, "setor", "Setor");
-                String school = getField(record, "escola", "Escola");
-                String companyName = getField(record, "empresa", "Empresa");
-                String city = getField(record, "cidade", "Cidade");
-                String state = getField(record, "estado", "Estado", "UF");
-                String zipCode = getField(record, "cep", "CEP");
+                    String name = getField(record, "nome", "Nome");
+                    String email = getField(record, "email", "Email", "E-mail");
+                    String role = getField(record, "cargo", "Cargo", "funcao", "Funcao");
+                    String department = getField(record, "setor", "Setor", "departamento", "Departamento");
+                    String school = getField(record, "escola", "Escola", "instituicao", "Instituicao");
+                    String companyName = getField(record, "empresa", "Empresa", "razao_social", "Razao Social");
+                    String city = getField(record, "cidade", "Cidade");
+                    String state = getField(record, "estado", "Estado", "UF", "uf");
+                    String zipCode = getField(record, "cep", "CEP", "Cep");
 
-                List<String> missingFields = new ArrayList<>();
-                if (name == null || name.isBlank()) missingFields.add("Nome");
-                if (email == null || email.isBlank()) missingFields.add("Email");
+                    List<String> missingFields = new ArrayList<>();
+                    if (name == null || name.isBlank()) missingFields.add("Nome");
+                    if (email == null || email.isBlank()) missingFields.add("Email");
 
-                if (!missingFields.isEmpty()) {
-                    errorCount++;
-                    response.getErrorDetails().add("Linha " + lineNumber + ": Campos obrigatorios ausentes (" + String.join(", ", missingFields) + ")");
-                    continue;
+                    if (!missingFields.isEmpty()) {
+                        errorCount++;
+                        response.getErrorDetails().add("Linha " + lineNumber + ": Campos obrigatorios ausentes (" + String.join(", ", missingFields) + ")");
+                        continue;
+                    }
+
+                    if (!isValidEmail(email)) {
+                        errorCount++;
+                        response.getErrorDetails().add("Linha " + lineNumber + ": Formato de e-mail invalido (" + email + ")");
+                        continue;
+                    }
+
+                    if (employeeRepository.existsByCompanyIdAndEmail(companyId, email)) {
+                        errorCount++;
+                        response.getErrorDetails().add("Linha " + lineNumber + ": Colaborador com e-mail '" + email + "' ja esta cadastrado nesta empresa.");
+                        continue;
+                    }
+
+                    Employee employee = new Employee(
+                            name,
+                            email,
+                            role,
+                            department,
+                            school,
+                            companyName,
+                            city,
+                            state,
+                            zipCode,
+                            company
+                    );
+
+                    toSave.add(employee);
+                    importedCount++;
+                    response.getSuccessDetails().add("Linha " + lineNumber + ": Colaborador '" + name + "' (" + email + ") validado com sucesso.");
                 }
-
-                if (!isValidEmail(email)) {
-                    errorCount++;
-                    response.getErrorDetails().add("Linha " + lineNumber + ": Formato de e-mail invalido (" + email + ")");
-                    continue;
-                }
-
-                if (employeeRepository.existsByCompanyIdAndEmail(companyId, email)) {
-                    errorCount++;
-                    response.getErrorDetails().add("Linha " + lineNumber + ": Colaborador com e-mail '" + email + "' ja esta cadastrado nesta empresa.");
-                    continue;
-                }
-
-                Employee employee = new Employee(
-                        name,
-                        email,
-                        role,
-                        department,
-                        school,
-                        companyName,
-                        city,
-                        state,
-                        zipCode,
-                        company
-                );
-
-                toSave.add(employee);
-                importedCount++;
-                response.getSuccessDetails().add("Linha " + lineNumber + ": Colaborador '" + name + "' (" + email + ") validado com sucesso.");
             }
 
             if (!toSave.isEmpty()) {

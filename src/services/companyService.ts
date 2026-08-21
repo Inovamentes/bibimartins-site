@@ -89,6 +89,7 @@ export const companyService = {
 
   /**
    * Modelo oficial base para importação de colaboradores (Sinapse 360 Empresas e Educação)
+   * Configurado com BOM UTF-8 para abertura nativa e perfeita no Microsoft Excel e LibreOffice.
    */
   downloadSampleCsv(type?: ProductInterest) {
     const headers = 'Nome,email,cargo,setor,escola,empresa,cidade,estado,cep'
@@ -96,9 +97,10 @@ export const companyService = {
       'Maria Souza,maria.souza@escola.com.br,Coordenadora Pedagogica,Ensino Fundamental,Colegio Futuro,,Sao Paulo,SP,01310-100',
       'Carlos Alberto,carlos.alberto@escola.com.br,Professor de Matematica,Corpo Docente,Colegio Futuro,,Sao Paulo,SP,01310-100',
       'Fernanda Lima,fernanda.lima@escola.com.br,Psicopedagoga,Apoio ao Aluno,Colegio Futuro,,Sao Paulo,SP,01310-100',
-    ].join('\n')
+    ].join('\r\n')
 
-    const csvContent = `${headers}\n${sampleRows}`
+    // Inclusão do BOM UTF-8 (\uFEFF) para garantir que o Microsoft Excel abra com acentos e colunas corretas
+    const csvContent = '\uFEFF' + `${headers}\r\n${sampleRows}\r\n`
     const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' })
     const url = URL.createObjectURL(blob)
     const link = document.createElement('a')
@@ -114,5 +116,6 @@ export const companyService = {
     document.body.appendChild(link)
     link.click()
     document.body.removeChild(link)
+    URL.revokeObjectURL(url)
   },
 }
