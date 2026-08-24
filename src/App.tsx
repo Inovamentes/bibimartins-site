@@ -62,39 +62,48 @@ function App() {
       <header 
         className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
           isScrolled 
-            ? 'bg-white/95 backdrop-blur-md shadow-lg py-3' 
-            : 'bg-transparent py-5'
+            ? 'bg-white/95 backdrop-blur-md shadow-md py-2.5 border-b border-gray-100' 
+            : 'bg-gradient-to-b from-black/60 via-black/30 to-transparent py-4'
         }`}
       >
-        <div className="container mx-auto px-4 lg:px-8">
-          <div className="flex items-center justify-between">
-            {/* Logo */}
-            <a href="#home" onClick={() => scrollToSection('home')} className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-full bg-gradient-to-br from-purple-600 to-orange-500 flex items-center justify-center">
-                <span className="text-white font-bold text-lg">BM</span>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex items-center justify-between gap-4">
+            
+            {/* Logo & Marca Bibi Martins */}
+            <a 
+              href="#home" 
+              onClick={(e) => { e.preventDefault(); scrollToSection('home'); }} 
+              className="flex items-center gap-3.5 group shrink-0"
+            >
+              <div className="w-10 h-10 sm:w-11 sm:h-11 rounded-2xl bg-gradient-to-br from-purple-600 via-purple-700 to-orange-500 flex items-center justify-center shadow-md shadow-purple-900/30 group-hover:scale-105 transition-transform duration-300 border border-white/20">
+                <span className="text-white font-extrabold text-base sm:text-lg tracking-wider font-mono">BM</span>
               </div>
-              <div className="hidden sm:block">
-                <span className={`font-bold text-xl transition-colors ${isScrolled ? 'text-gray-900' : 'text-white'}`}>
+              <div className="flex flex-col">
+                <span className={`font-black text-xl sm:text-2xl tracking-tight leading-none transition-colors ${
+                  isScrolled ? 'text-gray-900' : 'text-white'
+                }`}>
                   Bibi Martins
                 </span>
-                <p className={`text-xs transition-colors ${isScrolled ? 'text-gray-600' : 'text-white/80'}`}>
+                <span className={`text-[10px] uppercase font-bold tracking-[0.25em] mt-1 transition-colors ${
+                  isScrolled ? 'text-purple-700' : 'text-orange-300'
+                }`}>
                   Palestrante & Mentora
-                </p>
+                </span>
               </div>
             </a>
 
             {/* Desktop Navigation */}
-            <nav className="hidden lg:flex items-center gap-1">
+            <nav className="hidden lg:flex items-center gap-1 bg-black/5 dark:bg-white/5 backdrop-blur-sm px-2.5 py-1 rounded-full border border-black/5 dark:border-white/10">
               {navItems.map((item) => (
                 <button
                   key={item.id}
                   onClick={() => scrollToSection(item.id)}
-                  className={`px-4 py-2 rounded-full text-sm font-medium transition-all ${
+                  className={`px-3 py-1.5 rounded-full text-xs font-semibold tracking-wide transition-all ${
                     activeSection === item.id
-                      ? 'bg-purple-600 text-white'
+                      ? 'bg-purple-600 text-white shadow-sm'
                       : isScrolled
-                        ? 'text-gray-700 hover:text-purple-600 hover:bg-purple-50'
-                        : 'text-white/90 hover:text-white hover:bg-white/10'
+                        ? 'text-gray-700 hover:text-purple-700 hover:bg-purple-50'
+                        : 'text-white/90 hover:text-white hover:bg-white/15'
                   }`}
                 >
                   {item.label}
@@ -102,99 +111,123 @@ function App() {
               ))}
             </nav>
 
-            {/* CTA Button */}
-            <div className="hidden lg:flex items-center gap-3">
+            {/* CTA Buttons (100% visíveis, sem cortes) */}
+            <div className="hidden lg:flex items-center gap-2 shrink-0">
               <Button 
                 onClick={() => window.location.href = '/sinapse-360'}
-                className="bg-gradient-to-r from-purple-600 to-orange-500 hover:from-purple-700 hover:to-orange-600 text-white font-semibold shadow-md shadow-purple-500/20 rounded-full px-5"
+                className="bg-gradient-to-r from-purple-600 to-orange-500 hover:from-purple-700 hover:to-orange-600 text-white text-xs font-bold shadow-md shadow-purple-500/20 rounded-full px-3.5 h-9 flex items-center gap-1.5 transition-all hover:scale-[1.02]"
               >
-                <Building2 className="w-4 h-4 mr-2" />
-                Sinapse 360° Empresas & Educação
+                <Building2 className="w-3.5 h-3.5" />
+                <span>Sinapse 360°</span>
               </Button>
+              
               <Button 
                 variant="outline"
                 onClick={() => window.open('https://wa.me/5511932143117?text=Olá Bibi, gostaria de saber mais sobre a Plataforma NR-1 COPSOQ para minha empresa.', '_blank')}
-                className={`bg-transparent transition-colors font-medium border-orange-400 ${isScrolled ? 'text-orange-600 hover:bg-orange-50' : 'text-white border-white/50 hover:bg-white/10'}`}
+                className={`h-9 px-3 text-xs font-semibold rounded-full border transition-all ${
+                  isScrolled 
+                    ? 'border-orange-200 text-orange-700 hover:bg-orange-50' 
+                    : 'border-white/30 text-white bg-white/5 hover:bg-white/15'
+                }`}
               >
-                <ShieldCheck className="w-4 h-4 mr-2" />
-                Plataforma NR-1
+                <ShieldCheck className="w-3.5 h-3.5 mr-1" />
+                <span>NR-1</span>
               </Button>
+
               <Button 
-                variant="ghost"
                 onClick={() => window.location.href = '/login'}
-                className={`transition-colors font-medium ${isScrolled ? 'text-purple-700 hover:bg-purple-50 hover:text-purple-800' : 'text-white hover:bg-white/10'}`}
+                className={`h-9 px-3.5 text-xs font-bold rounded-full transition-all flex items-center gap-1.5 ${
+                  isScrolled
+                    ? 'bg-purple-600 text-white hover:bg-purple-700 shadow-sm'
+                    : 'bg-white text-purple-950 hover:bg-purple-50 shadow-md shadow-black/15'
+                }`}
               >
-                <User className="w-4 h-4 mr-2" />
-                Área do Cliente
+                <User className="w-3.5 h-3.5" />
+                <span>Área do Cliente</span>
               </Button>
             </div>
 
-            {/* Mobile Menu */}
-            <Sheet open={isMenuOpen} onOpenChange={setIsMenuOpen}>
-              <SheetTrigger asChild className="lg:hidden">
-                <Button variant="ghost" size="icon" className={isScrolled ? 'text-gray-900' : 'text-white'}>
-                  <Menu className="w-6 h-6" />
-                </Button>
-              </SheetTrigger>
-              <SheetContent side="right" className="w-[300px] bg-white">
-                <div className="flex flex-col gap-6 mt-8">
-                  <div className="flex items-center gap-3">
-                    <div className="w-12 h-12 rounded-full bg-gradient-to-br from-purple-600 to-orange-500 flex items-center justify-center">
-                      <span className="text-white font-bold text-xl">BM</span>
+            {/* Mobile Menu Trigger */}
+            <div className="flex items-center gap-2 lg:hidden">
+              <Button 
+                size="sm"
+                onClick={() => window.location.href = '/login'}
+                className="bg-gradient-to-r from-purple-600 to-orange-500 text-white text-xs font-bold rounded-full h-8 px-3"
+              >
+                <User className="w-3 h-3 mr-1" />
+                Entrar
+              </Button>
+
+              <Sheet open={isMenuOpen} onOpenChange={setIsMenuOpen}>
+                <SheetTrigger asChild>
+                  <Button variant="ghost" size="icon" className={`rounded-xl ${isScrolled ? 'text-gray-900 hover:bg-gray-100' : 'text-white hover:bg-white/10'}`}>
+                    <Menu className="w-6 h-6" />
+                  </Button>
+                </SheetTrigger>
+                <SheetContent side="right" className="w-[310px] bg-white p-6 flex flex-col justify-between">
+                  <div className="space-y-6">
+                    {/* Logo Mobile */}
+                    <div className="flex items-center gap-3 pt-2">
+                      <div className="w-11 h-11 rounded-2xl bg-gradient-to-br from-purple-600 to-orange-500 flex items-center justify-center text-white font-extrabold text-lg">
+                        BM
+                      </div>
+                      <div>
+                        <span className="font-extrabold text-xl text-gray-900 block leading-tight">Bibi Martins</span>
+                        <span className="text-[10px] font-bold uppercase tracking-widest text-purple-700">Palestrante & Mentora</span>
+                      </div>
                     </div>
-                    <div>
-                      <span className="font-bold text-lg text-gray-900">Bibi Martins</span>
-                      <p className="text-xs text-gray-600">Palestrante & Mentora</p>
-                    </div>
+
+                    {/* Nav Links */}
+                    <nav className="flex flex-col gap-1 border-t border-gray-100 pt-4">
+                      {navItems.map((item) => (
+                        <button
+                          key={item.id}
+                          onClick={() => {
+                            setIsMenuOpen(false);
+                            setTimeout(() => scrollToSection(item.id), 300);
+                          }}
+                          className={`px-4 py-2.5 rounded-xl text-left text-sm font-semibold transition-all ${
+                            activeSection === item.id
+                              ? 'bg-purple-100 text-purple-800 font-bold'
+                              : 'text-gray-700 hover:bg-gray-50'
+                          }`}
+                        >
+                          {item.label}
+                        </button>
+                      ))}
+                    </nav>
                   </div>
-                  <nav className="flex flex-col gap-2">
-                    {navItems.map((item) => (
-                      <button
-                        key={item.id}
-                        onClick={() => {
-                          setIsMenuOpen(false)
-                          setTimeout(() => {
-                            scrollToSection(item.id)
-                          }, 300)
-                        }}
-                        className={`px-4 py-3 rounded-lg text-left font-medium transition-all ${
-                          activeSection === item.id
-                            ? 'bg-purple-100 text-purple-700'
-                            : 'text-gray-700 hover:bg-gray-100'
-                        }`}
-                      >
-                        {item.label}
-                      </button>
-                    ))}
-                  </nav>
-                  <div className="flex flex-col gap-3 mt-2">
+
+                  {/* Mobile Actions */}
+                  <div className="space-y-2.5 pt-4 border-t border-gray-100">
                     <Button 
-                      variant="outline"
-                      onClick={() => window.open('https://wa.me/5511932143117?text=Olá Bibi, gostaria de saber mais sobre a Plataforma NR-1 COPSOQ para minha empresa.', '_blank')}
-                      className="border-orange-200 text-orange-700 hover:bg-orange-50 w-full"
+                      onClick={() => { setIsMenuOpen(false); window.location.href = '/sinapse-360'; }}
+                      className="w-full bg-gradient-to-r from-purple-600 to-orange-500 text-white font-bold text-xs h-10 rounded-xl shadow-md"
                     >
-                      <ShieldCheck className="w-4 h-4 mr-2" />
-                      Plataforma NR-1
+                      <Building2 className="w-4 h-4 mr-2" />
+                      Sinapse 360° Empresas & Educação
                     </Button>
                     <Button 
                       variant="outline"
-                      onClick={() => window.location.href = '/login'}
-                      className="border-purple-200 text-purple-700 hover:bg-purple-50 w-full"
+                      onClick={() => { setIsMenuOpen(false); window.location.href = '/login'; }}
+                      className="w-full border-purple-200 text-purple-700 hover:bg-purple-50 font-bold text-xs h-10 rounded-xl"
                     >
                       <User className="w-4 h-4 mr-2" />
-                      Área do Cliente
+                      Acessar Área do Cliente
                     </Button>
                     <Button 
+                      variant="outline"
                       onClick={() => window.open('https://wa.me/5511932143117', '_blank')}
-                      className="bg-gradient-to-r from-purple-600 to-purple-700 text-white w-full"
+                      className="w-full border-emerald-300 text-emerald-700 hover:bg-emerald-50 font-bold text-xs h-10 rounded-xl"
                     >
                       <Phone className="w-4 h-4 mr-2" />
-                      Fale Comigo
+                      Fale Comigo no WhatsApp
                     </Button>
                   </div>
-                </div>
-              </SheetContent>
-            </Sheet>
+                </SheetContent>
+              </Sheet>
+            </div>
+
           </div>
         </div>
       </header>
