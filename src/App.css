@@ -208,3 +208,17 @@ a:focus-visible {
     display: none !important;
   }
 }
+
+/* Separate from the header flex row so the original navigation keeps its space. */
+.language-selector {
+  position: fixed;
+  top: 100px;
+  right: max(1rem, calc((100vw - 1280px) / 2 + 2rem));
+  z-index: 49;
+}
+@media (max-width: 639px) {
+  .language-selector { top: 88px; right: 1rem; }
+}
+@media print {
+  .language-selector { display: none; }
+}

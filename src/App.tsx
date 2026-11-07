@@ -1,3 +1,5 @@
+import { useLanguage } from './i18n/useLanguage'
+import { LanguageSelector } from './components/LanguageSelector'
 import { useEffect, useState, useRef } from 'react'
 import './App.css'
 import { 
@@ -13,6 +15,7 @@ import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet'
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion'
 
 function App() {
+  const { language, setLanguage, t } = useLanguage()
   const [isScrolled, setIsScrolled] = useState(false)
   const [activeSection, setActiveSection] = useState('home')
   const [isMenuOpen, setIsMenuOpen] = useState(false)
@@ -47,13 +50,13 @@ function App() {
   }
 
   const navItems = [
-    { id: 'home', label: 'Home' },
-    { id: 'sobre', label: 'Sobre' },
-    { id: 'metodo', label: 'Método' },
-    { id: 'palestras', label: 'Palestras' },
-    { id: 'depoimentos', label: 'Depoimentos' },
-    { id: 'faq', label: 'FAQ' },
-    { id: 'contato', label: 'Contato' },
+    { id: 'home', label: t(7) },
+    { id: 'sobre', label: t(8) },
+    { id: 'metodo', label: t(9) },
+    { id: 'palestras', label: t(10) },
+    { id: 'depoimentos', label: t(11) },
+    { id: 'faq', label: t(12) },
+    { id: 'contato', label: t(13) },
   ]
 
   return (
@@ -87,7 +90,7 @@ function App() {
                 <span className={`text-[10px] uppercase font-bold tracking-[0.25em] mt-1 transition-colors ${
                   isScrolled ? 'text-purple-700' : 'text-orange-300'
                 }`}>
-                  Palestrante & Mentora
+                  {t(16)}
                 </span>
               </div>
             </a>
@@ -143,7 +146,7 @@ function App() {
                 }`}
               >
                 <User className="w-3.5 h-3.5" />
-                <span>Área do Cliente</span>
+                <span>{t(19)}</span>
               </Button>
             </div>
 
@@ -155,7 +158,7 @@ function App() {
                 className="bg-gradient-to-r from-purple-600 to-orange-500 text-white text-xs font-bold rounded-full h-8 px-3"
               >
                 <User className="w-3 h-3 mr-1" />
-                Entrar
+                {t(20)}
               </Button>
 
               <Sheet open={isMenuOpen} onOpenChange={setIsMenuOpen}>
@@ -173,7 +176,7 @@ function App() {
                       </div>
                       <div>
                         <span className="font-extrabold text-xl text-gray-900 block leading-tight">Bibi Martins</span>
-                        <span className="text-[10px] font-bold uppercase tracking-widest text-purple-700">Palestrante & Mentora</span>
+                        <span className="text-[10px] font-bold uppercase tracking-widest text-purple-700">{t(16)}</span>
                       </div>
                     </div>
 
@@ -205,7 +208,7 @@ function App() {
                       className="w-full bg-gradient-to-r from-purple-600 to-orange-500 text-white font-bold text-xs h-10 rounded-xl shadow-md"
                     >
                       <Building2 className="w-4 h-4 mr-2" />
-                      Sinapse 360° Empresas & Educação
+                      {t(21)}
                     </Button>
                     <Button 
                       variant="outline"
@@ -213,7 +216,7 @@ function App() {
                       className="w-full border-purple-200 text-purple-700 hover:bg-purple-50 font-bold text-xs h-10 rounded-xl"
                     >
                       <User className="w-4 h-4 mr-2" />
-                      Acessar Área do Cliente
+                      {t(22)}
                     </Button>
                     <Button 
                       variant="outline"
@@ -221,7 +224,7 @@ function App() {
                       className="w-full border-emerald-300 text-emerald-700 hover:bg-emerald-50 font-bold text-xs h-10 rounded-xl"
                     >
                       <Phone className="w-4 h-4 mr-2" />
-                      Fale Comigo no WhatsApp
+                      {t(23)}
                     </Button>
                   </div>
                 </SheetContent>
@@ -231,6 +234,8 @@ function App() {
           </div>
         </div>
       </header>
+
+      <LanguageSelector language={language} onChange={setLanguage} />
 
       {/* Hero Section */}
       <section 
@@ -260,22 +265,19 @@ function App() {
           <div className="max-w-2xl">
             <Badge className="mb-6 bg-white/20 text-white backdrop-blur-sm border-white/30 hover:bg-white/30">
               <Sparkles className="w-3 h-3 mr-1" />
-              Transformando Liderança
+              {t(24)}
             </Badge>
 
             <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-white leading-tight mb-6">
-              Liderança{' '}
+              {t(25)}{' '}
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-orange-400 to-orange-300">
-                Neurodiversa
+                {t(26)}
               </span>{' '}
-              para o Mundo Real
+              {t(27)}
             </h1>
 
             <p className="text-lg sm:text-xl text-white/90 mb-8 leading-relaxed">
-              Palestras e mentorias que rompem com os modelos tradicionais de liderança.
-              Descubra como evoluir de um líder padrão para uma liderança verdadeiramente inclusiva, 
-              capaz de reconhecer e potencializar talentos neurodivergentes no novo cenário corporativo.
-              E entenda por que as novas gerações estão transformando, de forma irreversível, o conceito de liderar.
+              {t(28)}
             </p>
 
             <div className="flex flex-col sm:flex-row gap-4 mb-12">
@@ -284,7 +286,7 @@ function App() {
                 onClick={() => scrollToSection('palestras')}
                 className="bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white px-8"
               >
-                Conheça Minhas Palestras
+                {t(29)}
                 <ArrowRight className="w-5 h-5 ml-2" />
               </Button>
               <Button 
@@ -294,16 +296,16 @@ function App() {
                 className="bg-transparent border-white/50 text-white hover:bg-white/10 px-8"
               >
                 <Phone className="w-5 h-5 mr-2" />
-                Solicitar Orçamento
+                {t(30)}
               </Button>
             </div>
 
             {/* Stats */}
             <div className="grid grid-cols-3 gap-6">
               {[
-                { value: '15+', label: 'Anos de Experiência' },
-                { value: '5', label: 'Pilares do Método' },
-                { value: '∞', label: 'Possibilidades' },
+                { value: '15+', label: t(32) },
+                { value: '5', label: t(34) },
+                { value: '∞', label: t(36) },
               ].map((stat, index) => (
                 <div key={index} className="text-center sm:text-left">
                   <div className="text-2xl sm:text-3xl font-bold text-white">{stat.value}</div>
@@ -331,7 +333,7 @@ function App() {
               <div className="relative rounded-3xl overflow-hidden shadow-2xl">
                 <img 
                   src="/images/3BFD633B-9979-478F-B846-28C3DD19BCF4.jpeg" 
-                  alt="Bibi Martins - Palestrante" 
+                  alt={t(37)}
                   className="w-full h-[500px] object-contain"
                   loading="lazy"
                 />
@@ -343,12 +345,12 @@ function App() {
                     <Award className="w-6 h-6 text-white" />
                   </div>
                   <div>
-                    <div className="font-bold text-gray-900">15+ Anos</div>
-                    <div className="text-sm text-gray-600">de Experiência</div>
+                    <div className="font-bold text-gray-900">{t(38)}</div>
+                    <div className="text-sm text-gray-600">{t(39)}</div>
                   </div>
                 </div>
                 <p className="text-sm text-gray-600">
-                  Transformando líderes e liderados a reconhecer que precisam mudar o mindset neurotípico.
+                  {t(40)}
                 </p>
               </div>
               {/* Decorative */}
@@ -359,42 +361,37 @@ function App() {
             {/* Content */}
             <div>
               <Badge className="mb-4 bg-purple-100 text-purple-700 hover:bg-purple-200">
-                Sobre Mim
+                {t(41)}
               </Badge>
               <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-900 mb-6">
-                Quem é{' '}
+                {t(42)}{' '}
                 <span className="text-gradient">Bibi Martins?</span>
               </h2>
               <div className="space-y-4 text-gray-600 leading-relaxed">
                 <p>
-                  Sou palestrante, mentora corporativa e especialista em liderança neurodiversa. 
-                  Minha missão é transformar a forma como as organizações entendem e praticam 
-                  a liderança no mundo contemporâneo.
+                  {t(44)}
                 </p>
                 <p>
-                  Ao longo de mais de 15 anos, de atuação em grandes empresas, vivenciei de perto desafios enfrentados
-                  <strong>por profissionais neurodivergentes. Sendo também uma pessoa neurodivergente,compreendo por </strong>
-                  que tantos talentos ainda são negligenciados — e, muitas vezes, marginalizados ou até desligados.
+                  {t(45)}{' '}
+                  <strong>{t(46)} </strong>
+                  {t(47)}
                 </p>
                 <p>
-                  Esse cenário não é pontual:  <strong>ele reflete a ausência de uma liderança preparada, com inteligência neurodiversa
-                  e flexibilidade cognitiva, para reconhecer, desenvolver e reter profissionais em toda a sua diversidade. </strong> 
-                  O resultado é a perda de talentos, redução de performance e ambientes menos inovadores.
+                  {t(48)}  <strong>{t(49)} </strong>
+                  {t(50)}
                 </p>
                 <p>
-                  Neste meu projeto <strong>trouxe também o porque das gerações mais novas estarem rejeitando 
-                  cargos de liderança</strong>. A resposta primária está nas <strong>relações de poder tóxicas, 
-                  na falta de propósito e na ausência de modelos de liderança que realmente inspirem.</strong>
+                  {t(51)} <strong>{t(52)}</strong>{t(53)} <strong>{t(54)}</strong>
                 </p>
               </div>
 
               {/* Topics */}
               <div className="mt-8 grid sm:grid-cols-2 gap-4">
                 {[
-                  { icon: Brain, text: 'Liderança Neurodiversa' },
-                  { icon: Users, text: 'Relações de Poder' },
-                  { icon: Heart, text: 'Empoderamento' },
-                  { icon: TrendingUp, text: 'Gestão de Pessoas' },
+                  { icon: Brain, text: t(55) },
+                  { icon: Users, text: t(56) },
+                  { icon: Heart, text: t(57) },
+                  { icon: TrendingUp, text: t(58) },
                 ].map((item, index) => (
                   <div key={index} className="flex items-center gap-3 p-3 rounded-xl bg-gray-50">
                     <div className="w-10 h-10 rounded-lg bg-purple-100 flex items-center justify-center">
@@ -416,13 +413,13 @@ function App() {
           <div className="text-center max-w-3xl mx-auto mb-16">
             <Badge className="mb-4 bg-orange-100 text-orange-700 hover:bg-orange-200">
               <Lightbulb className="w-3 h-3 mr-1" />
-              Metodologia Exclusiva
+              {t(59)}
             </Badge>
             <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-900 mb-6">
-              Método <span className="text-gradient">Sinapse 360°</span>
+              {t(9)} <span className="text-gradient">Sinapse 360°</span>
             </h2>
             <p className="text-lg text-gray-600">
-              Método Sinapse 360°: liderança inteligente que transforma a neurodiversidade em vantagem competitiva.
+              {t(60)}
             </p>
           </div>
 
@@ -431,41 +428,41 @@ function App() {
             {[
               {
                 number: '01',
-                title: 'Auto-Consciência Cognitiva',
-                description: 'O líder entende seu próprio padrão mental, forças e limites. Desenvolve autoconhecimento profundo sobre seu funcionamento mental e estilo de processamento.',
-                objective: 'Desenvolver autoconsciência para liderança adaptativa.',
+                title: t(61),
+                description: t(62),
+                objective: t(63),
                 color: 'purple',
                 icon: Brain,
               },
               {
                 number: '02',
-                title: 'Leitura de Perfis',
-                description: 'Capacidade de identificar estilos cognitivos e comportamentais sem rotular ou "patologizar". Aqui nasce a liderança inclusiva estratégica.',
-                objective: 'Identificar padrões cognitivos sem julgamentos.',
+                title: t(64),
+                description: t(65),
+                objective: t(66),
                 color: 'orange',
                 icon: Users,
               },
               {
                 number: '03',
-                title: 'Comunicação Sináptica',
-                description: 'Ajuste intencional da linguagem, estrutura e expectativas conforme o perfil da equipe. O coração do método - tradução entre mentes diferentes.',
-                objective: 'Estruturar mensagens com clareza cognitiva.',
+                title: t(67),
+                description: t(68),
+                objective: t(69),
                 color: 'teal',
                 icon: MessageCircle,
               },
               {
                 number: '04',
-                title: 'Arquitetura de Ambiente',
-                description: 'Criação de previsibilidade, clareza e segurança psicológica para diferentes funcionamentos mentais. O método sai do indivíduo e entra no sistema.',
-                objective: 'Criar ambientes previsíveis para cérebros diversos.',
+                title: t(70),
+                description: t(71),
+                objective: t(72),
                 color: 'purple',
                 icon: Target,
               },
               {
                 number: '05',
-                title: 'Performance Adaptativa',
-                description: 'Transformar diversidade cognitiva em vantagem competitiva. O líder deixa de "acomodar diferenças" e passa a usá-las estrategicamente.',
-                objective: 'Transformar diferenças em inovação e resultado.',
+                title: t(73),
+                description: t(74),
+                objective: t(75),
                 color: 'orange',
                 icon: Zap,
               },
@@ -525,20 +522,20 @@ function App() {
             <div className="relative z-10 flex flex-col lg:flex-row items-center justify-between gap-8">
               <div className="space-y-3 text-center lg:text-left max-w-2xl">
                 <Badge className="bg-gradient-to-r from-orange-500 to-amber-500 text-white border-0 px-3 py-1">
-                  Ambiente Institucional
+                  {t(76)}
                 </Badge>
                 <h3 className="text-2xl sm:text-3xl font-extrabold text-white">
-                  Sua Empresa ou Escola no Método Sinapse 360°
+                  {t(77)}
                 </h3>
                 <p className="text-purple-100 text-sm sm:text-base leading-relaxed">
-                  Cadastre sua instituição, selecione a trilha de interesse (Empresas ou Educação) e suba a planilha dos seus colaboradores para liberar acessos personalizados às ferramentas do método.
+                  {t(78)}
                 </p>
               </div>
               <Button 
                 onClick={() => window.location.href = '/sinapse-360'}
                 className="bg-gradient-to-r from-orange-500 to-amber-500 hover:from-orange-600 hover:to-amber-600 text-white font-bold h-14 px-8 rounded-2xl shadow-lg shadow-orange-500/30 text-base shrink-0 group transition-all"
               >
-                Acessar Portal Sinapse 360°
+                {t(79)}
                 <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />
               </Button>
             </div>
@@ -557,21 +554,18 @@ function App() {
                     />
                     <div>
                       <h3 className="text-2xl font-bold text-gray-900">BM Academy</h3>
-                      <p className="text-orange-600 font-medium">Se não te cabe, inove</p>
+                      <p className="text-orange-600 font-medium">{t(81)}</p>
                     </div>
                   </div>
                   <p className="text-gray-600 mb-6 leading-relaxed">
-                    A BM Academy é uma escola corporativa de nova geração, especializada na formação de líderes preparados para a complexidade do futuro do trabalho.
-                    Com base no Método Sinapse 360°, desenvolvemos uma liderança estratégica, adaptativa e inclusiva, capaz de integrar performance, diversidade e inovação.
-                    Aqui, não formamos gestores tradicionais — formamos líderes que antecipam mudanças, potencializam talentos 
-                    neurodivergentes e transformam desafios em vantagem competitiva.
+                    {t(82)}
                   </p>
                   <div className="flex flex-col sm:flex-row gap-4">
                     <Button 
                       onClick={() => window.open('https://wa.me/5511932143117?text=Olá Bibi, gostaria de saber mais sobre a formação de líderes na BM Academy.', '_blank')}
                       className="bg-gradient-to-r from-purple-600 to-purple-700 hover:from-purple-700 hover:to-purple-800 text-white"
                     >
-                      Saiba Mais
+                      {t(83)}
                       <ArrowRight className="w-4 h-4 ml-2" />
                     </Button>
                     <Button 
@@ -580,7 +574,7 @@ function App() {
                       className="border-orange-500 text-orange-600 hover:bg-orange-50"
                     >
                       <ShieldCheck className="w-4 h-4 mr-2" />
-                      Comprar Plataforma NR-1
+                      {t(84)}
                     </Button>
                   </div>
                 </div>
@@ -606,14 +600,13 @@ function App() {
           <div className="text-center max-w-3xl mx-auto mb-16">
             <Badge className="mb-4 bg-purple-100 text-purple-700 hover:bg-purple-200">
               <Play className="w-3 h-3 mr-1" />
-              Palestras
+              {t(10)}
             </Badge>
             <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-900 mb-6">
-              Temas que <span className="text-gradient">Transformam</span>
+              {t(86)} <span className="text-gradient">{t(87)}</span>
             </h2>
             <p className="text-lg text-gray-600">
-              Palestras impactantes que desafiam paradigmas e inspiram mudanças 
-              reais nas organizações.
+              {t(88)}
             </p>
           </div>
 
@@ -621,51 +614,51 @@ function App() {
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
             {[
               {
-                title: 'Neurodiversidade no Poder',
-                subtitle: 'Por que os neurodivergentes estão sendo negligenciados',
-                description: 'Uma análise profunda sobre como líderes despreparados estão marginalizando talentos neurodivergentes e o que fazer para reverter esse cenário.',
+                title: t(89),
+                subtitle: t(90),
+                description: t(91),
                 duration: '60-90 min',
-                audience: 'Liderança e RH',
+                audience: t(93),
                 color: 'purple',
               },
               {
-                title: 'A Crise da Liderança',
-                subtitle: 'Por que as novas gerações não querem ser líderes',
-                description: 'Descubra as razões profundas pelas quais millennials e gen Z estão rejeitando cargos de liderança e como criar modelos que realmente inspirem.',
+                title: t(94),
+                subtitle: t(95),
+                description: t(96),
                 duration: '60-90 min',
-                audience: 'Executivos e Gestores',
+                audience: t(97),
                 color: 'orange',
               },
               {
-                title: 'Relações de Poder Saudáveis',
-                subtitle: 'Empoderamento no ambiente corporativo',
-                description: 'Como construir relações de poder equilibradas que promovam crescimento, autonomia e resultados sem sacrificar o bem-estar das pessoas.',
+                title: t(98),
+                subtitle: t(99),
+                description: t(100),
                 duration: '60-90 min',
-                audience: 'Todas as hierarquias',
+                audience: t(101),
                 color: 'teal',
               },
               {
-                title: 'Liderança Adaptativa',
-                subtitle: 'O Método Sinapse 360° na prática',
-                description: 'Uma imersão prática na metodologia que está transformando líderes tradicionais em líderes adaptativos capazes de conduzir equipes diversas.',
-                duration: '2-4 horas',
-                audience: 'Liderança',
+                title: t(102),
+                subtitle: t(103),
+                description: t(104),
+                duration: t(105),
+                audience: t(25),
                 color: 'purple',
               },
               {
-                title: 'Inclusão que Gera Resultado',
-                subtitle: 'Da teoria à prática estratégica',
-                description: 'Como implementar programas de inclusão neurodiversa que realmente funcionam e geram vantagem competitiva mensurável.',
+                title: t(106),
+                subtitle: t(107),
+                description: t(108),
                 duration: '60-120 min',
-                audience: 'RH e Liderança',
+                audience: t(110),
                 color: 'orange',
               },
               {
-                title: 'Mentoria para Líderes',
-                subtitle: 'Programa personalizado de desenvolvimento',
-                description: 'Programa de mentoria individual ou em grupo para líderes que querem se desenvolver na condução de equipes diversas e de alta performance.',
-                duration: 'Personalizado',
-                audience: 'Líderes',
+                title: t(111),
+                subtitle: t(112),
+                description: t(113),
+                duration: t(114),
+                audience: t(115),
                 color: 'teal',
               },
             ].map((talk, index) => (
@@ -710,7 +703,7 @@ function App() {
                       'group-hover:from-teal-500 group-hover:to-teal-600'
                     } group-hover:text-white group-hover:border-transparent transition-all`}
                   >
-                    Solicitar Orçamento
+                    {t(30)}
                     <ChevronRight className="w-4 h-4 ml-1" />
                   </Button>
                 </CardContent>
@@ -725,9 +718,9 @@ function App() {
         <div className="container mx-auto px-4 lg:px-8">
           <div className="grid md:grid-cols-3 gap-4">
             {[
-              { value: 'Online + Presencial', label: 'formatos flexíveis para sua operação', icon: Award },
-              { value: 'Método Sinapse 360°', label: 'abordagem prática em 5 pilares', icon: Brain },
-              { value: 'Conteúdo Sob Medida', label: 'adaptação total ao contexto da empresa', icon: Target },
+              { value: t(116), label: t(117), icon: Award },
+              { value: t(118), label: t(119), icon: Brain },
+              { value: t(120), label: t(121), icon: Target },
             ].map((item, index) => (
               <div key={index} className="rounded-2xl bg-white border border-gray-100 p-5 text-center">
                 <div className="mx-auto mb-2 w-11 h-11 rounded-lg bg-purple-100 flex items-center justify-center">
@@ -748,13 +741,13 @@ function App() {
           <div className="text-center max-w-3xl mx-auto mb-16">
             <Badge className="mb-4 bg-orange-100 text-orange-700 hover:bg-orange-200">
               <Star className="w-3 h-3 mr-1" />
-              Depoimentos
+              {t(11)}
             </Badge>
             <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-900 mb-6">
-              O que dizem sobre <span className="text-gradient">meu trabalho</span>
+              {t(122)} <span className="text-gradient">{t(123)}</span>
             </h2>
             <p className="text-lg text-gray-600">
-              Histórias reais de transformação de líderes e equipes.
+              {t(124)}
             </p>
           </div>
 
@@ -762,39 +755,39 @@ function App() {
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
             {[
               {
-                text: 'A palestra da Bibi foi um divisor de águas para nossa liderança. Ela conseguiu traduzir conceitos complexos de neurodiversidade em ações práticas que nossos gestores puderam aplicar imediatamente.',
+                text: t(125),
                 author: 'Ana Paula Mendes',
-                role: 'Diretora de RH',
+                role: t(126),
                 company: 'TechCorp Brasil',
               },
               {
-                text: 'Nunca tinha visto uma abordagem tão honesta sobre as falhas da liderança tradicional. Bibi não tem medo de falar o que ninguém quer ouvir, e é exatamente isso que as empresas precisam.',
+                text: t(127),
                 author: 'Carlos Eduardo Lima',
                 role: 'CEO',
                 company: 'Inovação Group',
               },
               {
-                text: 'O Método Sinapse 360° transformou nossa cultura organizacional. Em 6 meses, reduzimos em 40% o turnover de talentos neurodivergentes e aumentamos a satisfação da equipe.',
+                text: t(129),
                 author: 'Mariana Souza',
-                role: 'Head de D&I',
+                role: t(130),
                 company: 'Global Industries',
               },
               {
-                text: 'A mentoria com a Bibi me ajudou a reconhecer meus próprios vieses como líder. Hoje consigo conduzir reuniões de forma mais inclusiva e obter melhores resultados da minha equipe.',
+                text: t(131),
                 author: 'Ricardo Almeida',
-                role: 'Gerente de Operações',
+                role: t(132),
                 company: 'Finance Solutions',
               },
               {
-                text: 'Contratamos a Bibi para falar sobre "A Crise da Liderança" e o impacto foi imediato. Nossos jovens talentos finalmente se sentiram ouvidos e entendidos.',
+                text: t(133),
                 author: 'Fernanda Costa',
-                role: 'Gerente de Talentos',
+                role: t(134),
                 company: 'StartUp Hub',
               },
               {
-                text: 'Bibi tem um dom: ela consegue fazer líderes tradicionais enxergarem a necessidade de mudança sem que se sintam atacados. É uma habilidade rara e valiosa.',
+                text: t(135),
                 author: 'João Pedro Silva',
-                role: 'Consultor de Gestão',
+                role: t(136),
                 company: 'Business Partners',
               },
             ].map((testimonial, index) => (
@@ -829,13 +822,13 @@ function App() {
           <div className="text-center max-w-3xl mx-auto mb-12">
             <Badge className="mb-4 bg-purple-100 text-purple-700 hover:bg-purple-200">
               <Building2 className="w-3 h-3 mr-1" />
-              Dúvidas Frequentes
+              {t(137)}
             </Badge>
             <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-900 mb-4">
-              Informações para <span className="text-gradient">contratar com segurança</span>
+              {t(138)} <span className="text-gradient">{t(139)}</span>
             </h2>
             <p className="text-lg text-gray-600">
-              Respostas rápidas para facilitar sua decisão e agilizar o próximo passo.
+              {t(140)}
             </p>
           </div>
 
@@ -844,24 +837,24 @@ function App() {
               <Accordion type="single" collapsible className="w-full">
                 {[
                   {
-                    question: 'As palestras são presenciais ou online?',
-                    answer: 'As duas modalidades estão disponíveis. O formato é definido conforme o objetivo do evento, a logística da empresa e o perfil da audiência.',
+                    question: t(141),
+                    answer: t(142),
                   },
                   {
-                    question: 'É possível personalizar o conteúdo para minha empresa?',
-                    answer: 'Sim. Antes do evento, fazemos um alinhamento para adaptar linguagem, exemplos e foco estratégico conforme seus desafios de liderança e cultura.',
+                    question: t(143),
+                    answer: t(144),
                   },
                   {
-                    question: 'Qual o tempo médio das palestras e workshops?',
-                    answer: 'As palestras variam entre 60 e 120 minutos. Workshops e imersões podem ser estruturados em formatos de 2 a 4 horas.',
+                    question: t(145),
+                    answer: t(146),
                   },
                   {
-                    question: 'Vocês atendem eventos para C-level, liderança e RH?',
-                    answer: 'Sim. O conteúdo é calibrado para diferentes públicos, incluindo executivos, gestores, RH, D&I e squads multidisciplinares.',
+                    question: t(147),
+                    answer: t(148),
                   },
                   {
-                    question: 'Como solicitar proposta e próximos passos?',
-                    answer: 'Basta clicar em “Falar no WhatsApp”. Você recebe atendimento para escopo, investimento, agenda e formato ideal para seu evento.',
+                    question: t(149),
+                    answer: t(150),
                   },
                 ].map((item, index) => (
                   <AccordionItem key={index} value={`item-${index}`}>
@@ -885,15 +878,13 @@ function App() {
             <div>
               <Badge className="mb-4 bg-purple-100 text-purple-700 hover:bg-purple-200">
                 <Phone className="w-3 h-3 mr-1" />
-                Contato
+                {t(13)}
               </Badge>
               <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-900 mb-6">
-                Vamos <span className="text-gradient">conversar?</span>
+                {t(151)} <span className="text-gradient">{t(152)}</span>
               </h2>
               <p className="text-lg text-gray-600 mb-8 leading-relaxed">
-                Estou pronta para ajudar sua organização a transformar sua liderança 
-                e criar ambientes mais inclusivos e produtivos. Entre em contato 
-                e vamos discutir como posso contribuir com seu evento ou projeto.
+                {t(153)}
               </p>
 
               <div className="space-y-6">
@@ -934,7 +925,7 @@ function App() {
                     <Instagram className="w-6 h-6 text-teal-600" />
                   </div>
 	                  <div>
-	                    <p className="text-sm text-gray-600">Redes Sociais</p>
+	                    <p className="text-sm text-gray-600">{t(157)}</p>
 	                    <a 
 	                      href="https://instagram.com/bibimartinsoficial" 
 	                      target="_blank" 
@@ -949,7 +940,7 @@ function App() {
 
               {/* Social Links */}
               <div className="mt-8">
-                <p className="text-sm text-gray-600 mb-4">Siga nas redes:</p>
+                <p className="text-sm text-gray-600 mb-4">{t(159)}</p>
                 <div className="flex gap-3">
                   {[
                     { icon: Instagram, href: 'https://instagram.com/bibimartinsoficial', color: 'bg-pink-100 text-pink-600' },
@@ -976,19 +967,18 @@ function App() {
                 <div className="absolute inset-0 bg-gradient-to-br from-purple-600 via-purple-700 to-orange-600" />
                 <div className="relative p-8 lg:p-12 text-white">
                   <h3 className="text-2xl lg:text-3xl font-bold mb-4">
-                    Pronto para transformar sua liderança?
+                    {t(160)}
                   </h3>
                   <p className="text-white/90 mb-8 leading-relaxed">
-                    Não espere mais para criar uma cultura organizacional verdadeiramente 
-                    inclusiva. Cada dia de atraso é um talento perdido.
+                    {t(161)}
                   </p>
 
                   <div className="space-y-4 mb-8">
                     {[
-                      'Palestras personalizadas para seu evento',
-                      'Programas de mentoria para líderes',
-                      'Consultoria em Diversidade & Inclusão',
-                      'Implementação do Método Sinapse 360°',
+                      t(162),
+                      t(163),
+                      t(164),
+                      t(165),
                     ].map((item, index) => (
                       <div key={index} className="flex items-center gap-3">
                         <CheckCircle2 className="w-5 h-5 text-orange-300 flex-shrink-0" />
@@ -1003,11 +993,11 @@ function App() {
                     className="w-full bg-white text-purple-700 hover:bg-gray-100 font-semibold"
                   >
                     <Phone className="w-5 h-5 mr-2" />
-                    Falar no WhatsApp
+                    {t(166)}
                   </Button>
 
                   <p className="text-center text-white/70 text-sm mt-4">
-                    Resposta em até 24 horas
+                    {t(167)}
                   </p>
                 </div>
               </Card>
@@ -1035,8 +1025,7 @@ function App() {
                 </div>
               </div>
               <p className="text-gray-400 leading-relaxed mb-6">
-                Transformando lideranças e organizações através da neurodiversidade 
-                e relações de poder saudáveis.
+                {t(168)}
               </p>
               <div className="flex gap-3">
                 {[
@@ -1059,16 +1048,16 @@ function App() {
 
             {/* Quick Links */}
             <div>
-              <h4 className="font-bold text-lg mb-6">Links Rápidos</h4>
+              <h4 className="font-bold text-lg mb-6">{t(169)}</h4>
               <ul className="space-y-3">
                 {[
-                  { label: 'Home', href: '#home' },
-                  { label: 'Sobre', href: '#sobre' },
-                  { label: 'Método Sinapse 360°', href: '#metodo' },
-                  { label: 'Palestras', href: '#palestras' },
-                  { label: 'Depoimentos', href: '#depoimentos' },
-                  { label: 'FAQ', href: '#faq' },
-                  { label: 'Contato', href: '#contato' },
+                  { label: t(7), href: '#home' },
+                  { label: t(8), href: '#sobre' },
+                  { label: t(118), href: '#metodo' },
+                  { label: t(10), href: '#palestras' },
+                  { label: t(11), href: '#depoimentos' },
+                  { label: t(12), href: '#faq' },
+                  { label: t(13), href: '#contato' },
                 ].map((link, index) => (
                   <li key={index}>
                     <button 
@@ -1084,15 +1073,15 @@ function App() {
 
             {/* Palestras */}
             <div>
-              <h4 className="font-bold text-lg mb-6">Palestras</h4>
+              <h4 className="font-bold text-lg mb-6">{t(10)}</h4>
               <ul className="space-y-3">
 	                {[
-	                  'Neurodiversidade no Poder',
-	                  'A Crise da Liderança',
-	                  'Relações de Poder Saudáveis',
-	                  'Liderança Adaptativa',
-	                  'Inclusão que Gera Resultado',
-	                  'Mentoria para Líderes',
+	                  t(89),
+	                  t(94),
+	                  t(98),
+	                  t(102),
+	                  t(106),
+	                  t(111),
 	                ].map((talk, index) => (
 	                  <li key={index}>
 	                    <button 
@@ -1108,7 +1097,7 @@ function App() {
 
             {/* Contact */}
             <div>
-              <h4 className="font-bold text-lg mb-6">Contato</h4>
+              <h4 className="font-bold text-lg mb-6">{t(13)}</h4>
               <ul className="space-y-4">
                 <li className="flex items-center gap-3">
                   <Phone className="w-5 h-5 text-purple-400" />
@@ -1140,10 +1129,10 @@ function App() {
           {/* Bottom */}
           <div className="border-t border-white/10 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
             <p className="text-gray-500 text-sm">
-              © 2025 Bibi Martins. Todos os direitos reservados.
+              {t(170)}
             </p>
             <div className="flex items-center gap-2">
-              <span className="text-gray-500 text-sm">Uma iniciativa</span>
+              <span className="text-gray-500 text-sm">{t(171)}</span>
               <img 
                 src="/images/Gemini_Generated_Image_pvaxsjpvaxsjpvax.png" 
                 alt="BM Academy" 
