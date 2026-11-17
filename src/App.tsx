@@ -1,10 +1,11 @@
 import { useLanguage } from './i18n/useLanguage'
 import { LanguageSelector } from './components/LanguageSelector'
+import { TestimonialsSection } from './components/TestimonialsSection'
 import { useEffect, useState, useRef } from 'react'
 import './App.css'
 import { 
   Menu, Phone, Mail, Instagram, Facebook, Youtube, 
-  ChevronRight, Star, Quote, Brain, Users, MessageCircle, 
+  ChevronRight, Brain, Users, MessageCircle, 
   Target, Zap, Award, TrendingUp, ArrowRight, Play, Building2,
   Sparkles, Lightbulb, Heart, CheckCircle2, User, ShieldCheck
 } from 'lucide-react'
@@ -735,86 +736,7 @@ function App() {
       </section>
 
       {/* Testimonials Section */}
-      <section id="depoimentos" className="py-20 lg:py-32 bg-gradient-to-b from-gray-50 to-white">
-        <div className="container mx-auto px-4 lg:px-8">
-          {/* Header */}
-          <div className="text-center max-w-3xl mx-auto mb-16">
-            <Badge className="mb-4 bg-orange-100 text-orange-700 hover:bg-orange-200">
-              <Star className="w-3 h-3 mr-1" />
-              {t(11)}
-            </Badge>
-            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-900 mb-6">
-              {t(122)} <span className="text-gradient">{t(123)}</span>
-            </h2>
-            <p className="text-lg text-gray-600">
-              {t(124)}
-            </p>
-          </div>
-
-          {/* Testimonials Grid */}
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {[
-              {
-                text: t(125),
-                author: 'Ana Paula Mendes',
-                role: t(126),
-                company: 'TechCorp Brasil',
-              },
-              {
-                text: t(127),
-                author: 'Carlos Eduardo Lima',
-                role: 'CEO',
-                company: 'Inovação Group',
-              },
-              {
-                text: t(129),
-                author: 'Mariana Souza',
-                role: t(130),
-                company: 'Global Industries',
-              },
-              {
-                text: t(131),
-                author: 'Ricardo Almeida',
-                role: t(132),
-                company: 'Finance Solutions',
-              },
-              {
-                text: t(133),
-                author: 'Fernanda Costa',
-                role: t(134),
-                company: 'StartUp Hub',
-              },
-              {
-                text: t(135),
-                author: 'João Pedro Silva',
-                role: t(136),
-                company: 'Business Partners',
-              },
-            ].map((testimonial, index) => (
-              <Card 
-                key={index} 
-                className="border-0 shadow-lg hover:shadow-xl transition-all duration-300"
-              >
-                <CardContent className="p-6">
-                  <Quote className="w-10 h-10 text-purple-200 mb-4" />
-                  <p className="text-gray-700 leading-relaxed mb-6">
-                    "{testimonial.text}"
-                  </p>
-                  <div className="flex items-center gap-3">
-                    <div className="w-12 h-12 rounded-full bg-gradient-to-br from-purple-500 to-orange-500 flex items-center justify-center text-white font-bold">
-                      {testimonial.author.split(' ').map(n => n[0]).join('')}
-                    </div>
-                    <div>
-                      <p className="font-semibold text-gray-900">{testimonial.author}</p>
-                      <p className="text-sm text-gray-600">{testimonial.role}</p>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        </div>
-      </section>
+      <TestimonialsSection />
 
       {/* FAQ Section */}
       <section id="faq" className="py-20 lg:py-28 bg-gray-50">
