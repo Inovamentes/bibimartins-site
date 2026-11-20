@@ -12,7 +12,7 @@ interface TestimonialItem {
   author: string
   role: string
   company: string
-  category: 'DHL' | 'Mills' | 'Rappi' | 'Geral'
+  category: 'DHL' | 'Mills' | 'Bimbo' | 'Rappi' | 'Geral'
   excerpt: string
   fullText?: string
   image?: string
@@ -159,6 +159,18 @@ export function TestimonialsSection() {
       verified: true,
       highlight: 'Apoio estratégico e mentoria',
     },
+    {
+      id: 'engenheiro-mills',
+      author: 'Engenheiro Mills',
+      role: 'Engenharia & Operações',
+      company: 'Mills',
+      category: 'Mills',
+      excerpt: 'Bom diaa, Rosi! Muito obrigado pelo tempo trabalhando juntos e pode ter certeza que agregou sim e deixou sua marca. Muito boa sorte, abraço!',
+      image: '/depoimentos/engenheiro-mills.jpg',
+      aspect: 'compact',
+      verified: true,
+      highlight: 'Parceria sólida e legado no time',
+    },
   ]
 
   const filtered = selectedCategory === 'all'
@@ -181,7 +193,7 @@ export function TestimonialsSection() {
             O Impacto da Transformação <span className="text-gradient">na Prática</span>
           </h2>
           <p className="text-lg text-gray-600 leading-relaxed">
-            Mensagens espontâneas, feedbacks e histórias reais de executivos, líderes e liderados que vivenciaram a liderança e a metodologia de Bibi Martins em gigantes como <strong>DHL</strong>, <strong>Mills</strong> e <strong>Rappi</strong>.
+            Mensagens espontâneas, feedbacks e histórias reais de executivos, líderes e liderados que vivenciaram a liderança e a metodologia de Bibi Martins em gigantes como <strong>DHL</strong>, <strong>Mills</strong>, <strong>Bimbo</strong> e <strong>Rappi</strong>.
           </p>
 
           {/* Filter Categories */}
@@ -190,6 +202,7 @@ export function TestimonialsSection() {
               { id: 'all', label: 'Todos os Depoimentos' },
               { id: 'DHL', label: 'DHL Supply Chain' },
               { id: 'Mills', label: 'Mills Estruturas' },
+              { id: 'Bimbo', label: 'Bimbo Brasil' },
               { id: 'Rappi', label: 'Rappi Brasil' },
             ].map(tab => (
               <button
@@ -389,7 +402,63 @@ export function TestimonialsSection() {
           </div>
         )}
 
-        {/* 3. GRADE DE PROVAS SOCIAIS E PRINTS REAIS */}
+        {/* 3. DEPOIMENTO EM EXTENSÃO HORIZONTAL (DENISE PEDROSO - BIMBO) */}
+        {(selectedCategory === 'all' || selectedCategory === 'Bimbo') && (
+          <div className="mb-14">
+            <Card className="border border-orange-100 shadow-xl bg-gradient-to-br from-orange-50/70 via-white to-purple-50/60 rounded-3xl overflow-hidden">
+              <CardContent className="p-6 sm:p-8 lg:p-10 space-y-6">
+                <div className="flex flex-wrap items-center justify-between gap-4 border-b border-orange-100/80 pb-5">
+                  <div className="flex flex-wrap items-center gap-3">
+                    <Badge className="bg-orange-100 text-orange-700 hover:bg-orange-200 border-orange-200">
+                      <Award className="w-3.5 h-3.5 mr-1 text-orange-600" />
+                      Liderança Humana & Autoridade
+                    </Badge>
+                    <span className="text-xs font-semibold text-gray-500 uppercase tracking-wider">
+                      Bimbo Brasil • Equipe de Operações
+                    </span>
+                    <span className="text-xs text-emerald-600 font-semibold flex items-center gap-1 bg-emerald-50 px-2.5 py-1 rounded-full border border-emerald-200/60">
+                      <CheckCircle2 className="w-3.5 h-3.5" /> Depoimento Real Verificado
+                    </span>
+                  </div>
+
+                  <div className="flex items-center gap-3">
+                    <div className="w-11 h-11 rounded-xl bg-gradient-to-tr from-orange-500 to-purple-600 text-white flex items-center justify-center font-bold text-base shadow-sm">
+                      DP
+                    </div>
+                    <div>
+                      <h4 className="font-bold text-gray-900 text-base leading-tight">Denise Pedroso</h4>
+                      <p className="text-xs text-gray-500">Relato Profissional • Equipe de Operações — <span className="text-orange-600 font-semibold">Bimbo</span></p>
+                    </div>
+                  </div>
+                </div>
+
+                <h3 className="text-xl sm:text-2xl lg:text-3xl font-bold text-gray-900 leading-snug">
+                  "Em um setor majoritariamente masculino, exercer a liderança com respeito, equilíbrio e sem conflitos é algo realmente inspirador e admirável."
+                </h3>
+
+                <blockquote className="lg:columns-2 lg:gap-10 text-gray-700 text-base leading-relaxed space-y-4">
+                  <p className="break-inside-avoid">
+                    "Rose, gestora, uma pessoa pontual, firme e, acima de tudo, humana. Em um setor majoritariamente masculino, conseguir exercer a liderança com respeito, equilíbrio e sem conflitos é algo realmente inspirador e admirável."
+                  </p>
+                  <p className="break-inside-avoid">
+                    "Sua forma de conduzir a equipe, dando suporte tanto coletivo quanto individual, demonstra que liderar vai muito além de cobrar resultados. É também saber ouvir, compreender e tentar enxergar as dores e dificuldades de cada um que está na rua, enfrentando diariamente os desafios do trabalho."
+                  </p>
+                  <p className="break-inside-avoid">
+                    "Rose procura entender as necessidades de cada profissional, oferecendo apoio e buscando soluções sempre que possível. Sua postura firme, aliada à empatia e ao respeito, faz diferença no dia a dia de toda a equipe."
+                  </p>
+                  <p className="break-inside-avoid">
+                    "Ser líder é ter autoridade, mas também saber acolher. É cobrar quando necessário, mas reconhecer as dificuldades. E é justamente esse equilíbrio que torna sua liderança tão especial."
+                  </p>
+                  <p className="break-inside-avoid font-medium text-gray-800">
+                    "Por tudo isso, Rose, fica aqui minha admiração, respeito e reconhecimento pelo trabalho que você realiza e pela maneira como conduz a equipe."
+                  </p>
+                </blockquote>
+              </CardContent>
+            </Card>
+          </div>
+        )}
+
+        {/* 4. GRADE DE PROVAS SOCIAIS E PRINTS REAIS */}
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
           {filtered.map((item) => (
             <Card 
